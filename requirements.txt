@@ -1,0 +1,6 @@
+playwright>=1.49.0
+google-generativeai>=0.8.0
+google-genai>=1.0.0
+curl_cffi>=0.14.0
+XClientTransaction>=1.0.0
+beautifulsoup4>=4.12.0

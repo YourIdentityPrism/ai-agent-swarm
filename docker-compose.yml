@@ -1,0 +1,13 @@
+services:
+  agent:
+    build: .
+    container_name: ai-agent
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - ./profiles:/app/profiles
+      - ./logs:/app/logs
+      - ./bot_config.json:/app/bot_config.json
+      # Mount cookie files for each bot
+      # - ./cookies_bot1.json:/app/cookies_bot1.json
+      # - ./cookies_bot2.json:/app/cookies_bot2.json

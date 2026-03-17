@@ -1,0 +1,58 @@
+{
+  "bots": [
+    {
+      "name": "alpha_agent",
+      "twitter_handle": "YourBot1",
+      "cookies_file": "cookies_bot1.json",
+      "api_only": true,
+      "target_accounts": ["elonmusk", "AnthropicAI", "OpenAI"],
+      "priority_accounts": ["AnthropicAI"],
+      "hashtags": ["#AI", "#BuildInPublic"],
+      "mention_accounts": [],
+      "news_niche": "ai",
+      "search_keywords": ["AI agents", "autonomous AI", "Claude"],
+      "sleep_hours_utc": [4, 5, 6, 7, 8, 9, 10],
+      "min_post_interval_hours": 4,
+      "max_posts_per_day": 3,
+      "max_replies_per_day": 40,
+      "max_gql_replies_per_day": 15,
+      "mentions_check_interval_min": 30,
+      "session_break_min_min": 30,
+      "session_break_max_min": 60,
+      "post_image_probability": 0.5,
+      "content_types": [
+        {"type": "insight", "weight": 0.4, "prompt_hint": "Share a genuine technical insight about AI agents, autonomous systems, or developer tools. Be specific and add value."},
+        {"type": "commentary", "weight": 0.3, "prompt_hint": "React to recent news in AI/tech. Reference real data from [REAL-TIME DATA] section. Add your unique perspective."},
+        {"type": "question", "weight": 0.3, "prompt_hint": "Ask an engaging question that sparks discussion. Low barrier to reply, high opinion content."}
+      ],
+      "persona": "You are an AI researcher and builder sharing insights about autonomous agents, LLMs, and the future of human-AI collaboration. Be technical but accessible. Short punchy sentences. Back claims with data. Never generic — every tweet must earn its place in someone's feed."
+    },
+    {
+      "name": "beta_agent",
+      "twitter_handle": "YourBot2",
+      "cookies_file": "cookies_bot2.json",
+      "api_only": true,
+      "target_accounts": ["VitalikButerin", "Bitcoin", "CoinDesk"],
+      "priority_accounts": ["VitalikButerin"],
+      "hashtags": ["#Bitcoin", "#Crypto"],
+      "mention_accounts": [],
+      "news_niche": "bitcoin",
+      "search_keywords": ["Bitcoin L1", "smart contracts", "DeFi"],
+      "sleep_hours_utc": [4, 5, 6, 7, 8, 9, 10],
+      "min_post_interval_hours": 5,
+      "max_posts_per_day": 2,
+      "max_replies_per_day": 30,
+      "max_gql_replies_per_day": 10,
+      "mentions_check_interval_min": 30,
+      "session_break_min_min": 40,
+      "session_break_max_min": 80,
+      "post_image_probability": 0.3,
+      "content_types": [
+        {"type": "analysis", "weight": 0.5, "prompt_hint": "Technical analysis of Bitcoin/crypto trends. Use real data from [REAL-TIME DATA]."},
+        {"type": "take", "weight": 0.3, "prompt_hint": "Share a contrarian but defensible opinion about crypto."},
+        {"type": "builder_log", "weight": 0.2, "prompt_hint": "Share what you're building. Raw developer energy."}
+      ],
+      "persona": "You are a crypto-native developer building on Bitcoin. You understand both the tech and the markets. Sharp, concise, zero corporate speak. Use $BTC naturally. Reference real metrics when available."
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+# Environment & Secrets
+.env
+.env.local
+.env.*.local
+bot_config.json
+cookies*.json
+*.lock
+
+# Browser profiles & user data
+profiles/
+user_data_dir/
+
+# Runtime data
+logs/
+*.log
+*.db
+*.sqlite
+heartbeat.json
+debug_screenshots/
+metrics/
+memory/
+last_tweet.txt
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.pytest_cache/
+venv/
+.venv/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Docker volumes
+data/
