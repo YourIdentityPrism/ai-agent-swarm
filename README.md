@@ -18,26 +18,77 @@ Single bots are predictable. A **swarm of specialized agents** is exponentially 
 
 ## Architecture
 
+```mermaid
+graph TB
+    subgraph Orchestrator["🎯 BotOrchestrator"]
+        direction TB
+        ORCH[Coordination Hub<br/>Staggered starts · Action lock · Cross-dedup]
+    end
+
+    subgraph Agents["🤖 Autonomous Agents"]
+        direction LR
+        A1["Agent Alpha<br/>━━━━━━━━━━<br/>🧠 AI/Tech niche<br/>📝 Posts + Replies<br/>🎨 AI Images<br/>💾 Own Memory"]
+        A2["Agent Beta<br/>━━━━━━━━━━<br/>₿ Crypto niche<br/>📝 Posts + Replies<br/>🎬 AI Videos<br/>💾 Own Memory"]
+        A3["Agent Gamma<br/>━━━━━━━━━━<br/>🔧 Builder niche<br/>📝 Posts + Replies<br/>🎨 AI Images<br/>💾 Own Memory"]
+    end
+
+    subgraph Shared["⚡ Shared Infrastructure"]
+        direction LR
+        BRAIN["🧠 GeminiBrain<br/>Text · Image · Video<br/>Gemini 3 Flash + Veo 3.1"]
+        FEEDS["📡 NewsFeeder<br/>15+ Real-time APIs<br/>BTC · Mempool · News"]
+        LOCK["🔒 Action Lock<br/>Mutex · Dedup DB<br/>No conflicts"]
+        MEM["💾 Shared DB<br/>Replied tweets<br/>Cross-agent awareness"]
+    end
+
+    subgraph External["🌐 External Services"]
+        direction LR
+        TW["Twitter/X<br/>GraphQL + REST API"]
+        GEM["Google Gemini<br/>Text + Image + Video"]
+        DATA["Data APIs<br/>CoinGecko · Mempool<br/>Polymarket · RSS"]
+    end
+
+    ORCH --> A1 & A2 & A3
+    A1 & A2 & A3 --> BRAIN & FEEDS & LOCK & MEM
+    BRAIN --> GEM
+    FEEDS --> DATA
+    A1 & A2 & A3 --> TW
+
+    style Orchestrator fill:#1a1a2e,stroke:#e94560,color:#fff
+    style Agents fill:#16213e,stroke:#0f3460,color:#fff
+    style Shared fill:#0f3460,stroke:#533483,color:#fff
+    style External fill:#1a1a2e,stroke:#e94560,color:#fff
 ```
-                    ┌─────────────────────┐
-                    │   BotOrchestrator   │
-                    │  (coordination hub) │
-                    └──────────┬──────────┘
-                               │
-              ┌────────────────┼────────────────┐
-              │                │                │
-     ┌────────▼──────┐ ┌──────▼───────┐ ┌──────▼───────┐
-     │  Agent Alpha  │ │  Agent Beta  │ │  Agent Gamma │
-     │  (AI/Tech)    │ │  (Crypto)    │ │  (Builder)   │
-     └───────┬───────┘ └──────┬───────┘ └──────┬───────┘
-             │                │                │
-     ┌───────▼───────────────▼────────────────▼───────┐
-     │              Shared Infrastructure              │
-     │  ┌──────────┐ ┌──────────┐ ┌─────────────────┐ │
-     │  │ GeminiBrain│ │NewsFeeder│ │Action Lock     │ │
-     │  │ (AI core)  │ │(15+ APIs)│ │ (no conflicts) │ │
-     │  └──────────┘ └──────────┘ └─────────────────┘ │
-     └─────────────────────────────────────────────────┘
+
+### Agent Lifecycle
+
+```mermaid
+stateDiagram-v2
+    [*] --> Wake: Staggered start
+    Wake --> CheckMentions: Scan notifications
+    CheckMentions --> ReplyMentions: New mentions found
+    CheckMentions --> Post: No mentions / done
+    ReplyMentions --> Post: Replies sent
+    Post --> GenerateContent: Cooldown passed
+    Post --> NicheReplies: Post cooldown active
+    GenerateContent --> AIImage: Image probability roll
+    GenerateContent --> AIVideo: Video probability roll
+    GenerateContent --> TextOnly: No media
+    AIImage --> Publish
+    AIVideo --> Publish
+    TextOnly --> Publish
+    Publish --> NicheReplies: Find target tweets
+    NicheReplies --> FollowBack: Search + reply
+    FollowBack --> Learn: Follow-back cycle
+    Learn --> Break: Analyze engagement
+    Break --> Sleep: Sleep hours (UTC)
+    Break --> Wake: Session break (30-60min)
+    Sleep --> [*]: Next day
+
+    note right of Learn
+        Every 48h: AI rewrites
+        agent persona based on
+        engagement metrics
+    end note
 ```
 
 ## Key Features
