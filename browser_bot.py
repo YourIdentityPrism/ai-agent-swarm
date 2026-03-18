@@ -1637,6 +1637,9 @@ class BotConfig:
     hashtag_count: int = 1
     max_video_posts_per_day: int = 0
     video_prompt_template: str = ""
+    max_follows_per_day: int = 50
+    min_followers_for_follow: int = 300
+    max_follow_ratio: float = 0.0  # 0 = no upper limit on friends/followers ratio
 
     @classmethod
     def from_dict(cls, d: dict) -> "BotConfig":
@@ -8106,7 +8109,7 @@ Return ONLY the tweet text (or SKIP)."""
         """
         if not self.gql or self.gql.disabled:
             return
-        max_follows_day = 50
+        max_follows_day = self.cfg.max_follows_per_day
         max_per_cycle = 12
         follows_today = int(self.memory.get_state("follows_today") or "0")
         last_follow_check = float(self.memory.get_state("last_follow_check_ts") or "0")
@@ -8126,10 +8129,12 @@ Return ONLY the tweet text (or SKIP)."""
             """Check if account likely follows back (friends/followers ratio)."""
             fc = info.get("followers_count", 0)
             fr = info.get("friends_count", 0)
-            if fc < 100:
+            if fc < self.cfg.min_followers_for_follow:
                 return False
-            # High ratio = they follow many people back
-            return fr / max(fc, 1) > 0.3
+            ratio = fr / max(fc, 1)
+            if self.cfg.max_follow_ratio > 0 and ratio > self.cfg.max_follow_ratio:
+                return False
+            return ratio > 0.3
 
         # A) Follow back people who mentioned/replied to us (from notifications)
         try:
@@ -8187,7 +8192,7 @@ Return ONLY the tweet text (or SKIP)."""
                         already_checked.add(author.lower())
                         # Already-known followers count from search
                         fc = tw.get("followers_count", 0)
-                        if fc < 300 or fc > 500000:
+                        if fc < self.cfg.min_followers_for_follow or fc > 500000:
                             continue  # sweet spot: 300-500K followers
                         user_info = await self.gql.get_user_by_screen_name(author)
                         if not user_info or user_info.get("following"):
