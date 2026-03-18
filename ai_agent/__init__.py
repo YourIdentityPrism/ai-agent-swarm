@@ -14,7 +14,7 @@ Architecture:
     └── orchestrator.py  # BotOrchestrator — crash-resilient multi-bot runner
 
 Each bot can run standalone:
-    python browser_bot.py --bot polybot --config bots/polybot/config.json
+    python browser_bot.py --bot trader_bot --config bots/trader_bot/config.json
 """
 
 import sys

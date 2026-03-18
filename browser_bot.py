@@ -3577,7 +3577,7 @@ Return ONLY the comment text."""
     def post_validate_for_bot(self, text: str, bot_name: str,
                               memory: "AgentMemory" = None) -> str:
         """Per-bot post-validation: enforce bot-specific rules."""
-        if bot_name == "fennecbot":
+        if bot_name == "meme_bot":
             # Ensure at least one $ ticker is present (with configured probability)
             if "$" not in text and random.random() < 0.65:
                 tickers = ["$FENNEC", "$FB", "$BTC"]
@@ -3590,7 +3590,7 @@ Return ONLY the comment text."""
                     else:
                         lines[-1] = last[:-1] + f" {ticker}" + last[-1]
                     text = "\n".join(lines)
-        if bot_name == "identityprism" and memory:
+        if bot_name == "analyst_bot" and memory:
             lower = text.lower()
             # Limit airdrop teases: max 1 per 3 days
             if any(w in lower for w in ["airdrop", "early supporters", "check your score", "just saying"]):
@@ -3607,7 +3607,7 @@ Return ONLY the comment text."""
                     # Don't block the whole tweet, just note it
                 else:
                     memory.set_state("last_site_mention_ts", str(time.time()))
-        if bot_name == "polybot" and memory:
+        if bot_name == "trader_bot" and memory:
             # Virtual portfolio: inject running record into tweets about trades
             lower = text.lower()
             if any(w in lower for w in ["entered", "position", "trade", "p&l", "record"]):
@@ -5813,7 +5813,7 @@ class BrowserBot:
         """Process pending items from TG monitor queue. Returns count processed."""
         items = self._load_tg_queue()
         pending = [i for i in items if i.get("status") == "pending"
-                   and i.get("bot", "fennecbot") == self.cfg.name]
+                   and i.get("bot", "meme_bot") == self.cfg.name]
         if not pending:
             return 0
 
@@ -5960,9 +5960,9 @@ class BrowserBot:
             self.day_start = time.time()
             self.memory.cleanup_old_replies(days=30)
             self._curated_today = False
-        # Even at daily limit, identityprism still checks wallet mentions
+        # Even at daily limit, analyst_bot still checks wallet mentions
         if self.actions_today >= self.cfg.actions_per_day:
-            if self.cfg.name == "identityprism":
+            if self.cfg.name == "analyst_bot":
                 self.log.info("Daily limit reached but checking wallet mentions first...")
                 try:
                     await self._cycle_wallet_roast("")
@@ -5982,7 +5982,7 @@ class BrowserBot:
                     self.log.debug("Curation error: %s", e)
 
         # TG queue: process any pending Telegram-sourced tweet URLs (FennecBot priority)
-        if self.cfg.name == "fennecbot":
+        if self.cfg.name == "meme_bot":
             try:
                 tg_processed = await self._process_tg_queue()
                 if tg_processed:
@@ -6071,7 +6071,7 @@ class BrowserBot:
             # Event-Driven: priority mention check first action only
             if i == 0:
                 # IdentityPrism: ALWAYS check wallet mentions first
-                if self.cfg.name == "identityprism":
+                if self.cfg.name == "analyst_bot":
                     await self._cycle_wallet_roast(learning)
                 did_priority = await self._priority_mention_scan(learning)
                 if did_priority:
@@ -6094,20 +6094,20 @@ class BrowserBot:
                 force_post = False  # only once per session
 
             # PolyBot: Polymarket virtual betting (8%) + bet review (4%)
-            elif not force_engage and self.cfg.name == "polybot" and roll < 0.04 and self._can_post():
+            elif not force_engage and self.cfg.name == "trader_bot" and roll < 0.04 and self._can_post():
                 await self._cycle_polymarket_bet(learning)
-            elif not force_engage and self.cfg.name == "polybot" and roll < 0.08:
+            elif not force_engage and self.cfg.name == "trader_bot" and roll < 0.08:
                 await self._cycle_polymarket_review(learning)
             # PolyBot legacy: market follow-up + prediction accuracy
-            elif not force_engage and self.cfg.name == "polybot" and roll < 0.11 and self._can_reply():
+            elif not force_engage and self.cfg.name == "trader_bot" and roll < 0.11 and self._can_reply():
                 await self._cycle_market_followup(learning)
 
             # FennecBot: on-chain alert (4%)
-            elif not force_engage and self.cfg.name == "fennecbot" and roll < 0.04 and self._can_post():
+            elif not force_engage and self.cfg.name == "meme_bot" and roll < 0.04 and self._can_post():
                 await self._cycle_onchain_alert(learning)
 
             # IdentityPrism: wallet roasting — skip if already done at i=0
-            elif not force_engage and self.cfg.name == "identityprism" and roll < 0.15 and i > 0:
+            elif not force_engage and self.cfg.name == "analyst_bot" and roll < 0.15 and i > 0:
                 await self._cycle_wallet_roast(learning)
 
             # Weekly series (2%) — only fires on the right day
@@ -6746,12 +6746,12 @@ class BrowserBot:
         if perf:
             mem_ctx += f"\n[PERFORMANCE INSIGHT]: {perf}\nWrite more like your top posts.\n"
         # PolyBot: inject virtual portfolio stats
-        if self.cfg.name == "polybot":
+        if self.cfg.name == "trader_bot":
             wins = self.memory.get_state("portfolio_wins", "47")
             losses = self.memory.get_state("portfolio_losses", "19")
             mem_ctx += f"\n[PORTFOLIO] Your running record: {wins}W-{losses}L. Reference this naturally in trade/portfolio tweets.\n"
         # Identity Prism: 20% chance of wallet analysis post (ONLY with real data)
-        if self.cfg.name == "identityprism" and random.random() < 0.20:
+        if self.cfg.name == "analyst_bot" and random.random() < 0.20:
             real_wallet = NewsFeeder._cache.get("helius_wallet_raw")
             if real_wallet:
                 text = await self.brain.generate_wallet_analysis(
@@ -6900,12 +6900,12 @@ class BrowserBot:
         perf = self.memory.get_state("performance_insight", "")
         if perf:
             mem_ctx += f"\n[PERFORMANCE INSIGHT]: {perf}\nWrite more like your top posts.\n"
-        if self.cfg.name == "polybot":
+        if self.cfg.name == "trader_bot":
             wins = self.memory.get_state("portfolio_wins", "47")
             losses = self.memory.get_state("portfolio_losses", "19")
             mem_ctx += f"\n[PORTFOLIO] Record: {wins}W-{losses}L.\n"
         # Identity Prism: sometimes generate wallet analysis instead (ONLY with real data)
-        if self.cfg.name == "identityprism" and random.random() < 0.25:
+        if self.cfg.name == "analyst_bot" and random.random() < 0.25:
             real_wallet = NewsFeeder._cache.get("helius_wallet_raw")
             if real_wallet:
                 text = await self.brain.generate_wallet_analysis(
@@ -6949,7 +6949,7 @@ class BrowserBot:
         if self.cfg.image_prompt_template:
             if random.random() < self.cfg.post_image_probability:
                 self.log.info("  🎨 Generating image...")
-                meme = self.cfg.name == "fennecbot" and random.random() < 0.3
+                meme = self.cfg.name == "meme_bot" and random.random() < 0.3
                 img_bytes = await self._grok_image(
                     self.cfg.image_prompt_template, text, meme_mode=meme)
                 if not img_bytes:
@@ -7225,7 +7225,7 @@ class BrowserBot:
         self.log.info("Cycle: thread post")
         news_ctx = await NewsFeeder.build_context(self.cfg.news_niche)
         mem_ctx = self.memory.get_context_for_generation()
-        if self.cfg.name == "polybot":
+        if self.cfg.name == "trader_bot":
             wins = self.memory.get_state("portfolio_wins", "47")
             losses = self.memory.get_state("portfolio_losses", "19")
             mem_ctx += f"\n[PORTFOLIO] Your running record: {wins}W-{losses}L.\n"
@@ -7296,8 +7296,8 @@ class BrowserBot:
                     self.log.info("  🚫 Skip spam mention from @%s: %s", tw["author"], tw["text"][:60])
                     self._mark_replied(tid, tw["author"])
                     continue
-                # Skip wallet tweets for identityprism (handled by wallet_roast cycle)
-                if self.cfg.name == "identityprism":
+                # Skip wallet tweets for analyst_bot (handled by wallet_roast cycle)
+                if self.cfg.name == "analyst_bot":
                     _clean = re.sub(r"[​-‏⁠-⁤﻿]", "", tw.get("text", ""))
                     if SOLANA_WALLET_REGEX.search(_clean):
                         continue
@@ -7437,7 +7437,7 @@ class BrowserBot:
     # ── PolyBot-specific cycles ────────────────────────────────────────
     async def _cycle_market_followup(self, learning: str):
         """PolyBot: find own recent prediction posts, check if market moved, reply with update."""
-        if self.cfg.name != "polybot":
+        if self.cfg.name != "trader_bot":
             return
         self.log.info("Cycle: market follow-up")
         try:
@@ -7510,7 +7510,7 @@ class BrowserBot:
 
     async def _cycle_prediction_accuracy(self, learning: str):
         """PolyBot: post a prediction accuracy / track record update."""
-        if self.cfg.name != "polybot":
+        if self.cfg.name != "trader_bot":
             return
         self.log.info("Cycle: prediction accuracy update")
         try:
@@ -7851,7 +7851,7 @@ Only suggest changes if confidence > 0.7 (strong signal from data)."""
     # ── PolyBot: Virtual Polymarket Betting ─────────────────────────
     async def _cycle_polymarket_bet(self, learning: str):
         """Analyze Polymarket, place virtual bet, post about it."""
-        if self.cfg.name != "polybot":
+        if self.cfg.name != "trader_bot":
             return
         last_bet = float(self.memory.get_state("last_bet_ts", "0"))
         if time.time() - last_bet < 4 * 3600:
@@ -7922,7 +7922,7 @@ Rules:
 
     async def _cycle_polymarket_review(self, learning: str):
         """Check open bets, resolve any with significant odds movement, post updates."""
-        if self.cfg.name != "polybot":
+        if self.cfg.name != "trader_bot":
             return
         open_bets = self.memory.get_open_bets()
         if not open_bets:
@@ -7954,7 +7954,7 @@ Rules:
     # ── FennecBot: On-chain Alert System ─────────────────────────────
     async def _cycle_onchain_alert(self, learning: str):
         """Monitor Fractal Bitcoin / UniSat for noteworthy on-chain events."""
-        if self.cfg.name != "fennecbot":
+        if self.cfg.name != "meme_bot":
             return
         last_alert = float(self.memory.get_state("last_onchain_alert_ts", "0"))
         if time.time() - last_alert < 3 * 3600:
@@ -8800,7 +8800,7 @@ Return ONLY the tweet text (or SKIP)."""
     # ── IdentityPrism: Wallet Roasting from Mentions ─────────────────
     async def _cycle_wallet_roast(self, learning: str):
         """Scan mentions for Solana wallet addresses, call Identity Prism API, and roast."""
-        if self.cfg.name != "identityprism":
+        if self.cfg.name != "analyst_bot":
             return
         # No global cooldown - reply to every wallet mention ASAP
         # Per-address dedup handled by self.replied_ids
@@ -9064,7 +9064,7 @@ Return ONLY a JSON: {{"new_phrases": ["phrase1", "phrase2"]}}"""
                                 self.cfg.twitter_handle.lower() in _txt_low))
                 # IdentityPrism: wallet address = instant priority
                 has_wallet = False
-                if self.cfg.name == "identityprism":
+                if self.cfg.name == "analyst_bot":
                     addrs = SOLANA_WALLET_REGEX.findall(tw["text"])
                     addrs = [a for a in addrs if len(a) >= 40 and not a.startswith("http")]
                     has_wallet = len(addrs) > 0
@@ -9137,7 +9137,7 @@ Return ONLY a JSON: {{"new_phrases": ["phrase1", "phrase2"]}}"""
                 mentions_us = (self.cfg.name.lower() in _txt_low or
                                (self.cfg.twitter_handle and self.cfg.twitter_handle.lower() in _txt_low))
                 has_wallet = False
-                if self.cfg.name == "identityprism":
+                if self.cfg.name == "analyst_bot":
                     addrs = SOLANA_WALLET_REGEX.findall(tw["text"])
                     addrs = [a for a in addrs if len(a) >= 40 and not a.startswith("http")]
                     has_wallet = len(addrs) > 0
