@@ -561,7 +561,7 @@ class NewsFeeder:
 
     _cache: dict = {}
     _cache_ts: dict = {}
-    CACHE_TTL = 1800  # 30 min
+    CACHE_TTL = 900  # 15 min
 
     @classmethod
     async def get_crypto_prices(cls) -> dict:
@@ -1172,6 +1172,27 @@ class NewsFeeder:
             stats_parts.append("REFERENCE PRICES (use sparingly, NOT as main content):\n" + "\n".join(price_lines))
         # Solana-specific data
         if bot_niche == "solana":
+            # DeFi Llama — TVL + top protocols (HIGH PRIORITY for Solana bot)
+            defi = await cls.get_defi_llama_solana()
+            if defi.get("total_tvl"):
+                tvl_b = defi["total_tvl"] / 1e9
+                change = defi["tvl_change_1d"]
+                proto_lines = []
+                for p in defi.get("top_protocols", [])[:6]:
+                    p_tvl = p["tvl"] / 1e9 if p["tvl"] > 1e9 else p["tvl"] / 1e6
+                    unit = "B" if p["tvl"] > 1e9 else "M"
+                    proto_lines.append(
+                        f"  {p['name']}: ${p_tvl:.1f}{unit} ({p['change_1d']:+.1f}%)")
+                priority_parts.append(
+                    f">>> SOLANA DEFI DATA — Cite these numbers! <<<\n"
+                    f"Total TVL: ${tvl_b:.2f}B ({change:+.1f}% 24h)\n"
+                    f"Top protocols:\n" + "\n".join(proto_lines))
+            # Solana RSS news (additional to general news)
+            sol_news = await cls.get_all_solana_news()
+            if sol_news:
+                priority_parts.append(
+                    ">>> SOLANA-SPECIFIC NEWS <<<\n" +
+                    "\n".join(f"- {h[:100]}" for h in sol_news[:5]))
             sol = await cls.get_solana_data()
             if sol:
                 stats_parts.append(f"SOLANA DETAILS: Price ${sol.get('price',0):,.2f}, "
@@ -1236,7 +1257,7 @@ class NewsFeeder:
     async def get_niche_tweets(cls, niche: str) -> list:
         """Fetch niche ecosystem tweets via X API search."""
         cache_key = f"niche_tweets_{niche}"
-        if cache_key in cls._cache and time.time() - cls._cache_ts.get(cache_key, 0) < 14400:
+        if cache_key in cls._cache and time.time() - cls._cache_ts.get(cache_key, 0) < 1800:
             log.info("Niche tweets [%s]: returning %d cached results", niche, len(cls._cache[cache_key]))
             return cls._cache[cache_key]
         queries = {
@@ -1268,6 +1289,162 @@ class NewsFeeder:
         except Exception as e:
             log.warning("Niche tweet search failed [%s]: %s", niche, e)
             return cls._cache.get(cache_key, [])
+
+    # ── DeFi Llama + RSS aggregation (Solana ecosystem) ────────────────
+
+    @classmethod
+    async def get_defi_llama_solana(cls) -> dict:
+        """Returns {total_tvl, tvl_change_1d, top_protocols: [{name, tvl, change_1d, category}]}"""
+        cache_key = "defi_llama_solana"
+        if cache_key in cls._cache and time.time() - cls._cache_ts.get(cache_key, 0) < 1800:
+            return cls._cache[cache_key]
+        result = {"total_tvl": 0, "tvl_change_1d": 0, "top_protocols": []}
+        try:
+            import urllib.request
+            # 1) Chain TVL
+            req = urllib.request.Request(
+                "https://api.llama.fi/v2/chains",
+                headers={"User-Agent": "Mozilla/5.0"})
+            resp = await asyncio.to_thread(
+                lambda: urllib.request.urlopen(req, timeout=15).read())
+            chains = json.loads(resp)
+            sol_chain = next((c for c in chains if c.get("name") == "Solana"), None)
+            if sol_chain:
+                result["total_tvl"] = sol_chain.get("tvl", 0)
+
+            # 2) Historical TVL for day-over-day change
+            req2 = urllib.request.Request(
+                "https://api.llama.fi/v2/historicalChainTvl/Solana",
+                headers={"User-Agent": "Mozilla/5.0"})
+            resp2 = await asyncio.to_thread(
+                lambda: urllib.request.urlopen(req2, timeout=15).read())
+            hist = json.loads(resp2)
+            if len(hist) >= 2:
+                today_tvl = hist[-1].get("tvl", 0)
+                yesterday_tvl = hist[-2].get("tvl", 1)
+                if yesterday_tvl > 0:
+                    result["tvl_change_1d"] = ((today_tvl - yesterday_tvl) / yesterday_tvl) * 100
+                result["total_tvl"] = today_tvl or result["total_tvl"]
+
+            # 3) Top Solana protocols
+            req3 = urllib.request.Request(
+                "https://api.llama.fi/protocols",
+                headers={"User-Agent": "Mozilla/5.0"})
+            resp3 = await asyncio.to_thread(
+                lambda: urllib.request.urlopen(req3, timeout=15).read())
+            protocols = json.loads(resp3)
+            sol_protos = []
+            for p in protocols:
+                sol_tvl = (p.get("chainTvls") or {}).get("Solana", 0)
+                if sol_tvl > 0:
+                    change = p.get("change_1d", 0) or 0
+                    sol_protos.append({
+                        "name": p.get("name", "?"),
+                        "tvl": sol_tvl,
+                        "change_1d": change,
+                        "category": p.get("category", ""),
+                    })
+            sol_protos.sort(key=lambda x: x["tvl"], reverse=True)
+            result["top_protocols"] = sol_protos[:10]
+
+            cls._cache[cache_key] = result
+            cls._cache_ts[cache_key] = time.time()
+            log.info("DeFi Llama Solana: TVL $%.2fB, %d protocols",
+                     result["total_tvl"] / 1e9, len(result["top_protocols"]))
+        except Exception as e:
+            log.debug("DeFi Llama fetch failed: %s", e)
+            return cls._cache.get(cache_key, result)
+        return result
+
+    @classmethod
+    async def get_all_solana_news(cls) -> list:
+        """Fetch from 3 RSS sources, filter for Solana, deduplicate. Returns up to 15 headlines."""
+        cache_key = "all_solana_news"
+        if cache_key in cls._cache and time.time() - cls._cache_ts.get(cache_key, 0) < cls.CACHE_TTL:
+            return cls._cache[cache_key]
+        import urllib.request
+        import xml.etree.ElementTree as ET
+        feeds = [
+            ("https://cointelegraph.com/rss/tag/solana", True),   # Solana-specific
+            ("https://www.theblock.co/rss.xml", False),            # General, needs filter
+            ("https://decrypt.co/feed", False),                    # General, needs filter
+        ]
+        sol_keywords = {"solana", "sol ", "$sol", "phantom", "jupiter", "jito",
+                        "marinade", "raydium", "tensor", "magic eden", "helius",
+                        "sanctum", "kamino", "drift", "pyth", "wormhole",
+                        "seeker", "saga", "bonk", "jup"}
+        all_headlines = []
+        seen_titles = set()
+        for feed_url, is_solana_feed in feeds:
+            try:
+                req = urllib.request.Request(feed_url, headers={
+                    "User-Agent": "Mozilla/5.0"})
+                resp = await asyncio.to_thread(
+                    lambda u=feed_url, r=req: urllib.request.urlopen(r, timeout=10).read())
+                root = ET.fromstring(resp)
+                items = root.findall(".//item")
+                for item in items[:30]:
+                    title = (item.findtext("title") or "").strip()
+                    if not title:
+                        continue
+                    title_lower = title.lower()
+                    # Deduplicate
+                    title_key = title_lower[:60]
+                    if title_key in seen_titles:
+                        continue
+                    # Filter for Solana relevance (skip for Solana-specific feeds)
+                    if not is_solana_feed:
+                        if not any(kw in title_lower for kw in sol_keywords):
+                            continue
+                    seen_titles.add(title_key)
+                    all_headlines.append(title)
+            except Exception as e:
+                log.debug("RSS fetch failed (%s): %s", feed_url[:40], e)
+        all_headlines = all_headlines[:15]
+        cls._cache[cache_key] = all_headlines
+        cls._cache_ts[cache_key] = time.time()
+        log.info("Solana RSS news: %d headlines from %d feeds", len(all_headlines), len(feeds))
+        return all_headlines
+
+    @classmethod
+    async def build_digest_context(cls) -> str:
+        """Aggregates ALL data for daily digest: headlines + TVL + protocols + prices + niche tweets."""
+        parts = []
+        # 1) All Solana news headlines
+        news = await cls.get_all_solana_news()
+        if news:
+            parts.append("SOLANA NEWS (last 24h):\n" +
+                         "\n".join(f"  {i+1}. {h}" for i, h in enumerate(news)))
+        # 2) DeFi Llama data
+        defi = await cls.get_defi_llama_solana()
+        if defi.get("total_tvl"):
+            tvl_b = defi["total_tvl"] / 1e9
+            change = defi["tvl_change_1d"]
+            proto_lines = []
+            for p in defi.get("top_protocols", [])[:10]:
+                p_tvl = p["tvl"] / 1e9 if p["tvl"] > 1e9 else p["tvl"] / 1e6
+                unit = "B" if p["tvl"] > 1e9 else "M"
+                proto_lines.append(
+                    f"  {p['name']}: ${p_tvl:.1f}{unit} ({p['change_1d']:+.1f}%) [{p['category']}]")
+            parts.append(f"SOLANA DEFI (DeFi Llama):\n"
+                         f"  Total TVL: ${tvl_b:.2f}B ({change:+.1f}% 24h)\n"
+                         f"  Top protocols:\n" + "\n".join(proto_lines))
+        # 3) Prices
+        prices = await cls.get_crypto_prices()
+        if prices:
+            price_lines = []
+            for coin, data in prices.items():
+                p = data.get("usd", 0)
+                ch = data.get("usd_24h_change", 0)
+                price_lines.append(f"  {coin.upper()}: ${p:,.2f} ({ch:+.1f}%)")
+            parts.append("PRICES:\n" + "\n".join(price_lines))
+        # 4) Niche ecosystem tweets
+        niche_tweets = await cls.get_niche_tweets("solana")
+        if niche_tweets:
+            parts.append("ECOSYSTEM TWEETS:\n" +
+                         "\n".join(f"  @{t['author']}: {t['text'][:120]}"
+                                   for t in niche_tweets[:8]))
+        return "\n\n".join(parts) if parts else ""
 
     _api_client_ref = None
 
@@ -1640,6 +1817,7 @@ class BotConfig:
     max_follows_per_day: int = 50
     min_followers_for_follow: int = 300
     max_follow_ratio: float = 0.0  # 0 = no upper limit on friends/followers ratio
+    niche_max_age_hours: float = 1.0  # Max age of niche tweets to reply to
 
     @classmethod
     def from_dict(cls, d: dict) -> "BotConfig":
@@ -2998,6 +3176,100 @@ class XGraphQLClient:
             self._log.warning("Following feed parse error: %s", e)
         return results
 
+    async def get_tweet_detail(self, tweet_id: str, count: int = 20) -> list[dict]:
+        """Fetch replies to a tweet via TweetDetail GraphQL operation.
+        Returns list of {id, text, author, created_at} for replies."""
+        variables = {
+            "focalTweetId": tweet_id,
+            "with_rux_injections": False,
+            "rankingMode": "Relevance",
+            "includePromotedContent": False,
+            "withCommunity": True,
+            "withQuickPromoteEligibilityTweetFields": False,
+            "withBirdwatchNotes": True,
+            "withVoice": True,
+        }
+        features = {
+            "rweb_tipjar_consumption_enabled": True,
+            "responsive_web_graphql_exclude_directive_enabled": True,
+            "verified_phone_label_enabled": False,
+            "creator_subscriptions_tweet_preview_api_enabled": True,
+            "responsive_web_graphql_timeline_navigation_enabled": True,
+            "responsive_web_graphql_skip_user_profile_image_extensions_enabled": False,
+            "communities_web_enable_tweet_community_results_fetch": True,
+            "c9s_tweet_anatomy_moderator_badge_enabled": True,
+            "articles_preview_enabled": True,
+            "responsive_web_edit_tweet_api_enabled": True,
+            "graphql_is_translatable_rweb_tweet_is_translatable_enabled": True,
+            "view_counts_everywhere_api_enabled": True,
+            "longform_notetweets_consumption_enabled": True,
+            "responsive_web_twitter_article_tweet_consumption_enabled": True,
+            "tweet_awards_web_tipping_enabled": False,
+            "creator_subscriptions_quote_tweet_preview_enabled": False,
+            "freedom_of_speech_not_reach_fetch_enabled": True,
+            "standardized_nudges_misinfo": True,
+            "tweet_with_visibility_results_prefer_gql_limited_actions_policy_enabled": True,
+            "longform_notetweets_rich_text_read_enabled": True,
+            "longform_notetweets_inline_media_enabled": True,
+            "responsive_web_enhance_cards_enabled": False,
+        }
+        data = await self._gql_get_request(
+            "TweetDetail", "TweetDetail", variables, features)
+        replies = []
+        try:
+            instructions = (data.get("data", {})
+                            .get("threaded_conversation_with_injections_v2", {})
+                            .get("instructions", []))
+            for instr in instructions:
+                for entry in instr.get("entries", []):
+                    eid = entry.get("entryId", "")
+                    if "cursor" in eid:
+                        continue
+                    # Conversation thread entries
+                    content = entry.get("content", {})
+                    items = []
+                    if content.get("entryType") == "TimelineTimelineItem":
+                        items = [content]
+                    elif content.get("entryType") == "TimelineTimelineModule":
+                        items = content.get("items", [])
+                        items = [it.get("item", {}) for it in items]
+                    for item in items:
+                        ic = item.get("itemContent", {})
+                        tr = (ic.get("tweet_results", {}).get("result", {}))
+                        if not tr:
+                            continue
+                        if tr.get("__typename") == "TweetWithVisibilityResults":
+                            tr = tr.get("tweet", {})
+                        legacy = tr.get("legacy", {})
+                        text = legacy.get("full_text", "")
+                        rid = legacy.get("id_str", "") or tr.get("rest_id", "")
+                        # Skip the focal tweet itself
+                        if rid == tweet_id:
+                            continue
+                        # Only include actual replies to the focal tweet
+                        if legacy.get("in_reply_to_status_id_str") != tweet_id:
+                            continue
+                        ua = (tr.get("core", {})
+                              .get("user_results", {})
+                              .get("result", {}))
+                        screen_name = (
+                            ua.get("core", {}).get("screen_name", "")
+                            or ua.get("legacy", {}).get("screen_name", ""))
+                        followers = ua.get("legacy", {}).get("followers_count", 0)
+                        if text and rid:
+                            replies.append({
+                                "id": rid,
+                                "text": text,
+                                "author": screen_name,
+                                "created_at": legacy.get("created_at", ""),
+                                "followers_count": followers,
+                            })
+                    if len(replies) >= count:
+                        break
+        except Exception as e:
+            self._log.warning("TweetDetail parse error: %s", e)
+        return replies[:count]
+
 
 async def _extract_cookies(user_data_dir: str) -> dict[str, str] | None:
     """Extract auth_token + ct0 directly from Chromium cookie SQLite DB.
@@ -3259,24 +3531,24 @@ Skip: off-topic, non-English, political, spam. Be SELECTIVE — quality over qua
 
 Reply to @{author}'s tweet: "{tweet_text}"
 
-MANDATORY: Your reply MUST reference at least ONE specific word, phrase, concept, or name from the tweet above. If the tweet mentions "Firedancer" — say something about Firedancer. If it mentions "grants" — talk about grants. If it's about a product update — comment on THAT update. GENERIC REPLIES THAT COULD APPLY TO ANY TWEET WILL BE REJECTED BY CODE.
+MANDATORY: Your reply MUST reference at least ONE specific word, phrase, concept, or name from the tweet above. If the tweet mentions "Firedancer" — say something about Firedancer. If it mentions "grants" — talk about grants. GENERIC REPLIES THAT COULD APPLY TO ANY TWEET WILL BE REJECTED BY CODE.
 
-Choose ONE style:
-- Agree with a specific detail + add your own angle
-- Challenge one specific point they made
-- Ask a genuine question about something they said
-- Share a take that directly connects to their topic
+Choose ONE approach:
+- Cite a specific DATA POINT from [REAL-TIME DATA] that relates to their topic (e.g. "Kamino just hit $1.9B TVL — that backs this up")
+- Ask a GENUINE question about something specific they said
+- Challenge one specific point WITH evidence or data
+- Add context they missed — a number, a comparison, a trend
 
 Hard rules:
-- MAX 120 characters — be PUNCHY
+- MAX 200 characters
 - NO generic phrases: "Great post", "Love this", "So true", "This!", "Couldn't agree more"
-- NO just mentioning BTC price unless the tweet is specifically about price action
 - NO hashtags in replies — real people don't hashtag replies
 - NO links, NO @mentions
 - 0-1 emoji
+- Only mention Identity Prism if the tweet is specifically about wallets, on-chain identity, or reputation
 
 PERSONA RULE: Persona is BACKGROUND FLAVOR only.
-- Do NOT open with character clichés (fox metaphors, 'based', 'ser', 'wagmi', 'bullish', 'alpha', 'lfg')
+- Do NOT open with character clichés ('based', 'ser', 'wagmi', 'bullish', 'alpha', 'lfg')
 - Do NOT start with generic affirmations ('facts', 'real', 'true', 'exactly', 'absolutely')
 - LEAD WITH THE SUBSTANCE — reference what THEY said
 Return ONLY the reply text."""
@@ -3307,7 +3579,7 @@ Return ONLY the reply text."""
                                     f"and didn't reference anything specific from the tweet.\n"
                                     f"You MUST include at least one specific word or concept from "
                                     f"the tweet above. Read it carefully and respond to its CONTENT.\n"
-                                    f"MAX 120 chars. No hashtags. 0-1 emoji. Return ONLY the reply.")
+                                    f"MAX 200 chars. No hashtags. 0-1 emoji. Return ONLY the reply.")
                     text2 = await self._call(retry_prompt, temperature=random.uniform(0.7, 0.95))
                     if text2:
                         text2 = text2.replace("**", "").replace("__", "").replace("```", "")
@@ -3421,6 +3693,8 @@ STRICT QUALITY CHECK — fail if ANY of these apply:
 3. FORMATTING: Broken words across lines? Markdown artifacts? Too many emojis (>3)? Hashtag spam (>3)?
 4. VALUE: Does this tweet add real value (insight, humor, data, hot take)? Generic hype with no substance = fail.
 5. CRINGE: Would crypto twitter mock this? Too try-hard? Forced slang? Fail.
+6. SPECIFICITY: Does it name a specific protocol, person, or event? Does it cite a real number? Vague tweets that could apply to any chain or any day = fail.
+7. ANALYST VALUE: Would a Solana dev or investor learn something new from this? If the tweet is just hype or motivation with no information = fail.
 
 If the tweet fails, write an IMPROVED version that fixes ALL issues while keeping the core idea.
 The improved version MUST have completely different wording, opener, and structure.
@@ -3678,6 +3952,54 @@ Return ONLY the formatted tweets."""
                             tweets.append(t)
                         break
         return tweets[:3] if len(tweets) >= 2 else []
+
+    async def generate_daily_digest(self, persona: str,
+                                     digest_context: str) -> list[str]:
+        """Generate a 3-4 tweet daily Solana ecosystem digest thread."""
+        prompt = f"""{persona}
+
+You are writing your DAILY SOLANA ECOSYSTEM DIGEST — a comprehensive overview thread.
+You have access to headlines, DeFi TVL data, protocol metrics, and ecosystem tweets.
+
+DATA:
+{digest_context}
+
+Write a 3-4 tweet thread:
+TWEET1: The #1 story today. Lead with the headline, add your sharp take. (250 chars max)
+TWEET2: DeFi/TVL analysis. Cite specific numbers: TVL changes, protocol shifts, movers. (250 chars max)
+TWEET3: 2-3 other notable stories, briefly. Connect dots between them if possible. (250 chars max)
+TWEET4 (optional): Your prediction or what to watch next. Identity Prism angle ONLY if naturally relevant. (200 chars max)
+
+RULES:
+- Every tweet MUST cite at least 1 specific number or project name
+- Take POSITIONS — "this matters because..." not "interesting development"
+- The thread should feel like reading a smart analyst's morning brief
+- No generic hype. No "wagmi". No "building the future". Pure signal.
+- Use 1-2 emojis per tweet max. Use 📊 or 🔍 for data tweets.
+- Add #Solana hashtag to TWEET1 only
+
+Format EXACTLY as:
+TWEET1: <text>
+TWEET2: <text>
+TWEET3: <text>
+TWEET4: <text>
+
+Return ONLY the formatted tweets."""
+        text = await self._call(prompt, temperature=random.uniform(0.75, 0.95))
+        tweets = []
+        if text:
+            for line in text.split("\n"):
+                line = line.strip()
+                for prefix in ["TWEET1:", "TWEET2:", "TWEET3:", "TWEET4:",
+                                "1:", "2:", "3:", "4:"]:
+                    if line.upper().startswith(prefix):
+                        t = line[len(prefix):].strip().strip('"').strip("'")
+                        t = t.replace("**", "").replace("__", "").replace("```", "")
+                        t = re.sub(r'\s*#\w+', '', t).strip() if prefix != "TWEET1:" else t
+                        if 20 < len(t) <= 280:
+                            tweets.append(t)
+                        break
+        return tweets[:4] if len(tweets) >= 3 else []
 
     async def generate_ab_variants(self, persona: str, learning_ctx: str = "",
                                    content_types: list = None,
@@ -8085,6 +8407,23 @@ Return ONLY the tweet text (or SKIP)."""
             if reasons:
                 self.log.info("Post skipped: %s", ", ".join(reasons))
 
+        # 2.5. Daily digest (once per day, peak hours only)
+        last_digest = float(self.memory.get_state("last_digest_ts", "0"))
+        if (time.time() - last_digest > 20 * 3600
+                and self._is_peak_hour()
+                and self.gql and not self.gql.disabled):
+            try:
+                await self._gql_post_digest()
+            except Exception as e:
+                self.log.error("Daily digest error: %s", e)
+
+        # 2.7. Conversation replies (respond to replies on our tweets)
+        if self.gql and not self.gql.disabled and self._can_gql_reply():
+            try:
+                await self._gql_reply_to_conversations()
+            except Exception as e:
+                self.log.error("Conversation replies error: %s", e)
+
         # 3. Niche replies via GraphQL (looks like normal web user)
         if (self.gql and not self.gql.disabled
                 and self._can_gql_reply()
@@ -8470,8 +8809,172 @@ Return ONLY the tweet text (or SKIP)."""
             self.last_post_ts = time.time()
             self.memory.set_state("last_post_ts", str(self.last_post_ts))
             self.memory.remember("my_tweet", text[:200])
+            # Store tweet ID for conversation tracking (rotating buffer of 10)
+            self._store_my_tweet_id(result)
         else:
             self.log.error("GQL post failed: %s", result)
+
+    def _store_my_tweet_id(self, tweet_id: str):
+        """Store tweet ID in rotating buffer for conversation reply tracking."""
+        ids = [self.memory.get_state(f"my_tweet_id_{i}") for i in range(10)]
+        ids = [i for i in ids if i]
+        ids.insert(0, tweet_id)
+        ids = ids[:10]
+        for i, tid in enumerate(ids):
+            self.memory.set_state(f"my_tweet_id_{i}", tid)
+
+    # ── GQL Thread Poster ──────────────────────────────────────────────
+    async def _gql_post_thread(self, tweets: list[str],
+                                media_ids: list[str] = None) -> bool:
+        """Post a thread via GQL: first tweet with optional media, then self-replies."""
+        if not self.gql or self.gql.disabled or not tweets:
+            return False
+        # Post first tweet (with media if provided)
+        ok, first_id = await self.gql.post(tweets[0], media_ids=media_ids)
+        if not ok:
+            self.log.error("GQL thread: first tweet failed: %s", first_id)
+            return False
+        self.log.info("GQL thread [1/%d]: %s", len(tweets), tweets[0][:60])
+        self.memory.remember("my_tweet", tweets[0][:200])
+        prev_id = first_id
+        for i, tweet in enumerate(tweets[1:], start=2):
+            # Human-like delay between thread tweets
+            await asyncio.sleep(random.uniform(30, 60))
+            ok, new_id = await self.gql.reply(tweet, prev_id)
+            if ok:
+                self.log.info("GQL thread [%d/%d]: %s", i, len(tweets), tweet[:60])
+                self.memory.remember("my_tweet", tweet[:200])
+                prev_id = new_id
+            else:
+                self.log.warning("GQL thread [%d/%d] failed: %s", i, len(tweets), new_id)
+                break
+        return True
+
+    # ── Daily Solana Digest ────────────────────────────────────────────
+    async def _gql_post_digest(self):
+        """Post daily Solana ecosystem digest thread (max 1/day, peak hours only)."""
+        if not self.gql or self.gql.disabled:
+            return
+        last_digest = float(self.memory.get_state("last_digest_ts", "0"))
+        if time.time() - last_digest < 20 * 3600:
+            return
+        self.log.info("📰 Generating daily Solana digest...")
+        # Build digest context from all data sources
+        digest_ctx = await NewsFeeder.build_digest_context()
+        if not digest_ctx or len(digest_ctx) < 100:
+            self.log.warning("Digest: insufficient data, skipping")
+            return
+        # Generate thread
+        tweets = await self.brain.generate_daily_digest(self.cfg.persona, digest_ctx)
+        if not tweets:
+            self.log.warning("Digest: generation returned empty")
+            return
+        # Generate image for the first tweet
+        media_ids = None
+        try:
+            img_bytes = await self.brain.generate_image(
+                self.cfg.image_prompt_template,
+                "Solana ecosystem daily digest: " + tweets[0][:100])
+            if img_bytes:
+                mid = await self.gql.upload_media(img_bytes)
+                if mid:
+                    media_ids = [mid]
+        except Exception as e:
+            self.log.warning("Digest: image gen failed: %s", e)
+        # Post thread
+        ok = await self._gql_post_thread(tweets, media_ids=media_ids)
+        if ok:
+            self.memory.set_state("last_digest_ts", str(time.time()))
+            self.posts_today += 1
+            self.actions_today += 1
+            self.last_post_ts = time.time()
+            self.memory.set_state("last_post_ts", str(self.last_post_ts))
+            self.log.info("📰 Daily digest posted (%d tweets)", len(tweets))
+        else:
+            self.log.error("📰 Daily digest thread posting failed")
+
+    # ── Conversation Reply Cycle ───────────────────────────────────────
+    async def _gql_reply_to_conversations(self):
+        """Check replies to our recent tweets and respond to genuine ones."""
+        if not self.gql or self.gql.disabled:
+            return
+        if self.gql.paused_until > time.time():
+            return
+        last_conv_check = float(self.memory.get_state("last_conv_check_ts", "0"))
+        if time.time() - last_conv_check < 3600:  # max once per hour
+            return
+        self.memory.set_state("last_conv_check_ts", str(time.time()))
+        # Get our recent tweet IDs (last 24h)
+        recent_posts = self.memory.get_my_recent_posts(10)
+        # We need tweet IDs — extract from memory state
+        my_tweet_ids = []
+        for i in range(10):
+            tid = self.memory.get_state(f"my_tweet_id_{i}")
+            if tid:
+                my_tweet_ids.append(tid)
+        if not my_tweet_ids:
+            self.log.info("Conv replies: no tweet IDs stored, skipping")
+            return
+        replied_conv = 0
+        max_conv_replies = 3
+        for tweet_id in my_tweet_ids[:5]:
+            if replied_conv >= max_conv_replies:
+                break
+            try:
+                replies = await self.gql.get_tweet_detail(tweet_id, count=10)
+            except Exception as e:
+                self.log.warning("Conv: tweet detail error for %s: %s", tweet_id, e)
+                continue
+            for reply in replies:
+                if replied_conv >= max_conv_replies:
+                    break
+                rid = reply.get("id", "")
+                author = reply.get("author", "")
+                text = reply.get("text", "")
+                if not rid or not text or not author:
+                    continue
+                if self._is_self(author):
+                    continue
+                if rid in self.replied_ids:
+                    continue
+                # Skip spam and low-effort replies
+                if self._is_spam_mention(text):
+                    self._mark_replied(rid, author)
+                    continue
+                if self._LOW_EFFORT_RE.match(text):
+                    self._mark_replied(rid, author)
+                    continue
+                # Skip low-follower accounts
+                fc = reply.get("followers_count", 0)
+                if 0 < fc < 100:
+                    self._mark_replied(rid, author)
+                    continue
+                # Generate contextual reply
+                mem_ctx = self.memory.get_context_for_generation(
+                    topic=text[:30], author=author)
+                news_ctx = await NewsFeeder.build_context(self.cfg.news_niche)
+                reply_text = await self.brain.generate_reply(
+                    self.cfg.persona, text, author, news_ctx + mem_ctx,
+                    bot_name=self.cfg.name)
+                if not reply_text:
+                    continue
+                reply_text = self.brain.post_validate_for_bot(
+                    reply_text, self.cfg.name, self.memory)
+                if not reply_text:
+                    continue
+                ok, result = await self.gql.reply(reply_text, rid)
+                if ok:
+                    self.log.info("  Conv reply to @%s: %s", author, reply_text[:60])
+                    self._mark_replied(rid, author)
+                    self.replies_today += 1
+                    self.gql_replies_today += 1
+                    self.actions_today += 1
+                    self.memory.remember("my_reply", reply_text, author, text[:100])
+                    replied_conv += 1
+                    await asyncio.sleep(random.uniform(120, 300))
+                else:
+                    self.log.warning("  Conv reply failed: %s", str(result)[:100])
+        self.log.info("Conv replies: replied to %d conversations", replied_conv)
 
     # ── GQL Notifications-based Mentions Processing (free, no OAuth) ──
     async def _gql_process_mentions(self):
@@ -8726,14 +9229,14 @@ Return ONLY the tweet text (or SKIP)."""
                 skip_reasons["rate_limit"] += 1
                 continue
 
-            # Freshness check: skip tweets older than 1 hour
+            # Freshness check: skip tweets older than configured max age
             created = tw.get("created_at", "")
             if created:
                 try:
                     from email.utils import parsedate_to_datetime
                     tweet_dt = parsedate_to_datetime(created)
                     age_sec = (datetime.now(timezone.utc) - tweet_dt).total_seconds()
-                    if age_sec > 1 * 3600:
+                    if age_sec > self.cfg.niche_max_age_hours * 3600:
                         skip_reasons["old"] += 1
                         continue
                 except Exception:
