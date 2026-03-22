@@ -4,6 +4,20 @@ A production-grade framework for running **multiple autonomous AI agents** that 
 
 > **4 agents running in production 24/7**, each with distinct personas, posting original content with AI-generated images/videos, replying to trending accounts, and growing followers autonomously.
 
+### Live Agents (click to see them in action)
+| Agent | Handle | Niche | Posts/day |
+|-------|--------|-------|-----------|
+| Identity Prism | [@Identity_Prism](https://x.com/Identity_Prism) | Solana ecosystem analyst | 4 + daily digest thread |
+| OPNet Hub | [@opnethub](https://x.com/opnethub) | Bitcoin/OPNet | 3 |
+| BitPredict | [@OpBitPredict](https://x.com/OpBitPredict) | Bitcoin prediction markets | 8 |
+| JustBTCdevv | [@JustBTCdevv](https://x.com/JustBTCdevv) | AI/Bitcoin dev | 6 |
+
+### ERC-8004 Agent Identity
+- **Agent ID**: 33278
+- **Registry**: `eip155:8453:0x8004A169FB4a3325136EB29fA0ceB6D2e539a432`
+- **Registration TX**: [`0x165bd6...`](https://basescan.org/tx/0x165bd636f6dd4135e14740de8ec1e966886b59092b5c1e67375721c61fe6a9f5)
+- See [`agent.json`](agent.json) for capability manifest and [`agent_log.json`](agent_log.json) for execution logs
+
 ## Why Multi-Agent?
 
 Single bots are predictable. A **swarm of specialized agents** is exponentially more effective:
@@ -130,15 +144,21 @@ stateDiagram-v2
 
 Real-time data feeds injected into every AI prompt:
 
-| Source | Data |
-|--------|------|
-| CoinGecko | BTC/ETH/SOL prices, 24h changes, market cap |
-| Mempool.space | Bitcoin fee rates, block height, unconfirmed tx count |
-| Alternative.me | Fear & Greed Index |
-| Polymarket | Prediction market odds for trending events |
-| CoinTelegraph RSS | Breaking crypto news |
-| Bitcoin Magazine RSS | Bitcoin-specific news |
-| Helius API | Solana wallet analysis (balances, NFTs, DeFi positions) |
+| Source | Data | Cache |
+|--------|------|-------|
+| CoinGecko | BTC/ETH/SOL prices, 24h changes, trending coins | 15min |
+| DeFi Llama `/v2/chains` | Solana TVL (currently $6.70B) | 30min |
+| DeFi Llama `/protocols` | Top 10 Solana protocols + TVL + 24h% | 30min |
+| DeFi Llama `/v2/historicalChainTvl` | TVL day-over-day change | 30min |
+| Mempool.space | Bitcoin fee rates, block height, unconfirmed tx | 15min |
+| CoinTelegraph RSS `/rss/tag/solana` | Solana-specific headlines | 15min |
+| The Block RSS | Crypto news (filtered for ecosystem) | 15min |
+| Decrypt RSS | Crypto news (filtered for ecosystem) | 15min |
+| Polymarket | Prediction market odds | 15min |
+| Helius API | Solana wallet analysis, on-chain data | 15min |
+| Magic Eden API | NFT floor prices (Solana + Ordinals) | 15min |
+| UniSat API | Fractal Bitcoin, BRC-20 data | 15min |
+| Twitter/X Search | Niche ecosystem tweets from target accounts | 30min |
 
 ## Quick Start
 
@@ -240,22 +260,25 @@ When `video_prompt_template` starts with `{{DYNAMIC}}`, Gemini analyzes the twee
 
 ```
 ai-agent-framework/
-├── browser_bot.py              # Core engine (~9800 lines)
+├── browser_bot.py              # Core engine (~10300 lines)
 │   ├── AgentMemory              # SQLite RAG memory system
-│   ├── NewsFeeder               # 15+ real-time data APIs
+│   ├── NewsFeeder               # 15+ real-time data APIs + DeFi Llama + RSS
 │   ├── EngagementTracker        # Self-learning metrics
 │   ├── BotConfig                # Per-bot configuration
 │   ├── XApiClient               # Twitter API v2 (OAuth)
 │   ├── XGraphQLClient           # Twitter GraphQL (cookie-based)
-│   ├── GeminiBrain              # AI text/image/video generation
+│   ├── GeminiBrain              # AI text/image/video + daily digest
 │   ├── GrokBrowser              # Grok integration via Playwright
-│   ├── BrowserBot               # Main bot class
+│   ├── BrowserBot               # Main bot class + digest + conversations
 │   └── BotOrchestrator          # Multi-bot coordination
+├── agent.json                   # ERC-8004 capability manifest
+├── agent_log.json               # Structured execution logs
 ├── ai_agent/                    # Package facade (clean imports)
 ├── bot_config.example.json      # Example multi-agent config
 ├── .env.example                 # Environment variables template
 ├── Dockerfile                   # Production container
 ├── docker-compose.yml           # Orchestrated deployment
+├── tests/                       # Unit tests
 └── requirements.txt             # Python dependencies
 ```
 
@@ -281,12 +304,15 @@ Session Timeline (24h):
 
 ## Production Stats
 
-Currently running 4 agents in production:
-- **3-6 original posts/day** per agent (text + AI images + AI video)
+Currently running 4 agents in production since March 2026:
+- **3-8 original posts/day** per agent (text + AI images + AI video)
+- **Daily Solana ecosystem digest** — 4-tweet thread with DeFi Llama TVL data, RSS headlines, protocol analysis
 - **10-40 contextual replies/day** per agent to trending accounts
+- **Conversation tracking** — agents respond to replies on their own tweets
 - **50 strategic follows/day** targeting accounts likely to follow back
 - **24/7 uptime** with Docker + auto-restart
 - **Zero manual intervention** — fully autonomous operation
+- **ERC-8004 registered** — Agent ID #33278 on Base
 
 ## Tech Stack
 

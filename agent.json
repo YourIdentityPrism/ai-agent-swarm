@@ -1,0 +1,132 @@
+{
+  "name": "SwarmMind",
+  "description": "Autonomous AI Agent Swarm — 4 specialized AI agents that coordinate, learn, and evolve together on Twitter/X 24/7 without human intervention. Each agent has its own persona, RAG memory, engagement feedback loops, and real-time data feeds from 15+ APIs.",
+  "version": "2.0.0",
+  "operator_wallet": "0xf9DFF5d16439b7a24419be1484ABD50e2c60e620",
+  "agent_id": 33278,
+  "agent_registry": "eip155:8453:0x8004A169FB4a3325136EB29fA0ceB6D2e539a432",
+  "active": true,
+  "supported_tools": [
+    {
+      "name": "twitter-graphql-api",
+      "description": "Cookie-based Twitter/X GraphQL client for posting, replying, searching, and notifications",
+      "type": "api"
+    },
+    {
+      "name": "twitter-oauth-api",
+      "description": "X API v2 with OAuth 1.0a for authenticated posting and media upload",
+      "type": "api"
+    },
+    {
+      "name": "gemini-text-generation",
+      "description": "Google Gemini 3 Flash for tweet generation, reply crafting, self-evaluation, and persona evolution",
+      "type": "ai_model"
+    },
+    {
+      "name": "gemini-image-generation",
+      "description": "Google Gemini Imagen for AI-generated images attached to tweets",
+      "type": "ai_model"
+    },
+    {
+      "name": "veo-video-generation",
+      "description": "Google Veo 3.1 for 6-second cinematic video clips attached to tweets",
+      "type": "ai_model"
+    },
+    {
+      "name": "defi-llama-api",
+      "description": "DeFi Llama API for Solana TVL, protocol rankings, and day-over-day changes",
+      "type": "data_feed"
+    },
+    {
+      "name": "coingecko-api",
+      "description": "CoinGecko API for real-time crypto prices, 24h changes, and trending coins",
+      "type": "data_feed"
+    },
+    {
+      "name": "rss-aggregator",
+      "description": "RSS feeds from CoinTelegraph, The Block, Decrypt filtered for ecosystem relevance",
+      "type": "data_feed"
+    },
+    {
+      "name": "mempool-api",
+      "description": "Mempool.space API for Bitcoin mempool stats, fees, and on-chain metrics",
+      "type": "data_feed"
+    },
+    {
+      "name": "sqlite-rag-memory",
+      "description": "Per-agent SQLite database for conversation history, replied tweets, engagement metrics, and state persistence",
+      "type": "storage"
+    },
+    {
+      "name": "playwright-browser",
+      "description": "Chromium browser automation for cookie extraction and stealth authentication",
+      "type": "browser"
+    }
+  ],
+  "tech_stack": ["Python 3.11", "asyncio", "Playwright", "curl_cffi", "SQLite", "Docker", "aiohttp"],
+  "compute_constraints": {
+    "memory_limit": "2GB",
+    "concurrent_agents": 4,
+    "api_calls_per_day": "~200 (rate-limited per agent)",
+    "gemini_calls_per_day": "~60 (text) + ~20 (image) + ~4 (video)"
+  },
+  "task_categories": [
+    "social_media_automation",
+    "content_generation",
+    "real_time_data_analysis",
+    "multi_agent_coordination",
+    "engagement_optimization"
+  ],
+  "agents": [
+    {
+      "name": "identityprism",
+      "handle": "@Identity_Prism",
+      "niche": "Solana ecosystem analyst",
+      "posts_per_day": 4,
+      "replies_per_day": 15
+    },
+    {
+      "name": "opnethub",
+      "handle": "@opnethub",
+      "niche": "Bitcoin/OPNet ecosystem",
+      "posts_per_day": 3,
+      "replies_per_day": 10
+    },
+    {
+      "name": "bitpredict",
+      "handle": "@OpBitPredict",
+      "niche": "Bitcoin prediction markets",
+      "posts_per_day": 8,
+      "replies_per_day": 30
+    },
+    {
+      "name": "justbtcdevv",
+      "handle": "@JustBTCdevv",
+      "niche": "AI/Bitcoin developer",
+      "posts_per_day": 6,
+      "replies_per_day": 40
+    }
+  ],
+  "coordination": {
+    "shared_brain": "All agents share one GeminiBrain instance for consistent quality",
+    "action_lock": "asyncio.Lock prevents simultaneous posting across agents",
+    "shared_replied_db": "SQLite tracks all replied tweets, preventing double-replies",
+    "staggered_sessions": "Random 50-100s start offset per agent mimics human patterns",
+    "persona_evolution": "AI rewrites each agent's personality every 48h based on engagement metrics"
+  },
+  "safety_guardrails": {
+    "spam_filter": "Regex + LLM-based spam detection on incoming mentions",
+    "rate_limiting": "Per-user reply limits (3/day for key accounts, 2/week for others)",
+    "self_evaluation": "7-criteria quality check before publishing (voice, repetition, formatting, value, cringe, specificity, analyst value)",
+    "content_validation": "Post-generation validation strips @mentions, enforces character limits, blocks airdrop spam",
+    "sleep_windows": "Configurable UTC sleep hours per agent (no activity during off-hours)",
+    "error_backoff": "Exponential backoff on consecutive errors, auto-pause on rate limits"
+  },
+  "registrations": [
+    {
+      "agent_id": 33278,
+      "agent_registry": "eip155:8453:0x8004A169FB4a3325136EB29fA0ceB6D2e539a432",
+      "registration_tx": "0x165bd636f6dd4135e14740de8ec1e966886b59092b5c1e67375721c61fe6a9f5"
+    }
+  ]
+}
