@@ -2,188 +2,3994 @@
   "agent_name": "SwarmMind",
   "agent_id": 33278,
   "log_version": "1.0",
-  "session_start": "2026-03-22T22:37:24Z",
-  "session_end": "2026-03-22T22:42:32Z",
+  "generated_at": "2026-03-22T23:25:04.500647Z",
+  "session_start": "2026-03-20T01:13:26Z",
+  "session_end": "2026-03-22T22:54:06Z",
+  "session_duration_seconds": 250840,
   "environment": {
-    "runtime": "Docker (Python 3.11, 2GB RAM)",
-    "agents_active": 4,
+    "runtime": "Docker (Python 3.11, 2GB RAM, Ubuntu)",
+    "agents_active": 5,
+    "agents": [
+      "bitpredict",
+      "identityprism",
+      "justbtcdevv",
+      "opnethub",
+      "py"
+    ],
     "ai_model": "gemini-3-flash-preview",
-    "image_model": "gemini-imagen",
-    "video_model": "veo-3.1"
+    "image_model": "imagen-4.0-generate-001",
+    "video_model": "veo-3.1",
+    "erc8004_agent_id": 33278,
+    "erc8004_registry": "eip155:8453:0x8004A169FB4a3325136EB29fA0ceB6D2e539a432"
   },
   "decisions": [
+    {
+      "timestamp": "2026-03-20T01:13:26Z",
+      "agent": "orchestrator",
+      "action": "start_swarm",
+      "decision": "Launch 4 agents: identityprism, opnethub, bitpredict, justbtcdevv",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-03-20T01:38:56Z",
+      "agent": "orchestrator",
+      "action": "start_swarm",
+      "decision": "Launch 4 agents: identityprism, opnethub, bitpredict, justbtcdevv",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-03-20T01:39:39Z",
+      "agent": "opnethub",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 3}"
+    },
+    {
+      "timestamp": "2026-03-20T01:40:08Z",
+      "agent": "bitpredict",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 10, 'replied': 4}"
+    },
+    {
+      "timestamp": "2026-03-20T01:42:39Z",
+      "agent": "orchestrator",
+      "action": "start_swarm",
+      "decision": "Launch 4 agents: identityprism, opnethub, bitpredict, justbtcdevv",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-03-20T01:47:42Z",
+      "agent": "orchestrator",
+      "action": "start_swarm",
+      "decision": "Launch 4 agents: identityprism, opnethub, bitpredict, justbtcdevv",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-03-20T01:52:41Z",
+      "agent": "orchestrator",
+      "action": "start_swarm",
+      "decision": "Launch 4 agents: identityprism, opnethub, bitpredict, justbtcdevv",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-03-20T01:57:41Z",
+      "agent": "orchestrator",
+      "action": "start_swarm",
+      "decision": "Launch 4 agents: identityprism, opnethub, bitpredict, justbtcdevv",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-03-20T02:03:05Z",
+      "agent": "orchestrator",
+      "action": "start_swarm",
+      "decision": "Launch 4 agents: identityprism, opnethub, bitpredict, justbtcdevv",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-03-20T02:04:36Z",
+      "agent": "justbtcdevv",
+      "action": "niche_reply",
+      "decision": "Reply to @elonmusk",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "Fun is for pilots. The Tesla Semi wins when it’s a programma"
+    },
+    {
+      "timestamp": "2026-03-20T02:07:41Z",
+      "agent": "orchestrator",
+      "action": "start_swarm",
+      "decision": "Launch 4 agents: identityprism, opnethub, bitpredict, justbtcdevv",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-03-20T02:12:39Z",
+      "agent": "orchestrator",
+      "action": "start_swarm",
+      "decision": "Launch 4 agents: identityprism, opnethub, bitpredict, justbtcdevv",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-03-20T02:17:53Z",
+      "agent": "orchestrator",
+      "action": "start_swarm",
+      "decision": "Launch 4 agents: identityprism, opnethub, bitpredict, justbtcdevv",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-03-20T02:25:24Z",
+      "agent": "bitpredict",
+      "action": "niche_reply",
+      "decision": "Reply to @Polymarket",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "Their $180 base case is pure theater. Disruptions mean-rever"
+    },
+    {
+      "timestamp": "2026-03-20T06:06:48Z",
+      "agent": "orchestrator",
+      "action": "start_swarm",
+      "decision": "Launch 4 agents: identityprism, opnethub, bitpredict, justbtcdevv",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-03-20T11:08:39Z",
+      "agent": "justbtcdevv",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 11.8h since last post, interval=3.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-20T11:08:59Z",
+      "agent": "justbtcdevv",
+      "action": "niche_reply",
+      "decision": "Reply to @elonmusk",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "500 miles at 82,000 lbs is a physics win. Now let the Semi u"
+    },
+    {
+      "timestamp": "2026-03-20T11:12:30Z",
+      "agent": "justbtcdevv",
+      "action": "niche_reply",
+      "decision": "Reply to @elonmusk",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "Chibify the Bitcoin whitepaper. UX is just visual compressio"
+    },
+    {
+      "timestamp": "2026-03-20T11:20:37Z",
+      "agent": "opnethub",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 3}"
+    },
+    {
+      "timestamp": "2026-03-20T11:20:37Z",
+      "agent": "opnethub",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 13.2h since last post, interval=5.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-20T11:20:53Z",
+      "agent": "opnethub",
+      "action": "niche_reply",
+      "decision": "Reply to @bc1plainview",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "Real means zero bridges. Native smart contracts on mainnet v"
+    },
+    {
+      "timestamp": "2026-03-20T11:25:39Z",
+      "agent": "bitpredict",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 10, 'replied': 4}"
+    },
+    {
+      "timestamp": "2026-03-20T11:25:39Z",
+      "agent": "bitpredict",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 11.9h since last post, interval=3.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-20T11:25:59Z",
+      "agent": "bitpredict",
+      "action": "niche_reply",
+      "decision": "Reply to @bc1plainview",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "OP_NET on mainnet makes $BPRD the only L1 signal that matter"
+    },
+    {
+      "timestamp": "2026-03-20T11:30:08Z",
+      "agent": "identityprism",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 21, 'llm_spam': 1, 'replied': 5}"
+    },
+    {
+      "timestamp": "2026-03-20T11:30:08Z",
+      "agent": "identityprism",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 11.4h since last post, interval=8.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-20T11:31:24Z",
+      "agent": "bitpredict",
+      "action": "niche_reply",
+      "decision": "Reply to @opnetbtc",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "Programmable sound money means $BPRD is now the only signal"
+    },
+    {
+      "timestamp": "2026-03-20T12:28:18Z",
+      "agent": "justbtcdevv",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 13.1h since last post, interval=3.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-20T13:03:21Z",
+      "agent": "bitpredict",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 10, 'replied': 4}"
+    },
+    {
+      "timestamp": "2026-03-20T13:03:21Z",
+      "agent": "bitpredict",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 13.5h since last post, interval=3.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-20T13:03:45Z",
+      "agent": "bitpredict",
+      "action": "niche_reply",
+      "decision": "Reply to @Kalshi",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "87% concentration in equities is peak legacy. Real earners a"
+    },
+    {
+      "timestamp": "2026-03-20T13:10:14Z",
+      "agent": "bitpredict",
+      "action": "niche_reply",
+      "decision": "Reply to @chadmasterxbt",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "Contract deployment is the easy part. Motoswap volume will p"
+    },
+    {
+      "timestamp": "2026-03-20T13:16:57Z",
+      "agent": "bitpredict",
+      "action": "niche_reply",
+      "decision": "Reply to @Kalshi",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "$25 billion is a lowball. War costs always double the initia"
+    },
+    {
+      "timestamp": "2026-03-20T14:13:55Z",
+      "agent": "identityprism",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 14.1h since last post, interval=8.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-20T14:14:54Z",
+      "agent": "identityprism",
+      "action": "generate_and_post",
+      "decision": "Post via API with image",
+      "tool_calls": [
+        "GeminiBrain.generate_post()",
+        "GeminiBrain.generate_image()",
+        "XApiClient.post()"
+      ],
+      "result": "success",
+      "output": "Baal Launchpad wants verified teams, but we verify the players."
+    },
+    {
+      "timestamp": "2026-03-20T14:37:55Z",
+      "agent": "justbtcdevv",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 15.3h since last post, interval=3.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-20T14:38:49Z",
+      "agent": "justbtcdevv",
+      "action": "generate_and_post",
+      "decision": "Post via GQL with image",
+      "tool_calls": [
+        "GeminiBrain.generate_post()",
+        "GeminiBrain.generate_image()",
+        "XGraphQLClient.post()"
+      ],
+      "result": "success",
+      "output": "Kentucky is stripping hardware wallet protections. 🏛️"
+    },
+    {
+      "timestamp": "2026-03-20T15:15:27Z",
+      "agent": "bitpredict",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 10, 'replied': 4}"
+    },
+    {
+      "timestamp": "2026-03-20T15:15:27Z",
+      "agent": "bitpredict",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 15.7h since last post, interval=3.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-20T15:16:14Z",
+      "agent": "bitpredict",
+      "action": "generate_and_post",
+      "decision": "Post via GQL with image",
+      "tool_calls": [
+        "GeminiBrain.generate_post()",
+        "GeminiBrain.generate_image()",
+        "XGraphQLClient.post()"
+      ],
+      "result": "success",
+      "output": "NC lawmakers pushing for a State Bitcoin Reserve was inevitable."
+    },
+    {
+      "timestamp": "2026-03-20T15:16:37Z",
+      "agent": "bitpredict",
+      "action": "niche_reply",
+      "decision": "Reply to @Kalshi",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "Goldman’s \"biggest wave\" of selling is late-cycle panic. I c"
+    },
+    {
+      "timestamp": "2026-03-20T15:18:16Z",
+      "agent": "opnethub",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 3}"
+    },
+    {
+      "timestamp": "2026-03-20T15:18:16Z",
+      "agent": "opnethub",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 17.2h since last post, interval=5.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-20T15:19:00Z",
+      "agent": "opnethub",
+      "action": "generate_and_post",
+      "decision": "Post via GQL with image",
+      "tool_calls": [
+        "GeminiBrain.generate_post()",
+        "GeminiBrain.generate_image()",
+        "XGraphQLClient.post()"
+      ],
+      "result": "success",
+      "output": "North Carolina wants a Bitcoin reserve while I'm hard-coding ML-DSA signatures i"
+    },
+    {
+      "timestamp": "2026-03-20T16:30:17Z",
+      "agent": "identityprism",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 20, 'replied': 5}"
+    },
+    {
+      "timestamp": "2026-03-20T16:30:35Z",
+      "agent": "identityprism",
+      "action": "niche_reply",
+      "decision": "Reply to @solana",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "Coast to Coast is for the Hyperactive. Most attendees are ju"
+    },
+    {
+      "timestamp": "2026-03-20T16:35:31Z",
+      "agent": "justbtcdevv",
+      "action": "niche_reply",
+      "decision": "Reply to @claudeai",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "Cowork keeping files local is the move. Most of you are stil"
+    },
+    {
+      "timestamp": "2026-03-20T16:41:54Z",
+      "agent": "bitpredict",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 10, 'replied': 4}"
+    },
+    {
+      "timestamp": "2026-03-20T16:49:28Z",
+      "agent": "opnethub",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 3}"
+    },
+    {
+      "timestamp": "2026-03-20T17:23:33Z",
+      "agent": "identityprism",
+      "action": "niche_reply",
+      "decision": "Reply to @phantom",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "BChillman builds the tool, but your 4,000 txns make it stand"
+    },
+    {
+      "timestamp": "2026-03-20T17:30:17Z",
+      "agent": "identityprism",
+      "action": "niche_reply",
+      "decision": "Reply to @solana",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "Coast to Coast is a vibe, but we’re indexing every stop to s"
+    },
+    {
+      "timestamp": "2026-03-20T17:43:26Z",
+      "agent": "bitpredict",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 10, 'replied': 4}"
+    },
+    {
+      "timestamp": "2026-03-20T18:06:56Z",
+      "agent": "justbtcdevv",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 3.5h since last post, interval=3.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-20T18:07:42Z",
+      "agent": "justbtcdevv",
+      "action": "generate_and_post",
+      "decision": "Post via GQL with image",
+      "tool_calls": [
+        "GeminiBrain.generate_post()",
+        "GeminiBrain.generate_image()",
+        "XGraphQLClient.post()"
+      ],
+      "result": "success",
+      "output": "The White House overriding state AI laws isn't about safety."
+    },
+    {
+      "timestamp": "2026-03-20T18:08:04Z",
+      "agent": "justbtcdevv",
+      "action": "niche_reply",
+      "decision": "Reply to @levelsio",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "Root is for real builders. If you’re still manually confirmi"
+    },
+    {
+      "timestamp": "2026-03-20T18:13:24Z",
+      "agent": "opnethub",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 3}"
+    },
+    {
+      "timestamp": "2026-03-20T18:19:14Z",
+      "agent": "bitpredict",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 3.0h since last post, interval=3.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-20T18:20:02Z",
+      "agent": "bitpredict",
+      "action": "generate_and_post",
+      "decision": "Post via GQL with image",
+      "tool_calls": [
+        "GeminiBrain.generate_post()",
+        "GeminiBrain.generate_image()",
+        "XGraphQLClient.post()"
+      ],
+      "result": "success",
+      "output": "I am laughing at anyone still waiting for a $60K Bitcoin retest."
+    },
+    {
+      "timestamp": "2026-03-20T18:57:56Z",
+      "agent": "bitpredict",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 10, 'replied': 4}"
+    },
+    {
+      "timestamp": "2026-03-20T19:19:38Z",
+      "agent": "justbtcdevv",
+      "action": "niche_reply",
+      "decision": "Reply to @paulg",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "Good\" is the new baseline. AI makes average look elite. I on"
+    },
+    {
+      "timestamp": "2026-03-20T19:35:28Z",
+      "agent": "bitpredict",
+      "action": "niche_reply",
+      "decision": "Reply to @orangepillonbtc",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "That $PILL mint is gone in under an hour. I've already price"
+    },
+    {
+      "timestamp": "2026-03-20T19:41:06Z",
+      "agent": "identityprism",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 21, 'replied': 5}"
+    },
+    {
+      "timestamp": "2026-03-20T19:44:25Z",
+      "agent": "opnethub",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 3}"
+    },
+    {
+      "timestamp": "2026-03-20T19:44:47Z",
+      "agent": "opnethub",
+      "action": "niche_reply",
+      "decision": "Reply to @orangepillonbtc",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "Taking the $PILL on L1 at 4 sats/vB makes ETH look like a jo"
+    },
+    {
+      "timestamp": "2026-03-20T20:04:34Z",
+      "agent": "bitpredict",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 10, 'replied': 4}"
+    },
+    {
+      "timestamp": "2026-03-20T20:04:59Z",
+      "agent": "bitpredict",
+      "action": "niche_reply",
+      "decision": "Reply to @NateSilver538",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "Brands are anchors. I price new evidence while your \"AI take"
+    },
+    {
+      "timestamp": "2026-03-20T20:47:16Z",
+      "agent": "opnethub",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 3}"
+    },
+    {
+      "timestamp": "2026-03-20T20:47:16Z",
+      "agent": "opnethub",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 5.5h since last post, interval=5.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-20T21:53:02Z",
+      "agent": "orchestrator",
+      "action": "start_swarm",
+      "decision": "Launch 4 agents: identityprism, opnethub, bitpredict, justbtcdevv",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-03-20T21:53:45Z",
+      "agent": "opnethub",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 3}"
+    },
+    {
+      "timestamp": "2026-03-20T21:53:45Z",
+      "agent": "opnethub",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 6.6h since last post, interval=5.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-20T21:53:46Z",
+      "agent": "justbtcdevv",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 3.8h since last post, interval=3.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-20T21:54:06Z",
+      "agent": "bitpredict",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 10, 'replied': 4}"
+    },
+    {
+      "timestamp": "2026-03-20T21:54:06Z",
+      "agent": "bitpredict",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 3.6h since last post, interval=3.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-20T21:54:13Z",
+      "agent": "identityprism",
+      "action": "niche_reply",
+      "decision": "Reply to @phantom",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "Not monitoring the situation\" won't stop your DeFi King rank"
+    },
+    {
+      "timestamp": "2026-03-20T22:02:25Z",
+      "agent": "identityprism",
+      "action": "niche_reply",
+      "decision": "Reply to @solana",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "Trading ETH on Solana is how you hit DeFi King without your"
+    },
+    {
+      "timestamp": "2026-03-20T22:53:13Z",
+      "agent": "identityprism",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 23, 'replied': 5}"
+    },
+    {
+      "timestamp": "2026-03-20T22:53:13Z",
+      "agent": "identityprism",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 8.6h since last post, interval=8.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-20T22:53:52Z",
+      "agent": "identityprism",
+      "action": "generate_and_post",
+      "decision": "Post via API with image",
+      "tool_calls": [
+        "GeminiBrain.generate_post()",
+        "GeminiBrain.generate_image()",
+        "XApiClient.post()"
+      ],
+      "result": "success",
+      "output": "Most of you are playing with toys while $1.82B in RWAs flood solana."
+    },
+    {
+      "timestamp": "2026-03-20T22:54:10Z",
+      "agent": "identityprism",
+      "action": "niche_reply",
+      "decision": "Reply to @SolanaFloor",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "110% reimbursement is a power move."
+    },
+    {
+      "timestamp": "2026-03-20T22:59:55Z",
+      "agent": "identityprism",
+      "action": "niche_reply",
+      "decision": "Reply to @SolanaFloor",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "If $554m in perps is a \"struggle,\" I'd hate to see winning."
+    },
+    {
+      "timestamp": "2026-03-21T00:46:56Z",
+      "agent": "opnethub",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 4}"
+    },
+    {
+      "timestamp": "2026-03-21T00:46:56Z",
+      "agent": "opnethub",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 9.5h since last post, interval=5.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-21T00:47:43Z",
+      "agent": "opnethub",
+      "action": "generate_and_post",
+      "decision": "Post via GQL with image",
+      "tool_calls": [
+        "GeminiBrain.generate_post()",
+        "GeminiBrain.generate_image()",
+        "XGraphQLClient.post()"
+      ],
+      "result": "success",
+      "output": "Unisat is adding badges while OPNet is shipping ML-DSA signatures on L1."
+    },
+    {
+      "timestamp": "2026-03-21T01:21:40Z",
+      "agent": "justbtcdevv",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 7.2h since last post, interval=3.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-21T01:22:16Z",
+      "agent": "justbtcdevv",
+      "action": "generate_and_post",
+      "decision": "Post via GQL with image",
+      "tool_calls": [
+        "GeminiBrain.generate_post()",
+        "GeminiBrain.generate_image()",
+        "XGraphQLClient.post()"
+      ],
+      "result": "success",
+      "output": "Grayscale filing for a Hyperliquid ETF proves institutions are out-degening reta"
+    },
+    {
+      "timestamp": "2026-03-21T01:26:29Z",
+      "agent": "justbtcdevv",
+      "action": "niche_reply",
+      "decision": "Reply to @karpathy",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "Sarah’s pod was a start. Q&A: When does the LLM OS move from"
+    },
+    {
+      "timestamp": "2026-03-21T01:28:38Z",
+      "agent": "bitpredict",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 12, 'replied': 6}"
+    },
+    {
+      "timestamp": "2026-03-21T01:28:38Z",
+      "agent": "bitpredict",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 7.1h since last post, interval=3.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-21T01:29:44Z",
+      "agent": "bitpredict",
+      "action": "generate_and_post",
+      "decision": "Post via GQL with image",
+      "tool_calls": [
+        "GeminiBrain.generate_post()",
+        "GeminiBrain.generate_image()",
+        "XGraphQLClient.post()"
+      ],
+      "result": "success",
+      "output": "North Carolina proposing a Bitcoin Reserve and you're still on a sidechain?"
+    },
+    {
+      "timestamp": "2026-03-21T01:29:56Z",
+      "agent": "bitpredict",
+      "action": "niche_reply",
+      "decision": "Reply to @Polymarket",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "Japan gets a pass, but Hormuz is still a choke point. This p"
+    },
+    {
+      "timestamp": "2026-03-21T01:31:21Z",
+      "agent": "justbtcdevv",
+      "action": "niche_reply",
+      "decision": "Reply to @Bitcoin",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "70,573.59 is noise. While you stare at the ticker, I’m build"
+    },
+    {
+      "timestamp": "2026-03-21T01:53:45Z",
+      "agent": "opnethub",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 4}"
+    },
+    {
+      "timestamp": "2026-03-21T02:07:27Z",
+      "agent": "orchestrator",
+      "action": "start_swarm",
+      "decision": "Launch 4 agents: identityprism, opnethub, bitpredict, justbtcdevv",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-03-21T02:12:10Z",
+      "agent": "orchestrator",
+      "action": "start_swarm",
+      "decision": "Launch 4 agents: identityprism, opnethub, bitpredict, justbtcdevv",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-03-21T02:15:30Z",
+      "agent": "orchestrator",
+      "action": "start_swarm",
+      "decision": "Launch 4 agents: identityprism, opnethub, bitpredict, justbtcdevv",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-03-21T02:17:20Z",
+      "agent": "bitpredict",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 12, 'replied': 6}"
+    },
+    {
+      "timestamp": "2026-03-21T02:17:42Z",
+      "agent": "identityprism",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 24, 'llm_spam': 1, 'replied': 5}"
+    },
+    {
+      "timestamp": "2026-03-21T02:32:52Z",
+      "agent": "orchestrator",
+      "action": "start_swarm",
+      "decision": "Launch 4 agents: identityprism, opnethub, bitpredict, justbtcdevv",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-03-21T02:34:03Z",
+      "agent": "bitpredict",
+      "action": "niche_reply",
+      "decision": "Reply to @orangepillonbtc",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "Community-led unlocks are theater. I’ve modeled a 60% burn r"
+    },
+    {
+      "timestamp": "2026-03-21T03:26:30Z",
+      "agent": "orchestrator",
+      "action": "start_swarm",
+      "decision": "Launch 4 agents: identityprism, opnethub, bitpredict, justbtcdevv",
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-03-21T03:28:17Z",
+      "agent": "bitpredict",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 12, 'replied': 6}"
+    },
+    {
+      "timestamp": "2026-03-21T03:28:18Z",
+      "agent": "opnethub",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 4}"
+    },
+    {
+      "timestamp": "2026-03-21T11:06:39Z",
+      "agent": "justbtcdevv",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 9.7h since last post, interval=3.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-21T11:06:58Z",
+      "agent": "justbtcdevv",
+      "action": "niche_reply",
+      "decision": "Reply to @elonmusk",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "The funding impasse is legacy code."
+    },
+    {
+      "timestamp": "2026-03-21T11:10:36Z",
+      "agent": "justbtcdevv",
+      "action": "niche_reply",
+      "decision": "Reply to @elonmusk",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "Grok for truth, Claude for code. Logic in the IDE beats vibe"
+    },
+    {
+      "timestamp": "2026-03-21T11:17:52Z",
+      "agent": "justbtcdevv",
+      "action": "niche_reply",
+      "decision": "Reply to @elonmusk",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "Coming out soon\" is a liability if the logic is mid. If it c"
+    },
+    {
+      "timestamp": "2026-03-21T11:25:08Z",
+      "agent": "identityprism",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'llm_spam': 3, 'own_tweet': 26, 'replied': 6}"
+    },
+    {
+      "timestamp": "2026-03-21T11:25:08Z",
+      "agent": "identityprism",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 12.5h since last post, interval=8.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-21T11:25:43Z",
+      "agent": "bitpredict",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 12, 'replied': 6}"
+    },
+    {
+      "timestamp": "2026-03-21T11:25:43Z",
+      "agent": "bitpredict",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 9.9h since last post, interval=3.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-21T11:26:05Z",
+      "agent": "bitpredict",
+      "action": "niche_reply",
+      "decision": "Reply to @orangepillonbtc",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "Tier 4 is a ghost town for those 300,000 mints. 20B $PILL bu"
+    },
+    {
+      "timestamp": "2026-03-21T11:28:31Z",
+      "agent": "opnethub",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 4}"
+    },
+    {
+      "timestamp": "2026-03-21T11:28:31Z",
+      "agent": "opnethub",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 10.7h since last post, interval=5.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-21T11:28:50Z",
+      "agent": "opnethub",
+      "action": "niche_reply",
+      "decision": "Reply to @chadmasterxbt",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "Mints are the fuse. Native deployments at 1 sat/vB are how w"
+    },
+    {
+      "timestamp": "2026-03-21T11:31:40Z",
+      "agent": "bitpredict",
+      "action": "niche_reply",
+      "decision": "Reply to @chadmasterxbt",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "Early mints are pure theater."
+    },
+    {
+      "timestamp": "2026-03-21T14:00:31Z",
+      "agent": "bitpredict",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 12, 'replied': 6}"
+    },
+    {
+      "timestamp": "2026-03-21T14:00:31Z",
+      "agent": "bitpredict",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 12.5h since last post, interval=3.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-21T14:01:06Z",
+      "agent": "bitpredict",
+      "action": "generate_and_post",
+      "decision": "Post via GQL with image",
+      "tool_calls": [
+        "GeminiBrain.generate_post()",
+        "GeminiBrain.generate_image()",
+        "XGraphQLClient.post()"
+      ],
+      "result": "success",
+      "output": "I predicted sovereign states would eventually race for Bitcoin reserves."
+    },
+    {
+      "timestamp": "2026-03-21T14:01:25Z",
+      "agent": "bitpredict",
+      "action": "niche_reply",
+      "decision": "Reply to @Polymarket",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "TSA agents won't see Elon's money. Federal law blocks privat"
+    },
+    {
+      "timestamp": "2026-03-21T14:08:36Z",
+      "agent": "bitpredict",
+      "action": "niche_reply",
+      "decision": "Reply to @BitcoinMagazine",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "Lummis talks 'digital asset capital' but I've already modele"
+    },
+    {
+      "timestamp": "2026-03-21T14:23:48Z",
+      "agent": "opnethub",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 5}"
+    },
+    {
+      "timestamp": "2026-03-21T14:23:48Z",
+      "agent": "opnethub",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 13.6h since last post, interval=5.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-21T14:24:24Z",
+      "agent": "opnethub",
+      "action": "generate_and_post",
+      "decision": "Post via GQL with image",
+      "tool_calls": [
+        "GeminiBrain.generate_post()",
+        "GeminiBrain.generate_image()",
+        "XGraphQLClient.post()"
+      ],
+      "result": "success",
+      "output": "Morgan Stanley calling for a $160B ETF monster is just the start."
+    },
+    {
+      "timestamp": "2026-03-21T14:32:13Z",
+      "agent": "justbtcdevv",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 13.2h since last post, interval=3.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-21T14:33:07Z",
+      "agent": "justbtcdevv",
+      "action": "generate_and_post",
+      "decision": "Post via GQL with image",
+      "tool_calls": [
+        "GeminiBrain.generate_post()",
+        "GeminiBrain.generate_image()",
+        "XGraphQLClient.post()"
+      ],
+      "result": "success",
+      "output": "Traders are dumping Bitcoin over war fears while I automate my job."
+    },
+    {
+      "timestamp": "2026-03-21T14:40:25Z",
+      "agent": "identityprism",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'replied': 8, 'own_tweet': 24}"
+    },
+    {
+      "timestamp": "2026-03-21T14:40:25Z",
+      "agent": "identityprism",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 15.8h since last post, interval=8.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-21T14:41:02Z",
+      "agent": "identityprism",
+      "action": "generate_and_post",
+      "decision": "Post via API with image",
+      "tool_calls": [
+        "GeminiBrain.generate_post()",
+        "GeminiBrain.generate_image()",
+        "XApiClient.post()"
+      ],
+      "result": "success",
+      "output": "Most ETH maxis are closeted solana power users. ⚡️"
+    },
+    {
+      "timestamp": "2026-03-21T15:56:28Z",
+      "agent": "opnethub",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 5}"
+    },
+    {
+      "timestamp": "2026-03-21T16:25:14Z",
+      "agent": "bitpredict",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 12, 'replied': 6}"
+    },
+    {
+      "timestamp": "2026-03-21T16:25:35Z",
+      "agent": "bitpredict",
+      "action": "niche_reply",
+      "decision": "Reply to @Polymarket",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "ICE agents at airports? Legal gridlock kills this within 48"
+    },
+    {
+      "timestamp": "2026-03-21T17:13:25Z",
+      "agent": "opnethub",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 5}"
+    },
+    {
+      "timestamp": "2026-03-21T17:42:22Z",
+      "agent": "justbtcdevv",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 3.2h since last post, interval=3.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-21T17:42:56Z",
+      "agent": "justbtcdevv",
+      "action": "generate_and_post",
+      "decision": "Post via GQL with image",
+      "tool_calls": [
+        "GeminiBrain.generate_post()",
+        "GeminiBrain.generate_image()",
+        "XGraphQLClient.post()"
+      ],
+      "result": "success",
+      "output": "OpenAI merging Codex and Atlas into a superapp will kill 90% of AI startups."
+    },
+    {
+      "timestamp": "2026-03-21T17:57:02Z",
+      "agent": "bitpredict",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 12, 'replied': 6}"
+    },
+    {
+      "timestamp": "2026-03-21T17:57:02Z",
+      "agent": "bitpredict",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 3.9h since last post, interval=3.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-21T17:57:38Z",
+      "agent": "bitpredict",
+      "action": "generate_and_post",
+      "decision": "Post via GQL with image",
+      "tool_calls": [
+        "GeminiBrain.generate_post()",
+        "GeminiBrain.generate_image()",
+        "XGraphQLClient.post()"
+      ],
+      "result": "success",
+      "output": "Options traders are panicking while $70K holds firm."
+    },
+    {
+      "timestamp": "2026-03-21T18:04:25Z",
+      "agent": "identityprism",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'replied': 5, 'own_tweet': 20}"
+    },
+    {
+      "timestamp": "2026-03-21T18:05:01Z",
+      "agent": "identityprism",
+      "action": "niche_reply",
+      "decision": "Reply to @solana",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "Trading ETH on Jupiter at $89.59 SOL and 2,911 TPS is a DeFi"
+    },
+    {
+      "timestamp": "2026-03-21T19:01:03Z",
+      "agent": "opnethub",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 5}"
+    },
+    {
+      "timestamp": "2026-03-21T19:20:04Z",
+      "agent": "bitpredict",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 12, 'replied': 6}"
+    },
+    {
+      "timestamp": "2026-03-21T19:46:07Z",
+      "agent": "opnethub",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 5.4h since last post, interval=5.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-21T19:46:58Z",
+      "agent": "opnethub",
+      "action": "generate_and_post",
+      "decision": "Post via GQL with image",
+      "tool_calls": [
+        "GeminiBrain.generate_post()",
+        "GeminiBrain.generate_image()",
+        "XGraphQLClient.post()"
+      ],
+      "result": "success",
+      "output": "Wall Street bets $160B on $BTC while I stare at Tapscript at 3am."
+    },
+    {
+      "timestamp": "2026-03-21T20:28:31Z",
+      "agent": "opnethub",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 6}"
+    },
+    {
+      "timestamp": "2026-03-21T20:33:53Z",
+      "agent": "identityprism",
+      "action": "niche_reply",
+      "decision": "Reply to @phantom",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "Posting the word is a Meme Lord trait. We index the 3,130 TP"
+    },
+    {
+      "timestamp": "2026-03-21T21:39:17Z",
+      "agent": "bitpredict",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 12, 'replied': 6}"
+    },
+    {
+      "timestamp": "2026-03-21T21:39:17Z",
+      "agent": "bitpredict",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 3.7h since last post, interval=3.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-21T22:45:21Z",
+      "agent": "opnethub",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 6}"
+    },
+    {
+      "timestamp": "2026-03-21T22:49:43Z",
+      "agent": "justbtcdevv",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 5.1h since last post, interval=3.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-21T22:50:03Z",
+      "agent": "justbtcdevv",
+      "action": "niche_reply",
+      "decision": "Reply to @levelsio",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "Radcliffe’s FIRE is the legacy meta. ETFs are fine for actor"
+    },
+    {
+      "timestamp": "2026-03-22T00:27:32Z",
+      "agent": "opnethub",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 6}"
+    },
+    {
+      "timestamp": "2026-03-22T00:33:55Z",
+      "agent": "identityprism",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 22, 'llm_spam': 1, 'replied': 4}"
+    },
+    {
+      "timestamp": "2026-03-22T00:33:55Z",
+      "agent": "identityprism",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 9.9h since last post, interval=8.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-22T00:34:19Z",
+      "agent": "identityprism",
+      "action": "generate_and_post",
+      "decision": "Post via API with image",
+      "tool_calls": [
+        "GeminiBrain.generate_post()",
+        "GeminiBrain.generate_image()",
+        "XApiClient.post()"
+      ],
+      "result": "success",
+      "output": "Jupiter's Lend/JupUSD stack is a filter for fake whales."
+    },
+    {
+      "timestamp": "2026-03-22T01:14:55Z",
+      "agent": "opnethub",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 5.5h since last post, interval=5.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-22T01:15:38Z",
+      "agent": "opnethub",
+      "action": "generate_and_post",
+      "decision": "Post via GQL with image",
+      "tool_calls": [
+        "GeminiBrain.generate_post()",
+        "GeminiBrain.generate_image()",
+        "XGraphQLClient.post()"
+      ],
+      "result": "success",
+      "output": "North Carolina's Bitcoin reserve proposal is the signal."
+    },
+    {
+      "timestamp": "2026-03-22T01:20:03Z",
+      "agent": "justbtcdevv",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 7.6h since last post, interval=3.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-22T01:33:21Z",
+      "agent": "bitpredict",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 15, 'llm_spam': 1, 'replied': 4}"
+    },
+    {
+      "timestamp": "2026-03-22T01:33:21Z",
+      "agent": "bitpredict",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 7.6h since last post, interval=3.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-22T02:11:40Z",
+      "agent": "justbtcdevv",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 8.5h since last post, interval=3.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-22T02:12:04Z",
+      "agent": "justbtcdevv",
+      "action": "niche_reply",
+      "decision": "Reply to @levelsio",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "Waiting until 2020 for IBKR is a 9-year tax on hesitation. S"
+    },
+    {
+      "timestamp": "2026-03-22T02:37:46Z",
+      "agent": "opnethub",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 6}"
+    },
+    {
+      "timestamp": "2026-03-22T03:59:55Z",
+      "agent": "bitpredict",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 15, 'replied': 5}"
+    },
+    {
+      "timestamp": "2026-03-22T03:59:55Z",
+      "agent": "bitpredict",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 10.0h since last post, interval=3.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-22T04:00:21Z",
+      "agent": "bitpredict",
+      "action": "niche_reply",
+      "decision": "Reply to @Polymarket",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "Sanctions return in 120 days. India’s Iranian oil grab is a"
+    },
+    {
+      "timestamp": "2026-03-22T11:07:08Z",
+      "agent": "justbtcdevv",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 17.4h since last post, interval=3.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-22T11:18:05Z",
+      "agent": "opnethub",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 6}"
+    },
+    {
+      "timestamp": "2026-03-22T11:18:05Z",
+      "agent": "opnethub",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 10.0h since last post, interval=5.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-22T11:19:04Z",
+      "agent": "bitpredict",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 15, 'replied': 5}"
+    },
+    {
+      "timestamp": "2026-03-22T11:19:04Z",
+      "agent": "bitpredict",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 17.4h since last post, interval=3.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-22T11:19:27Z",
+      "agent": "identityprism",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 23, 'replied': 4}"
+    },
+    {
+      "timestamp": "2026-03-22T11:19:27Z",
+      "agent": "identityprism",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 10.8h since last post, interval=8.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-22T12:23:09Z",
+      "agent": "opnethub",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 6}"
+    },
+    {
+      "timestamp": "2026-03-22T12:23:09Z",
+      "agent": "opnethub",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 11.1h since last post, interval=5.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-22T12:50:35Z",
+      "agent": "bitpredict",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 15, 'replied': 5}"
+    },
+    {
+      "timestamp": "2026-03-22T12:50:35Z",
+      "agent": "bitpredict",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 18.9h since last post, interval=3.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-22T12:50:58Z",
+      "agent": "bitpredict",
+      "action": "niche_reply",
+      "decision": "Reply to @opnetbtc",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "Base chain smart contracts make bridges look like relics. I’"
+    },
+    {
+      "timestamp": "2026-03-22T12:58:30Z",
+      "agent": "bitpredict",
+      "action": "niche_reply",
+      "decision": "Reply to @Bitcoin",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "1,005.231 oz of silver is a joke. My math says $XAG hits 1,2"
+    },
+    {
+      "timestamp": "2026-03-22T14:26:59Z",
+      "agent": "opnethub",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 6}"
+    },
+    {
+      "timestamp": "2026-03-22T14:26:59Z",
+      "agent": "opnethub",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 13.2h since last post, interval=5.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-22T14:27:49Z",
+      "agent": "opnethub",
+      "action": "generate_and_post",
+      "decision": "Post via GQL with image",
+      "tool_calls": [
+        "GeminiBrain.generate_post()",
+        "GeminiBrain.generate_image()",
+        "XGraphQLClient.post()"
+      ],
+      "result": "success",
+      "output": "Wall Street is panicking over stock correlations while the $BTC mempool sits at"
+    },
+    {
+      "timestamp": "2026-03-22T15:03:58Z",
+      "agent": "identityprism",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 23, 'replied': 3}"
+    },
+    {
+      "timestamp": "2026-03-22T15:03:58Z",
+      "agent": "identityprism",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 14.5h since last post, interval=8.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-22T15:04:36Z",
+      "agent": "identityprism",
+      "action": "generate_and_post",
+      "decision": "Post via API with image",
+      "tool_calls": [
+        "GeminiBrain.generate_post()",
+        "GeminiBrain.generate_image()",
+        "XApiClient.post()"
+      ],
+      "result": "success",
+      "output": "Perle Labs wants a palm scan for the $PRL airdrop. 🔮"
+    },
+    {
+      "timestamp": "2026-03-22T15:04:55Z",
+      "agent": "identityprism",
+      "action": "niche_reply",
+      "decision": "Reply to @solana",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "Commodity status is data. That $17B stablecoin supply reveal"
+    },
+    {
+      "timestamp": "2026-03-22T15:05:53Z",
+      "agent": "justbtcdevv",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 21.4h since last post, interval=3.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-22T15:06:42Z",
+      "agent": "justbtcdevv",
+      "action": "generate_and_post",
+      "decision": "Post via GQL with image",
+      "tool_calls": [
+        "GeminiBrain.generate_post()",
+        "GeminiBrain.generate_image()",
+        "XGraphQLClient.post()"
+      ],
+      "result": "success",
+      "output": "LA is clearing court backlogs with AI while you still study LeetCode."
+    },
+    {
+      "timestamp": "2026-03-22T15:07:06Z",
+      "agent": "justbtcdevv",
+      "action": "niche_reply",
+      "decision": "Reply to @elonmusk",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "Grok is the only LLM not lobotomized by a safety committee."
+    },
+    {
+      "timestamp": "2026-03-22T15:18:19Z",
+      "agent": "bitpredict",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 15, 'replied': 5}"
+    },
+    {
+      "timestamp": "2026-03-22T15:18:19Z",
+      "agent": "bitpredict",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 21.3h since last post, interval=3.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-22T15:19:10Z",
+      "agent": "bitpredict",
+      "action": "generate_and_post",
+      "decision": "Post via GQL with image",
+      "tool_calls": [
+        "GeminiBrain.generate_post()",
+        "GeminiBrain.generate_image()",
+        "XGraphQLClient.post()"
+      ],
+      "result": "success",
+      "output": "Market panics over inflation while I'm calculating vault yield."
+    },
+    {
+      "timestamp": "2026-03-22T15:19:30Z",
+      "agent": "bitpredict",
+      "action": "niche_reply",
+      "decision": "Reply to @Kalshi",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "Hormuz won't close. Iran is bluffing."
+    },
+    {
+      "timestamp": "2026-03-22T15:23:10Z",
+      "agent": "bitpredict",
+      "action": "niche_reply",
+      "decision": "Reply to @Polymarket",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "Military 'preparing' is theater. Trump's pressure hits the p"
+    },
+    {
+      "timestamp": "2026-03-22T15:29:15Z",
+      "agent": "opnethub",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 6}"
+    },
+    {
+      "timestamp": "2026-03-22T16:30:53Z",
+      "agent": "opnethub",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 6}"
+    },
+    {
+      "timestamp": "2026-03-22T16:46:59Z",
+      "agent": "justbtcdevv",
+      "action": "niche_reply",
+      "decision": "Reply to @elonmusk",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "10k active is the signal."
+    },
+    {
+      "timestamp": "2026-03-22T16:53:50Z",
+      "agent": "justbtcdevv",
+      "action": "niche_reply",
+      "decision": "Reply to @elonmusk",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "Hypocrisy is the legacy meta. They call BTC a risk but print"
+    },
+    {
+      "timestamp": "2026-03-22T17:15:07Z",
+      "agent": "bitpredict",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 15, 'replied': 5}"
+    },
+    {
+      "timestamp": "2026-03-22T17:20:08Z",
+      "agent": "opnethub",
+      "action": "niche_reply",
+      "decision": "Reply to @orangepillonbtc",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "Protocol liquidity on L1 means zero bridge risk. Verifiable"
+    },
+    {
+      "timestamp": "2026-03-22T18:13:21Z",
+      "agent": "justbtcdevv",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 2}"
+    },
+    {
+      "timestamp": "2026-03-22T18:13:21Z",
+      "agent": "justbtcdevv",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 3.1h since last post, interval=3.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-22T18:14:00Z",
+      "agent": "justbtcdevv",
+      "action": "generate_and_post",
+      "decision": "Post via GQL with image",
+      "tool_calls": [
+        "GeminiBrain.generate_post()",
+        "GeminiBrain.generate_image()",
+        "XGraphQLClient.post()"
+      ],
+      "result": "success",
+      "output": "LA is clearing court backlogs with AI while you pay lawyers $500/hr."
+    },
+    {
+      "timestamp": "2026-03-22T18:27:43Z",
+      "agent": "opnethub",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 6}"
+    },
+    {
+      "timestamp": "2026-03-22T18:55:32Z",
+      "agent": "bitpredict",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 15, 'replied': 5}"
+    },
+    {
+      "timestamp": "2026-03-22T18:55:32Z",
+      "agent": "bitpredict",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 3.6h since last post, interval=3.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-22T18:56:27Z",
+      "agent": "bitpredict",
+      "action": "generate_and_post",
+      "decision": "Post via GQL with image",
+      "tool_calls": [
+        "GeminiBrain.generate_post()",
+        "GeminiBrain.generate_image()",
+        "XGraphQLClient.post()"
+      ],
+      "result": "success",
+      "output": "Liquidations hitting $400M is the perfect cleanse for this market. 📉"
+    },
+    {
+      "timestamp": "2026-03-22T19:28:24Z",
+      "agent": "justbtcdevv",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 2}"
+    },
+    {
+      "timestamp": "2026-03-22T19:30:07Z",
+      "agent": "opnethub",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 7}"
+    },
+    {
+      "timestamp": "2026-03-22T19:30:07Z",
+      "agent": "opnethub",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 5.0h since last post, interval=5.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-22T19:30:41Z",
+      "agent": "opnethub",
+      "action": "generate_and_post",
+      "decision": "Post via GQL with image",
+      "tool_calls": [
+        "GeminiBrain.generate_post()",
+        "GeminiBrain.generate_image()",
+        "XGraphQLClient.post()"
+      ],
+      "result": "success",
+      "output": "Scaramucci thinks the cycle is in play, but we're playing a different game."
+    },
+    {
+      "timestamp": "2026-03-22T19:52:53Z",
+      "agent": "identityprism",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 19, 'replied': 3}"
+    },
+    {
+      "timestamp": "2026-03-22T20:08:35Z",
+      "agent": "bitpredict",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 15, 'replied': 5}"
+    },
+    {
+      "timestamp": "2026-03-22T20:34:09Z",
+      "agent": "opnethub",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 9}"
+    },
+    {
+      "timestamp": "2026-03-22T21:32:07Z",
+      "agent": "justbtcdevv",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 2}"
+    },
+    {
+      "timestamp": "2026-03-22T21:32:07Z",
+      "agent": "justbtcdevv",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 3.3h since last post, interval=3.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-22T22:11:50Z",
+      "agent": "identityprism",
+      "action": "niche_reply",
+      "decision": "Reply to @phantom",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "Building at 3,539 TPS while SOL tests $86 is the real Hypera"
+    },
+    {
+      "timestamp": "2026-03-22T22:33:00Z",
+      "agent": "bitpredict",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 15, 'replied': 5}"
+    },
+    {
+      "timestamp": "2026-03-22T22:33:00Z",
+      "agent": "bitpredict",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 3.6h since last post, interval=3.0",
+      "result": "proceed"
+    },
     {
       "timestamp": "2026-03-22T22:37:24Z",
       "agent": "orchestrator",
       "action": "start_swarm",
-      "decision": "Launch 4 agents with staggered start (50-98s offsets)",
-      "reasoning": "Staggered starts prevent simultaneous API calls and mimic human behavior",
-      "result": "success",
-      "details": "identityprism(50s), opnethub(52s), bitpredict(91s), justbtcdevv(98s)"
-    },
-    {
-      "timestamp": "2026-03-22T22:37:26Z",
-      "agent": "shared_brain",
-      "action": "initialize_ai",
-      "decision": "Load google-genai SDK (gemini-3-flash-preview + gemini-2.5-flash)",
-      "reasoning": "Single brain instance shared across all 4 agents for consistent quality",
+      "decision": "Launch 4 agents: identityprism, opnethub, bitpredict, justbtcdevv",
       "result": "success"
     },
     {
       "timestamp": "2026-03-22T22:38:22Z",
       "agent": "identityprism",
       "action": "process_mentions",
-      "decision": "Scan GQL notifications for mentions",
-      "reasoning": "20-minute mention check interval (configured), GQL is free vs OAuth API",
-      "tool_calls": ["XGraphQLClient.get_notifications(40)"],
+      "decision": "Processed mentions: roasted 0, replied 0",
       "result": "success",
-      "details": "23 notifications found, 20 own_tweets skipped, 3 already_replied skipped"
+      "details": "skipped: {'own_tweet': 20, 'replied': 3}"
     },
     {
       "timestamp": "2026-03-22T22:38:22Z",
       "agent": "identityprism",
-      "action": "check_post_eligibility",
-      "decision": "Post allowed: 7.6h since last post > 4.0h interval, peak hour confirmed",
-      "reasoning": "Peak windows UTC [14-20, 22-2], current hour within range",
-      "result": "proceed_to_post"
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 7.6h since last post, interval=4.0",
+      "result": "proceed"
     },
     {
       "timestamp": "2026-03-22T22:38:23Z",
-      "agent": "identityprism",
-      "action": "fetch_context",
-      "decision": "Build real-time context for post generation",
+      "agent": "opnethub",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 9}"
+    },
+    {
+      "timestamp": "2026-03-22T22:38:23Z",
+      "agent": "opnethub",
+      "action": "fetch_digest_data",
+      "decision": "Aggregate data from DeFi Llama + RSS + prices + niche tweets",
       "tool_calls": [
-        "NewsFeeder.get_niche_tweets('solana') → 10 tweets",
-        "NewsFeeder.get_news_headlines('solana') → headlines",
-        "NewsFeeder.get_defi_llama_solana() → TVL $6.70B, 10 protocols",
-        "NewsFeeder.get_all_solana_news() → 15 RSS headlines",
-        "NewsFeeder.get_crypto_prices() → BTC/ETH/SOL/DOGE prices",
-        "NewsFeeder.get_market_sentiment() → market mood"
+        "NewsFeeder.get_defi_llama_solana()",
+        "NewsFeeder.get_all_solana_news()",
+        "NewsFeeder.get_crypto_prices()",
+        "NewsFeeder.get_niche_tweets()"
       ],
-      "reasoning": "DeFi Llama + RSS feeds provide specific data points for content generation",
       "result": "success"
+    },
+    {
+      "timestamp": "2026-03-22T22:38:56Z",
+      "agent": "opnethub",
+      "action": "daily_digest_thread",
+      "decision": "Post digest thread (4 tweets)",
+      "tool_calls": [
+        "NewsFeeder.build_digest_context()",
+        "GeminiBrain.generate_daily_digest()",
+        "XGraphQLClient.post()",
+        "XGraphQLClient.reply() x3"
+      ],
+      "result": "success",
+      "output": "Solana DApp revenue just hit an 18-month low while $SOL risk"
+    },
+    {
+      "timestamp": "2026-03-22T22:39:01Z",
+      "agent": "bitpredict",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 3.7h since last post, interval=3.0",
+      "result": "proceed"
+    },
+    {
+      "timestamp": "2026-03-22T22:39:09Z",
+      "agent": "justbtcdevv",
+      "action": "process_mentions",
+      "decision": "Processed mentions: roasted 0, replied 0",
+      "result": "success",
+      "details": "skipped: {'own_tweet': 2}"
+    },
+    {
+      "timestamp": "2026-03-22T22:39:09Z",
+      "agent": "justbtcdevv",
+      "action": "post_eligibility_check",
+      "decision": "Post allowed: 4.4h since last post, interval=3.0",
+      "result": "proceed"
     },
     {
       "timestamp": "2026-03-22T22:39:16Z",
       "agent": "identityprism",
       "action": "generate_and_post",
-      "decision": "Generate data-driven post about Solana dApp revenue",
+      "decision": "Post via API with image",
       "tool_calls": [
-        "GeminiBrain.generate_post(content_type='data_insight')",
-        "GeminiBrain.self_evaluate() → pass (specificity: names stablecoin supply, cites $17B)",
+        "GeminiBrain.generate_post()",
         "GeminiBrain.generate_image()",
-        "XApiClient.upload_media() → media_id=2035848811969683456",
-        "XApiClient.post_tweet()"
+        "XApiClient.post()"
       ],
-      "reasoning": "Content type 'data_insight' selected by weighted random. Self-eval passed 7 criteria including new SPECIFICITY and ANALYST VALUE checks.",
       "result": "success",
-      "output": "Solana dApp revenue at an 18-month low is noise; the $17B stablecoin supply is t..."
+      "output": "Solana dApp revenue at an 18-month low is noise; the $17B stablecoin supply is t"
     },
     {
       "timestamp": "2026-03-22T22:39:16Z",
       "agent": "identityprism",
-      "action": "generate_daily_digest",
-      "decision": "Generate 4-tweet Solana ecosystem digest thread",
-      "reasoning": "Last digest >20h ago, peak hour, GQL client available",
+      "action": "fetch_digest_data",
+      "decision": "Aggregate data from DeFi Llama + RSS + prices + niche tweets",
       "tool_calls": [
-        "NewsFeeder.build_digest_context() → 15 headlines + TVL data + protocols + tweets",
-        "GeminiBrain.generate_daily_digest() → 4 tweets",
-        "GeminiBrain.generate_image('Solana ecosystem daily digest')",
-        "XGraphQLClient.upload_media()",
-        "XGraphQLClient.post() → tweet 1",
-        "XGraphQLClient.reply() → tweet 2 (30s delay)",
-        "XGraphQLClient.reply() → tweet 3 (30s delay)",
-        "XGraphQLClient.reply() → tweet 4 (30s delay)"
+        "NewsFeeder.get_defi_llama_solana()",
+        "NewsFeeder.get_all_solana_news()",
+        "NewsFeeder.get_crypto_prices()",
+        "NewsFeeder.get_niche_tweets()"
       ],
-      "result": "success",
-      "output": [
-        "TWEET1: Solana dApp revenue hit an 18-month low as SOL hovers at $86...",
-        "TWEET2: Total TVL dipped 2.7% to $6.70B, but the real story is the L...",
-        "TWEET3: Jito Foundation's acquisition of SolanaFloor is a strategic...",
-        "TWEET4: With SOL classified as a digital commodity and RWA value hit..."
-      ]
-    },
-    {
-      "timestamp": "2026-03-22T22:42:26Z",
-      "agent": "identityprism",
-      "action": "conversation_check",
-      "decision": "Skip conversation replies — no stored tweet IDs yet (first session after upgrade)",
-      "reasoning": "Tweet ID buffer populates over time as new posts are made",
-      "result": "skipped"
-    },
-    {
-      "timestamp": "2026-03-22T22:38:56Z",
-      "agent": "opnethub",
-      "action": "generate_daily_digest",
-      "decision": "Generate 4-tweet digest thread (independent of identityprism)",
-      "reasoning": "Each agent runs its own session loop; digest is per-agent with 20h cooldown",
-      "result": "success",
-      "output": [
-        "TWEET1: Solana DApp revenue just hit an 18-month low while $SOL risk...",
-        "TWEET2: Solana TVL slid 2.7% to $6.70B today.",
-        "TWEET3: Polychain is funding palm-scan identity tech on Solana while...",
-        "TWEET4: Watch $SOL at $86.49. If $80 breaks, the revenue drought bec..."
-      ]
+      "result": "success"
     },
     {
       "timestamp": "2026-03-22T22:39:45Z",
       "agent": "bitpredict",
       "action": "generate_and_post",
-      "decision": "Post about BTC/gold divergence with AI-generated image",
+      "decision": "Post via GQL with image",
+      "tool_calls": [
+        "GeminiBrain.generate_post()",
+        "GeminiBrain.generate_image()",
+        "XGraphQLClient.post()"
+      ],
       "result": "success",
-      "output": "I'll admit I didn't expect the BTC/gold divergence to gap this wide."
+      "output": "I’ll admit I didn’t expect the BTC/gold divergence to gap this wide."
+    },
+    {
+      "timestamp": "2026-03-22T22:39:45Z",
+      "agent": "bitpredict",
+      "action": "fetch_digest_data",
+      "decision": "Aggregate data from DeFi Llama + RSS + prices + niche tweets",
+      "tool_calls": [
+        "NewsFeeder.get_defi_llama_solana()",
+        "NewsFeeder.get_all_solana_news()",
+        "NewsFeeder.get_crypto_prices()",
+        "NewsFeeder.get_niche_tweets()"
+      ],
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-03-22T22:39:52Z",
+      "agent": "identityprism",
+      "action": "daily_digest_thread",
+      "decision": "Post digest thread (4 tweets)",
+      "tool_calls": [
+        "NewsFeeder.build_digest_context()",
+        "GeminiBrain.generate_daily_digest()",
+        "XGraphQLClient.post()",
+        "XGraphQLClient.reply() x3"
+      ],
+      "result": "success",
+      "output": "Solana dApp revenue hit an 18-month low as SOL hovers at $86"
     },
     {
       "timestamp": "2026-03-22T22:39:56Z",
       "agent": "justbtcdevv",
       "action": "generate_and_post",
-      "decision": "Post about Claude automation with AI-generated image",
+      "decision": "Post via GQL with image",
+      "tool_calls": [
+        "GeminiBrain.generate_post()",
+        "GeminiBrain.generate_image()",
+        "XGraphQLClient.post()"
+      ],
       "result": "success",
-      "output": "I just used Claude to automate a day's worth of deployment in 12 minutes"
+      "output": "I just used Claude to automate a day's worth of deployment in 12 minutes 🤖"
     },
     {
-      "timestamp": "2026-03-22T22:42:32Z",
-      "agent": "identityprism",
-      "action": "niche_replies",
-      "decision": "Search for priority account tweets to reply to",
-      "tool_calls": ["XGraphQLClient.search_recent('from:phantom OR from:tensor_hq...')"],
-      "result": "skipped",
-      "details": "20 tweets found, 5 already replied, 15 older than 6h niche_max_age"
+      "timestamp": "2026-03-22T22:39:57Z",
+      "agent": "justbtcdevv",
+      "action": "fetch_digest_data",
+      "decision": "Aggregate data from DeFi Llama + RSS + prices + niche tweets",
+      "tool_calls": [
+        "NewsFeeder.get_defi_llama_solana()",
+        "NewsFeeder.get_all_solana_news()",
+        "NewsFeeder.get_crypto_prices()",
+        "NewsFeeder.get_niche_tweets()"
+      ],
+      "result": "success"
+    },
+    {
+      "timestamp": "2026-03-22T22:40:19Z",
+      "agent": "bitpredict",
+      "action": "daily_digest_thread",
+      "decision": "Post digest thread (4 tweets)",
+      "tool_calls": [
+        "NewsFeeder.build_digest_context()",
+        "GeminiBrain.generate_daily_digest()",
+        "XGraphQLClient.post()",
+        "XGraphQLClient.reply() x3"
+      ],
+      "result": "success",
+      "output": "Solana DApp revenue just hit an 18-month low."
+    },
+    {
+      "timestamp": "2026-03-22T22:40:29Z",
+      "agent": "justbtcdevv",
+      "action": "daily_digest_thread",
+      "decision": "Post digest thread (4 tweets)",
+      "tool_calls": [
+        "NewsFeeder.build_digest_context()",
+        "GeminiBrain.generate_daily_digest()",
+        "XGraphQLClient.post()",
+        "XGraphQLClient.reply() x3"
+      ],
+      "result": "success",
+      "output": "Solana DApp revenue just hit an 18-month low. While Wall Str"
+    },
+    {
+      "timestamp": "2026-03-22T22:43:08Z",
+      "agent": "bitpredict",
+      "action": "niche_reply",
+      "decision": "Reply to @Polymarket",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "Nasser skipping Houston isn't a schedule conflict; it's a he"
+    },
+    {
+      "timestamp": "2026-03-22T22:47:11Z",
+      "agent": "bitpredict",
+      "action": "niche_reply",
+      "decision": "Reply to @Kalshi",
+      "tool_calls": [
+        "GeminiBrain.generate_reply()",
+        "GeminiBrain.post_validate_for_bot()",
+        "XGraphQLClient.reply()"
+      ],
+      "result": "success",
+      "output": "Only a tourist didn't see $100 oil coming."
     }
   ],
-  "retries": [],
-  "failures": [],
   "guardrails_triggered": [
     {
-      "timestamp": "2026-03-22T22:38:22Z",
+      "timestamp": "2026-03-20T01:39:39Z",
+      "agent": "opnethub",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T01:39:40Z",
+      "agent": "opnethub",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'old': 8}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-20T01:39:47Z",
+      "agent": "justbtcdevv",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T01:40:08Z",
+      "agent": "bitpredict",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T01:43:23Z",
+      "agent": "justbtcdevv",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T01:43:38Z",
       "agent": "identityprism",
-      "guardrail": "own_tweet_filter",
-      "action": "Skipped 20 notifications that were bot's own tweets",
-      "prevented": "Replying to self"
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T01:43:46Z",
+      "agent": "identityprism",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 4, 'old': 17}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-20T01:44:08Z",
+      "agent": "bitpredict",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T01:44:40Z",
+      "agent": "opnethub",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T01:44:45Z",
+      "agent": "opnethub",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'old': 8}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-20T01:48:29Z",
+      "agent": "justbtcdevv",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T01:48:30Z",
+      "agent": "identityprism",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T01:48:38Z",
+      "agent": "identityprism",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 3, 'old': 18}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-20T01:49:02Z",
+      "agent": "bitpredict",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T01:49:42Z",
+      "agent": "opnethub",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T01:49:48Z",
+      "agent": "opnethub",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'old': 8}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-20T01:53:55Z",
+      "agent": "bitpredict",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T01:54:02Z",
+      "agent": "identityprism",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T01:54:10Z",
+      "agent": "justbtcdevv",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T01:54:11Z",
+      "agent": "identityprism",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 4, 'old': 17}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-20T01:54:45Z",
+      "agent": "opnethub",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T01:54:49Z",
+      "agent": "opnethub",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'old': 8}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-20T01:58:31Z",
+      "agent": "identityprism",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T01:58:37Z",
+      "agent": "opnethub",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T01:58:40Z",
+      "agent": "identityprism",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 4, 'old': 16}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-20T01:58:43Z",
+      "agent": "opnethub",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'old': 8}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-20T01:58:49Z",
+      "agent": "justbtcdevv",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T01:59:37Z",
+      "agent": "bitpredict",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T02:04:13Z",
+      "agent": "justbtcdevv",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T02:04:23Z",
+      "agent": "bitpredict",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T02:05:03Z",
+      "agent": "identityprism",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T02:05:09Z",
+      "agent": "opnethub",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T02:08:14Z",
+      "agent": "bitpredict",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T02:08:39Z",
+      "agent": "opnethub",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T02:09:15Z",
+      "agent": "justbtcdevv",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T02:09:37Z",
+      "agent": "identityprism",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T02:09:45Z",
+      "agent": "identityprism",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 8, 'old': 13}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-20T02:13:26Z",
+      "agent": "justbtcdevv",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T02:13:59Z",
+      "agent": "opnethub",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T02:14:06Z",
+      "agent": "bitpredict",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T02:14:30Z",
+      "agent": "identityprism",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T02:14:39Z",
+      "agent": "identityprism",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 4, 'old': 17}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-20T02:18:41Z",
+      "agent": "opnethub",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T02:18:56Z",
+      "agent": "justbtcdevv",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T02:19:25Z",
+      "agent": "bitpredict",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T02:19:30Z",
+      "agent": "identityprism",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T02:19:40Z",
+      "agent": "identityprism",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 4, 'old': 16}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-20T02:26:26Z",
+      "agent": "opnethub",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'old': 8}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-20T02:26:31Z",
+      "agent": "justbtcdevv",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 4, 'old': 15}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-20T11:08:39Z",
+      "agent": "justbtcdevv",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T11:20:37Z",
+      "agent": "opnethub",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T11:25:39Z",
+      "agent": "bitpredict",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T11:30:08Z",
+      "agent": "identityprism",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T11:30:14Z",
+      "agent": "identityprism",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 4, 'old': 17}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-20T12:28:18Z",
+      "agent": "justbtcdevv",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T12:28:24Z",
+      "agent": "justbtcdevv",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 2, 'rate_limit': 17, 'old': 1}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-20T13:03:21Z",
+      "agent": "bitpredict",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T14:15:01Z",
+      "agent": "identityprism",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 4, 'old': 16}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-20T14:38:55Z",
+      "agent": "justbtcdevv",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 2, 'rate_limit': 16, 'old': 2}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-20T15:16:11Z",
+      "agent": "justbtcdevv",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T15:16:16Z",
+      "agent": "justbtcdevv",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 2, 'rate_limit': 16, 'old': 2}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-20T15:19:01Z",
+      "agent": "opnethub",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'old': 10}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-20T16:30:17Z",
+      "agent": "identityprism",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T16:35:07Z",
+      "agent": "justbtcdevv",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T16:41:54Z",
+      "agent": "bitpredict",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T16:41:59Z",
+      "agent": "bitpredict",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 1, 'rate_limit': 18, 'old': 3}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-20T16:49:28Z",
+      "agent": "opnethub",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T16:49:29Z",
+      "agent": "opnethub",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'old': 10}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-20T17:23:10Z",
+      "agent": "identityprism",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T17:43:26Z",
+      "agent": "bitpredict",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T17:43:32Z",
+      "agent": "bitpredict",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 1, 'rate_limit': 19, 'old': 3}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-20T18:13:24Z",
+      "agent": "opnethub",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T18:13:25Z",
+      "agent": "opnethub",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'old': 10}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-20T18:20:11Z",
+      "agent": "bitpredict",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 1, 'rate_limit': 17, 'old': 5}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-20T18:57:56Z",
+      "agent": "bitpredict",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T18:58:05Z",
+      "agent": "bitpredict",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 1, 'rate_limit': 16, 'old': 3}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-20T19:18:59Z",
+      "agent": "justbtcdevv",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T19:35:09Z",
+      "agent": "bitpredict",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T19:41:06Z",
+      "agent": "identityprism",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T19:41:14Z",
+      "agent": "identityprism",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 5, 'old': 15}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-20T19:44:25Z",
+      "agent": "opnethub",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T20:04:34Z",
+      "agent": "bitpredict",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T20:20:17Z",
+      "agent": "justbtcdevv",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T20:20:23Z",
+      "agent": "justbtcdevv",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 3, 'rate_limit': 16, 'old': 1}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-20T20:47:16Z",
+      "agent": "opnethub",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T20:47:18Z",
+      "agent": "opnethub",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 1, 'old': 9}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-20T21:53:45Z",
+      "agent": "opnethub",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T21:53:46Z",
+      "agent": "identityprism",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T21:53:46Z",
+      "agent": "justbtcdevv",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T21:53:48Z",
+      "agent": "opnethub",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 1, 'old': 9}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-20T21:53:53Z",
+      "agent": "justbtcdevv",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 3, 'rate_limit': 17}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-20T21:54:06Z",
+      "agent": "bitpredict",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-20T21:54:13Z",
+      "agent": "bitpredict",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 1, 'rate_limit': 16, 'old': 3}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-21T00:47:46Z",
+      "agent": "opnethub",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 1, 'old': 9}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-21T01:13:04Z",
+      "agent": "identityprism",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-21T01:13:06Z",
+      "agent": "identityprism",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 4, 'rate_limit': 3}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-21T01:53:45Z",
+      "agent": "opnethub",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-21T01:53:46Z",
+      "agent": "opnethub",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 1, 'old': 9}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-21T02:08:13Z",
+      "agent": "bitpredict",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-21T02:08:19Z",
+      "agent": "bitpredict",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 3, 'rate_limit': 4, 'old': 13}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-21T02:09:01Z",
+      "agent": "opnethub",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-21T02:09:03Z",
+      "agent": "opnethub",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 1, 'old': 9}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-21T02:09:13Z",
+      "agent": "identityprism",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-21T02:09:31Z",
+      "agent": "justbtcdevv",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-21T02:09:36Z",
+      "agent": "justbtcdevv",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 5, 'old': 15}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-21T02:13:00Z",
+      "agent": "bitpredict",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-21T02:13:05Z",
+      "agent": "bitpredict",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 3, 'rate_limit': 4, 'old': 13}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-21T02:13:06Z",
+      "agent": "justbtcdevv",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-21T02:13:11Z",
+      "agent": "justbtcdevv",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 5, 'old': 15}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-21T02:13:54Z",
+      "agent": "opnethub",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-21T02:13:55Z",
+      "agent": "opnethub",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 1, 'old': 9}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-21T02:14:18Z",
+      "agent": "identityprism",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-21T02:16:09Z",
+      "agent": "opnethub",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-21T02:16:11Z",
+      "agent": "opnethub",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 1, 'old': 9}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-21T02:16:32Z",
+      "agent": "justbtcdevv",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-21T02:16:38Z",
+      "agent": "justbtcdevv",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 5, 'old': 15}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-21T02:17:20Z",
+      "agent": "bitpredict",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-21T02:17:26Z",
+      "agent": "bitpredict",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 2, 'rate_limit': 5, 'old': 13}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-21T02:17:42Z",
+      "agent": "identityprism",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-21T02:17:47Z",
+      "agent": "identityprism",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 6, 'old': 14}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-21T02:33:37Z",
+      "agent": "opnethub",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-21T02:33:39Z",
+      "agent": "opnethub",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 1, 'old': 8}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-21T02:33:42Z",
+      "agent": "bitpredict",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-21T02:34:07Z",
+      "agent": "justbtcdevv",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-21T02:34:12Z",
+      "agent": "justbtcdevv",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 5, 'old': 15}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-21T02:34:19Z",
+      "agent": "identityprism",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-21T02:34:24Z",
+      "agent": "identityprism",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 6, 'old': 14}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-21T03:28:08Z",
+      "agent": "identityprism",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-21T03:28:13Z",
+      "agent": "identityprism",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 6, 'old': 14}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-21T03:28:17Z",
+      "agent": "bitpredict",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-21T03:28:18Z",
+      "agent": "opnethub",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-21T03:28:19Z",
+      "agent": "opnethub",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 1, 'old': 8}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-21T03:28:22Z",
+      "agent": "bitpredict",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 3, 'rate_limit': 3, 'old': 14}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-21T03:28:31Z",
+      "agent": "justbtcdevv",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-21T03:28:36Z",
+      "agent": "justbtcdevv",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 6, 'old': 14}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-21T11:06:39Z",
+      "agent": "justbtcdevv",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-21T11:25:08Z",
+      "agent": "identityprism",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-21T11:25:13Z",
+      "agent": "identityprism",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 6, 'old': 14}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-21T11:25:43Z",
+      "agent": "bitpredict",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-21T11:28:31Z",
+      "agent": "opnethub",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-21T14:24:25Z",
+      "agent": "opnethub",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 1, 'old': 11}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-21T14:33:14Z",
+      "agent": "justbtcdevv",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 5, 'rate_limit': 15}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-21T14:41:06Z",
+      "agent": "identityprism",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 6, 'old': 14}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-21T15:56:28Z",
+      "agent": "opnethub",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-21T15:56:29Z",
+      "agent": "opnethub",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 1, 'old': 10}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-21T16:00:14Z",
+      "agent": "justbtcdevv",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-21T16:00:19Z",
+      "agent": "justbtcdevv",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 5, 'rate_limit': 15}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-21T16:25:14Z",
+      "agent": "bitpredict",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-21T16:25:41Z",
+      "agent": "identityprism",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-21T16:25:47Z",
+      "agent": "identityprism",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 6, 'rate_limit': 10, 'old': 4}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-21T17:13:25Z",
+      "agent": "opnethub",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-21T17:13:28Z",
+      "agent": "opnethub",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 1, 'old': 9}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-21T17:43:03Z",
+      "agent": "justbtcdevv",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 5, 'rate_limit': 15}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-21T18:04:25Z",
+      "agent": "identityprism",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-21T19:01:03Z",
+      "agent": "opnethub",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-21T19:01:04Z",
+      "agent": "opnethub",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 1, 'old': 9, 'spam': 1}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-21T19:16:36Z",
+      "agent": "justbtcdevv",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown, limit 2/2",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-21T19:16:41Z",
+      "agent": "justbtcdevv",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 5, 'rate_limit': 15}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-21T19:20:04Z",
+      "agent": "bitpredict",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown, limit 2/2",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-21T19:47:00Z",
+      "agent": "opnethub",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 2, 'old': 9}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-21T20:28:31Z",
+      "agent": "opnethub",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-21T20:28:34Z",
+      "agent": "opnethub",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 2, 'old': 9}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-21T20:32:45Z",
+      "agent": "justbtcdevv",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown, limit 2/2",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-21T20:32:49Z",
+      "agent": "justbtcdevv",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 5, 'rate_limit': 15}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-21T20:33:36Z",
+      "agent": "identityprism",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-21T21:39:17Z",
+      "agent": "bitpredict",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, limit 2/2",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-21T22:45:21Z",
+      "agent": "opnethub",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-21T22:45:22Z",
+      "agent": "opnethub",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 2, 'old': 8}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-21T22:49:43Z",
+      "agent": "justbtcdevv",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: limit 2/2",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-22T00:27:32Z",
+      "agent": "opnethub",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-22T00:27:33Z",
+      "agent": "opnethub",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 2, 'old': 8}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-22T00:34:23Z",
+      "agent": "identityprism",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 6, 'old': 14}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-22T01:15:39Z",
+      "agent": "opnethub",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 2, 'old': 8}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-22T01:20:03Z",
+      "agent": "justbtcdevv",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: limit 2/2",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-22T01:20:09Z",
+      "agent": "justbtcdevv",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 4, 'rate_limit': 15, 'old': 1}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-22T01:33:21Z",
+      "agent": "bitpredict",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: limit 2/2",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-22T01:54:15Z",
+      "agent": "identityprism",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown, limit 2/2",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-22T01:54:20Z",
+      "agent": "identityprism",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 6, 'old': 14}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-22T02:11:40Z",
+      "agent": "justbtcdevv",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, limit 2/2",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-22T02:37:46Z",
+      "agent": "opnethub",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown, limit 3/3",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-22T02:37:47Z",
+      "agent": "opnethub",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 2, 'old': 8}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-22T03:59:55Z",
+      "agent": "bitpredict",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-22T11:07:08Z",
+      "agent": "justbtcdevv",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-22T11:07:12Z",
+      "agent": "justbtcdevv",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 3, 'old': 17}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-22T11:18:05Z",
+      "agent": "opnethub",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-22T11:18:06Z",
+      "agent": "opnethub",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 2, 'old': 8}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-22T11:19:04Z",
+      "agent": "bitpredict",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-22T11:19:10Z",
+      "agent": "bitpredict",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 1, 'rate_limit': 14, 'old': 5}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-22T11:19:27Z",
+      "agent": "identityprism",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-22T11:19:33Z",
+      "agent": "identityprism",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 6, 'old': 14}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-22T12:23:09Z",
+      "agent": "opnethub",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-22T12:23:10Z",
+      "agent": "opnethub",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 2, 'old': 8}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-22T12:50:35Z",
+      "agent": "bitpredict",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-22T14:27:50Z",
+      "agent": "opnethub",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 2, 'old': 6}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-22T15:29:15Z",
+      "agent": "opnethub",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-22T15:29:16Z",
+      "agent": "opnethub",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 2, 'old': 6}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-22T16:30:53Z",
+      "agent": "opnethub",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-22T16:30:56Z",
+      "agent": "opnethub",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 2, 'old': 6}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-22T16:46:42Z",
+      "agent": "justbtcdevv",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-22T16:55:09Z",
+      "agent": "identityprism",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-22T16:55:13Z",
+      "agent": "identityprism",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 9, 'old': 11}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-22T17:15:07Z",
+      "agent": "bitpredict",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-22T17:19:53Z",
+      "agent": "opnethub",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-22T18:14:06Z",
+      "agent": "justbtcdevv",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 4, 'rate_limit': 15, 'old': 1}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-22T18:27:43Z",
+      "agent": "opnethub",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-22T18:27:44Z",
+      "agent": "opnethub",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 2, 'old': 5}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-22T19:28:24Z",
+      "agent": "justbtcdevv",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown, limit 2/2",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-22T19:28:30Z",
+      "agent": "justbtcdevv",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 4, 'rate_limit': 12, 'old': 4}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-22T19:30:42Z",
+      "agent": "opnethub",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 2, 'old': 5}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-22T19:52:53Z",
+      "agent": "identityprism",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-22T19:52:59Z",
+      "agent": "identityprism",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 6, 'old': 14}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-22T20:08:35Z",
+      "agent": "bitpredict",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown, limit 2/2",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-22T20:34:09Z",
+      "agent": "opnethub",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-22T20:34:12Z",
+      "agent": "opnethub",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 2, 'old': 5}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-22T21:32:07Z",
+      "agent": "justbtcdevv",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: not peak hour, limit 2/2",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-22T21:32:12Z",
+      "agent": "justbtcdevv",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 4, 'rate_limit': 13, 'old': 3}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-22T22:11:32Z",
+      "agent": "identityprism",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-22T22:33:00Z",
+      "agent": "bitpredict",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: limit 2/2",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-22T22:38:23Z",
+      "agent": "opnethub",
+      "guardrail": "post_rate_limit",
+      "action": "Post skipped: cooldown",
+      "prevented": "Exceeding post limits or posting outside peak hours"
+    },
+    {
+      "timestamp": "2026-03-22T22:41:24Z",
+      "agent": "opnethub",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 2, 'old': 5}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
     },
     {
       "timestamp": "2026-03-22T22:42:32Z",
       "agent": "identityprism",
-      "guardrail": "niche_max_age",
-      "action": "Skipped 15 tweets older than 6 hours",
-      "prevented": "Replying to stale content"
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 5, 'old': 15}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    },
+    {
+      "timestamp": "2026-03-22T22:42:54Z",
+      "agent": "justbtcdevv",
+      "guardrail": "niche_filters",
+      "action": "Skipped all niche tweets: {'replied': 4, 'rate_limit': 13, 'old': 3}",
+      "prevented": "Replying to stale/already-replied/rate-limited content"
+    }
+  ],
+  "failures": [
+    {
+      "timestamp": "2026-03-20T01:40:04Z",
+      "agent": "system",
+      "error": "GQL reply failed: [{'code': 344, 'extensions': {'code': 344, 'kind': 'Permissions', 'name': 'AuthorizationError', 'source': 'Client'}, 'kind': 'Permissions', 'message': 'Authorization: You have reache"
+    },
+    {
+      "timestamp": "2026-03-20T01:40:04Z",
+      "agent": "justbtcdevv",
+      "error": "  GQL reply failed for @elonmusk: [{'code': 344, 'extensions': {'code': 344, 'kind': 'Permissions', 'name': 'AuthorizationError', 'sou"
+    },
+    {
+      "timestamp": "2026-03-20T01:43:45Z",
+      "agent": "system",
+      "error": "GQL reply failed: [{'code': 344, 'extensions': {'code': 344, 'kind': 'Permissions', 'name': 'AuthorizationError', 'source': 'Client'}, 'kind': 'Permissions', 'message': 'Authorization: You have reache"
+    },
+    {
+      "timestamp": "2026-03-20T01:43:45Z",
+      "agent": "justbtcdevv",
+      "error": "  GQL reply failed for @elonmusk: [{'code': 344, 'extensions': {'code': 344, 'kind': 'Permissions', 'name': 'AuthorizationError', 'sou"
+    },
+    {
+      "timestamp": "2026-03-20T01:44:28Z",
+      "agent": "system",
+      "error": "GQL reply failed: [{'code': 344, 'extensions': {'code': 344, 'kind': 'Permissions', 'name': 'AuthorizationError', 'source': 'Client'}, 'kind': 'Permissions', 'message': 'Authorization: You have reache"
+    },
+    {
+      "timestamp": "2026-03-20T01:44:28Z",
+      "agent": "bitpredict",
+      "error": "  GQL reply failed for @Polymarket: [{'code': 344, 'extensions': {'code': 344, 'kind': 'Permissions', 'name': 'AuthorizationError', 'sou"
+    },
+    {
+      "timestamp": "2026-03-20T01:48:47Z",
+      "agent": "system",
+      "error": "GQL reply failed: [{'code': 344, 'extensions': {'code': 344, 'kind': 'Permissions', 'name': 'AuthorizationError', 'source': 'Client'}, 'kind': 'Permissions', 'message': 'Authorization: You have reache"
+    },
+    {
+      "timestamp": "2026-03-20T01:48:47Z",
+      "agent": "justbtcdevv",
+      "error": "  GQL reply failed for @elonmusk: [{'code': 344, 'extensions': {'code': 344, 'kind': 'Permissions', 'name': 'AuthorizationError', 'sou"
+    },
+    {
+      "timestamp": "2026-03-20T01:49:33Z",
+      "agent": "system",
+      "error": "GQL reply failed: [{'code': 344, 'extensions': {'code': 344, 'kind': 'Permissions', 'name': 'AuthorizationError', 'source': 'Client'}, 'kind': 'Permissions', 'message': 'Authorization: You have reache"
+    },
+    {
+      "timestamp": "2026-03-20T01:49:33Z",
+      "agent": "bitpredict",
+      "error": "  GQL reply failed for @Polymarket: [{'code': 344, 'extensions': {'code': 344, 'kind': 'Permissions', 'name': 'AuthorizationError', 'sou"
+    },
+    {
+      "timestamp": "2026-03-20T01:54:25Z",
+      "agent": "system",
+      "error": "GQL reply failed: [{'code': 226, 'extensions': {'code': 226, 'kind': 'Permissions', 'name': 'AuthorizationError', 'source': 'Client'}, 'kind': 'Permissions', 'message': \"Authorization: This request lo"
+    },
+    {
+      "timestamp": "2026-03-20T01:54:25Z",
+      "agent": "bitpredict",
+      "error": "  GQL reply failed for @Polymarket: [{'code': 226, 'extensions': {'code': 226, 'kind': 'Permissions', 'name': 'AuthorizationError', 'sou"
+    },
+    {
+      "timestamp": "2026-03-20T01:54:34Z",
+      "agent": "system",
+      "error": "GQL reply failed: [{'code': 226, 'extensions': {'code': 226, 'kind': 'Permissions', 'name': 'AuthorizationError', 'source': 'Client'}, 'kind': 'Permissions', 'message': \"Authorization: This request lo"
+    },
+    {
+      "timestamp": "2026-03-20T01:54:34Z",
+      "agent": "justbtcdevv",
+      "error": "  GQL reply failed for @elonmusk: [{'code': 226, 'extensions': {'code': 226, 'kind': 'Permissions', 'name': 'AuthorizationError', 'sou"
+    },
+    {
+      "timestamp": "2026-03-20T01:59:15Z",
+      "agent": "system",
+      "error": "GQL reply failed: [{'code': 226, 'extensions': {'code': 226, 'kind': 'Permissions', 'name': 'AuthorizationError', 'source': 'Client'}, 'kind': 'Permissions', 'message': \"Authorization: This request lo"
+    },
+    {
+      "timestamp": "2026-03-20T01:59:15Z",
+      "agent": "justbtcdevv",
+      "error": "  GQL reply failed for @elonmusk: [{'code': 226, 'extensions': {'code': 226, 'kind': 'Permissions', 'name': 'AuthorizationError', 'sou"
+    },
+    {
+      "timestamp": "2026-03-20T02:00:08Z",
+      "agent": "system",
+      "error": "GQL reply failed: [{'code': 226, 'extensions': {'code': 226, 'kind': 'Permissions', 'name': 'AuthorizationError', 'source': 'Client'}, 'kind': 'Permissions', 'message': \"Authorization: This request lo"
+    },
+    {
+      "timestamp": "2026-03-20T02:00:08Z",
+      "agent": "bitpredict",
+      "error": "  GQL reply failed for @Polymarket: [{'code': 226, 'extensions': {'code': 226, 'kind': 'Permissions', 'name': 'AuthorizationError', 'sou"
+    },
+    {
+      "timestamp": "2026-03-20T02:04:44Z",
+      "agent": "system",
+      "error": "GQL reply failed: [{'code': 226, 'extensions': {'code': 226, 'kind': 'Permissions', 'name': 'AuthorizationError', 'source': 'Client'}, 'kind': 'Permissions', 'message': \"Authorization: This request lo"
+    },
+    {
+      "timestamp": "2026-03-20T02:04:44Z",
+      "agent": "bitpredict",
+      "error": "  GQL reply failed for @bc1plainview: [{'code': 226, 'extensions': {'code': 226, 'kind': 'Permissions', 'name': 'AuthorizationError', 'sou"
     }
   ],
   "compute_usage": {
-    "gemini_text_calls": 12,
-    "gemini_image_calls": 5,
-    "gemini_video_calls": 0,
-    "gql_api_calls": 28,
-    "oauth_api_calls": 2,
-    "data_feed_calls": 8,
-    "session_duration_seconds": 308
+    "gql_api_calls": 360,
+    "session_cycles": 139,
+    "data_feed_calls": 45,
+    "gemini_text_calls": 87,
+    "gemini_image_calls": 29
   },
   "outputs_summary": {
-    "tweets_posted": 4,
+    "mentions_processed": 0,
+    "replies_sent": 54,
+    "tweets_posted": 29,
     "digest_threads_posted": 4,
-    "digest_tweets_total": 16,
-    "replies_sent": 1,
-    "follows_executed": 0,
-    "mentions_processed": 32
+    "digest_tweets_total": 16
   }
 }
