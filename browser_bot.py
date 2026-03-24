@@ -354,7 +354,7 @@ class AgentMemory:
                                             'just launched', 'partnership', 'launched', 'shipped',
                                             'update:', 'breaking', 'announced', 'introducing',
                                             'grants', 'funding', 'raised'])
-        has_product = any(w in t for w in ['example.org', 'example.com', 'fennec id',
+        has_product = any(w in t for w in ['fennecbtc.xyz', 'identityprism.xyz', 'fennec id',
                                            'fennec dex', 'identity prism', 'prism league',
                                            'orbit survival', 'black hole', 'whale watcher'])
         has_personal = any(w in t for w in ['late night', 'just shipped', 'coding session',
@@ -1125,7 +1125,7 @@ class NewsFeeder:
             return "TIME: Late night UTC. Good for: degen energy, late-night thoughts, builder updates, 'still here' vibes."
 
     @classmethod
-    async def build_context(cls, bot_niche: str = "crypto") -> str:
+    async def build_context(cls, bot_niche: str = "crypto", for_reply: bool = False) -> str:
         """Build a rich real-world context string for prompts.
         ORDER MATTERS: News/tweets go FIRST (model pays most attention to top),
         raw stats/prices go LAST (reference data, not primary content)."""
@@ -1136,7 +1136,13 @@ class NewsFeeder:
         priority_parts.append(cls.get_time_context())
 
         # ─── PRIORITY: News + Niche tweets (TOP of context) ───────────
-        # Niche ecosystem tweets (via X API search) — HIGHEST priority
+        # Grok real-time intelligence (posts only — too stat-heavy for replies)
+        if not for_reply:
+            grok_brief = await cls.get_grok_news(bot_niche)
+            if grok_brief:
+                priority_parts.append(
+                    ">>> GROK INTELLIGENCE BRIEF (real-time, highest quality) <<<\n" + grok_brief[:1500])
+        # Niche ecosystem tweets (via X API search)
         niche_tweets = await cls.get_niche_tweets(bot_niche)
         if niche_tweets:
             priority_parts.append(
@@ -1154,6 +1160,10 @@ class NewsFeeder:
         if sentiment.get("mood") != "neutral":
             priority_parts.append(f"MARKET MOOD: {sentiment['mood'].upper()} (avg 24h: {sentiment['avg_change']:+.1f}%). "
                          f"{sentiment['detail']}")
+        # Fear & Greed Index (reference only, not primary content)
+        fng = await cls.get_fear_greed()
+        if fng:
+            stats_parts.append(f"FEAR & GREED INDEX: {fng['value']}/100 ({fng['label']}) — reference only, do NOT build tweets around this")
         # Trending coins
         trending = await cls.get_trending_coins()
         if trending:
@@ -1172,8 +1182,8 @@ class NewsFeeder:
             stats_parts.append("REFERENCE PRICES (use sparingly, NOT as main content):\n" + "\n".join(price_lines))
         # Solana-specific data
         if bot_niche == "solana":
-            # DeFi Llama — TVL + top protocols (HIGH PRIORITY for Solana bot)
-            defi = await cls.get_defi_llama_solana()
+            # DeFi Llama — TVL + top protocols (posts only, too stat-heavy for replies)
+            defi = await cls.get_defi_llama_solana() if not for_reply else {}
             if defi.get("total_tvl"):
                 tvl_b = defi["total_tvl"] / 1e9
                 change = defi["tvl_change_1d"]
@@ -1193,6 +1203,10 @@ class NewsFeeder:
                 priority_parts.append(
                     ">>> SOLANA-SPECIFIC NEWS <<<\n" +
                     "\n".join(f"- {h[:100]}" for h in sol_news[:5]))
+            # Solana community sentiment
+            sol_sent = await cls.get_solana_sentiment()
+            if sol_sent.get("sentiment_up"):
+                priority_parts.append(f"SOLANA COMMUNITY: {sol_sent['sentiment_up']:.0f}% bullish (CoinGecko)")
             sol = await cls.get_solana_data()
             if sol:
                 stats_parts.append(f"SOLANA DETAILS: Price ${sol.get('price',0):,.2f}, "
@@ -1301,7 +1315,6 @@ class NewsFeeder:
         result = {"total_tvl": 0, "tvl_change_1d": 0, "top_protocols": []}
         try:
             import urllib.request
-            # 1) Chain TVL
             req = urllib.request.Request(
                 "https://api.llama.fi/v2/chains",
                 headers={"User-Agent": "Mozilla/5.0"})
@@ -1311,8 +1324,6 @@ class NewsFeeder:
             sol_chain = next((c for c in chains if c.get("name") == "Solana"), None)
             if sol_chain:
                 result["total_tvl"] = sol_chain.get("tvl", 0)
-
-            # 2) Historical TVL for day-over-day change
             req2 = urllib.request.Request(
                 "https://api.llama.fi/v2/historicalChainTvl/Solana",
                 headers={"User-Agent": "Mozilla/5.0"})
@@ -1325,8 +1336,6 @@ class NewsFeeder:
                 if yesterday_tvl > 0:
                     result["tvl_change_1d"] = ((today_tvl - yesterday_tvl) / yesterday_tvl) * 100
                 result["total_tvl"] = today_tvl or result["total_tvl"]
-
-            # 3) Top Solana protocols
             req3 = urllib.request.Request(
                 "https://api.llama.fi/protocols",
                 headers={"User-Agent": "Mozilla/5.0"})
@@ -1346,7 +1355,6 @@ class NewsFeeder:
                     })
             sol_protos.sort(key=lambda x: x["tvl"], reverse=True)
             result["top_protocols"] = sol_protos[:10]
-
             cls._cache[cache_key] = result
             cls._cache_ts[cache_key] = time.time()
             log.info("DeFi Llama Solana: TVL $%.2fB, %d protocols",
@@ -1365,9 +1373,11 @@ class NewsFeeder:
         import urllib.request
         import xml.etree.ElementTree as ET
         feeds = [
-            ("https://cointelegraph.com/rss/tag/solana", True),   # Solana-specific
-            ("https://www.theblock.co/rss.xml", False),            # General, needs filter
-            ("https://decrypt.co/feed", False),                    # General, needs filter
+            ("https://cointelegraph.com/rss/tag/solana", True),
+            ("https://www.theblock.co/rss.xml", False),
+            ("https://decrypt.co/feed", False),
+            ("https://www.dlnews.com/arc/outboundfeeds/rss/", False),
+            ("https://blockworks.co/feed", False),
         ]
         sol_keywords = {"solana", "sol ", "$sol", "phantom", "jupiter", "jito",
                         "marinade", "raydium", "tensor", "magic eden", "helius",
@@ -1388,11 +1398,9 @@ class NewsFeeder:
                     if not title:
                         continue
                     title_lower = title.lower()
-                    # Deduplicate
                     title_key = title_lower[:60]
                     if title_key in seen_titles:
                         continue
-                    # Filter for Solana relevance (skip for Solana-specific feeds)
                     if not is_solana_feed:
                         if not any(kw in title_lower for kw in sol_keywords):
                             continue
@@ -1407,16 +1415,18 @@ class NewsFeeder:
         return all_headlines
 
     @classmethod
-    async def build_digest_context(cls) -> str:
+    async def build_digest_context(cls, niche: str = "solana") -> str:
         """Aggregates ALL data for daily digest: headlines + TVL + protocols + prices + niche tweets."""
         parts = []
-        # 1) All Solana news headlines
-        news = await cls.get_all_solana_news()
+        # Grok intelligence brief (freshest, highest quality)
+        grok = await cls.get_grok_news(niche)
+        if grok:
+            parts.append("GROK REAL-TIME BRIEF:\n" + grok[:1200])
+        news = await cls.get_all_solana_news() if niche == "solana" else await cls.get_news_headlines(niche)
         if news:
             parts.append("SOLANA NEWS (last 24h):\n" +
                          "\n".join(f"  {i+1}. {h}" for i, h in enumerate(news)))
-        # 2) DeFi Llama data
-        defi = await cls.get_defi_llama_solana()
+        defi = await cls.get_defi_llama_solana() if niche == "solana" else {}
         if defi.get("total_tvl"):
             tvl_b = defi["total_tvl"] / 1e9
             change = defi["tvl_change_1d"]
@@ -1429,7 +1439,6 @@ class NewsFeeder:
             parts.append(f"SOLANA DEFI (DeFi Llama):\n"
                          f"  Total TVL: ${tvl_b:.2f}B ({change:+.1f}% 24h)\n"
                          f"  Top protocols:\n" + "\n".join(proto_lines))
-        # 3) Prices
         prices = await cls.get_crypto_prices()
         if prices:
             price_lines = []
@@ -1438,7 +1447,6 @@ class NewsFeeder:
                 ch = data.get("usd_24h_change", 0)
                 price_lines.append(f"  {coin.upper()}: ${p:,.2f} ({ch:+.1f}%)")
             parts.append("PRICES:\n" + "\n".join(price_lines))
-        # 4) Niche ecosystem tweets
         niche_tweets = await cls.get_niche_tweets("solana")
         if niche_tweets:
             parts.append("ECOSYSTEM TWEETS:\n" +
@@ -1446,7 +1454,114 @@ class NewsFeeder:
                                    for t in niche_tweets[:8]))
         return "\n\n".join(parts) if parts else ""
 
-    _api_client_ref = None
+    @classmethod
+    async def get_fear_greed(cls) -> dict:
+        """Fetch Crypto Fear & Greed Index."""
+        if "fng" in cls._cache and time.time() - cls._cache_ts.get("fng", 0) < cls.CACHE_TTL:
+            return cls._cache["fng"]
+        try:
+            import urllib.request
+            req = urllib.request.Request("https://api.alternative.me/fng/?limit=1",
+                                        headers={"User-Agent": "Mozilla/5.0"})
+            resp = await asyncio.to_thread(
+                lambda: urllib.request.urlopen(req, timeout=10).read())
+            data = json.loads(resp)
+            result = data.get("data", [{}])[0]
+            fng = {"value": int(result.get("value", 50)),
+                   "label": result.get("value_classification", "Neutral")}
+            cls._cache["fng"] = fng
+            cls._cache_ts["fng"] = time.time()
+            return fng
+        except Exception as e:
+            log.debug("Fear & Greed fetch failed: %s", e)
+            return cls._cache.get("fng", {"value": 50, "label": "Neutral"})
+
+    @classmethod
+    async def get_solana_sentiment(cls) -> dict:
+        """Fetch Solana community sentiment from CoinGecko."""
+        if "sol_sentiment" in cls._cache and time.time() - cls._cache_ts.get("sol_sentiment", 0) < cls.CACHE_TTL:
+            return cls._cache["sol_sentiment"]
+        try:
+            import urllib.request
+            url = ("https://api.coingecko.com/api/v3/coins/solana"
+                   "?localization=false&tickers=false&community_data=true"
+                   "&developer_data=false&sparkline=false")
+            req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+            resp = await asyncio.to_thread(
+                lambda: urllib.request.urlopen(req, timeout=10).read())
+            data = json.loads(resp)
+            sent_up = data.get("sentiment_votes_up_percentage", 50)
+            result = {
+                "sentiment_up": sent_up,
+                "sentiment_down": 100 - sent_up,
+                "market_cap_rank": data.get("market_cap_rank", 0),
+                "coingecko_score": data.get("coingecko_score", 0),
+            }
+            cls._cache["sol_sentiment"] = result
+            cls._cache_ts["sol_sentiment"] = time.time()
+            return result
+        except Exception as e:
+            log.debug("Solana sentiment fetch failed: %s", e)
+            return cls._cache.get("sol_sentiment", {"sentiment_up": 50})
+
+    @classmethod
+    async def build_sentiment_oracle(cls) -> dict:
+        """Build comprehensive sentiment oracle data from all sources."""
+        prices = await cls.get_crypto_prices()
+        defi = await cls.get_defi_llama_solana()
+        fng = await cls.get_fear_greed()
+        sol_sent = await cls.get_solana_sentiment()
+        news = await cls.get_all_solana_news()
+        niche = await cls.get_niche_tweets("solana")
+        sentiment = await cls.get_market_sentiment()
+
+        # Composite score (0-100)
+        score = 50
+        sol_change = 0
+        if prices.get("solana"):
+            sol_change = prices["solana"].get("usd_24h_change", 0)
+            if sol_change > 5: score += 15
+            elif sol_change > 2: score += 8
+            elif sol_change < -5: score -= 15
+            elif sol_change < -2: score -= 8
+        tvl_change = defi.get("tvl_change_1d", 0)
+        if tvl_change > 3: score += 10
+        elif tvl_change > 0: score += 3
+        elif tvl_change < -3: score -= 10
+        elif tvl_change < 0: score -= 3
+        fng_val = fng.get("value", 50)
+        score += (fng_val - 50) // 5
+        sent_up = sol_sent.get("sentiment_up", 50)
+        score += int((sent_up - 50) * 0.2)
+        score = max(0, min(100, score))
+
+        if score >= 70: mood = "very_bullish"
+        elif score >= 55: mood = "bullish"
+        elif score >= 45: mood = "neutral"
+        elif score >= 30: mood = "bearish"
+        else: mood = "very_bearish"
+
+        top_movers = []
+        for p in defi.get("top_protocols", [])[:5]:
+            if abs(p.get("change_1d", 0)) > 2:
+                top_movers.append({"name": p["name"], "change": p["change_1d"],
+                                   "direction": "up" if p["change_1d"] > 0 else "down"})
+
+        return {
+            "score": score, "mood": mood, "fear_greed": fng,
+            "sol_price_24h_change": sol_change,
+            "tvl_total": defi.get("total_tvl", 0),
+            "tvl_change_1d": tvl_change,
+            "sol_sentiment_up": sent_up,
+            "top_narratives": news[:5],
+            "top_movers": top_movers,
+            "niche_tweet_count": len(niche),
+            "news_count": len(news),
+            "timestamp": time.time(),
+        }
+
+        _api_client_ref = None
+    _grok_gql_ref = None  # XGraphQLClient for Grok news (bitpredict cookies)
 
     @classmethod
     def set_api_client(cls, api):
@@ -1456,6 +1571,152 @@ class NewsFeeder:
     @classmethod
     def _get_api_client(cls):
         return cls._api_client_ref
+
+    @classmethod
+    def set_grok_client(cls, gql):
+        """Set a shared GQL client for Grok news queries (uses bitpredict cookies)."""
+        cls._grok_gql_ref = gql
+
+    @classmethod
+    async def get_grok_news(cls, niche: str = "solana") -> str:
+        """Ask Grok for fresh news + analytics, optimized for Twitter content.
+        Uses bitpredict's GQL client cookies. Cached for 2 hours."""
+        cache_key = f"grok_news_{niche}"
+        if cache_key in cls._cache and time.time() - cls._cache_ts.get(cache_key, 0) < 7200:
+            return cls._cache[cache_key]
+        gql = cls._grok_gql_ref
+        if not gql or gql.disabled:
+            return ""
+        try:
+            from curl_cffi.requests import Session
+            # Ensure ClientTransaction is initialized
+            if not gql._client_transaction:
+                await gql._fetch_query_ids()
+
+            s = Session(impersonate="chrome131")
+
+            # Step 1: Create conversation
+            conv_hdrs = gql._headers("POST", "/i/api/graphql/6cmfJY3d7EPWuCSXWrkOFg/CreateGrokConversation")
+            r1 = s.post(
+                "https://x.com/i/api/graphql/6cmfJY3d7EPWuCSXWrkOFg/CreateGrokConversation",
+                json={"variables": {}, "queryId": "6cmfJY3d7EPWuCSXWrkOFg"},
+                headers=conv_hdrs, timeout=15)
+            conv_data = json.loads(r1.text)
+            conv_id = conv_data["data"]["create_grok_conversation"]["conversation_id"]
+
+            # Step 2: Ask Grok for niche-specific news with Twitter-optimized analysis
+            prompts = {
+                "solana": (
+                    "You are a sharp Solana CT insider. Search for the MOST INTERESTING Solana stories "
+                    "from the past 12 hours. Skip boring stats — find the DRAMA, MONEY, and ALPHA.\n\n"
+                    "Find:\n"
+                    "- HACKATHONS & GRANTS: Any new Colosseum hackathon, Solana Foundation grants, "
+                    "Superteam bounties, Breakpoint announcements? Who won? What's the deadline?\n"
+                    "- Who got funded? Who got rekt? Any rugs or exploits?\n"
+                    "- Big launches, airdrops, token events, TGEs\n"
+                    "- Controversial takes from founders (Toly, Raj, Mert, Armani, etc.)\n"
+                    "- Protocol wars, competitor moves, ecosystem drama\n"
+                    "- Institutional moves (ETFs, enterprise adoption, partnerships)\n"
+                    "- Developer ecosystem: new SDKs, tools, frameworks, Anchor updates\n"
+                    "- What everyone is talking about on Solana CT right now\n\n"
+                    "Return EXACTLY:\n\n"
+                    "TOP STORIES (ranked by how interesting/viral they are):\n"
+                    "1. [what happened] — [who's involved] — [why it matters]\n"
+                    "(up to 8 stories)\n\n"
+                    "ECOSYSTEM EVENTS: Any active/upcoming hackathons, grant rounds, conferences.\n\n"
+                    "SPICY TAKES (tweet-ready, under 200 chars, would get 100+ likes):\n"
+                    "1. [hot take on story #1]\n"
+                    "2. [contrarian angle nobody is saying]\n"
+                    "3. [bold prediction]\n\n"
+                    "MONEY MOVES: biggest raises, liquidations, whale trades, TVL shifts.\n"
+                    "Name names. Be specific. Make it interesting."
+                ),
+                "bitcoin": (
+                    "You are a sharp Bitcoin CT insider covering Fractal Bitcoin and BTC macro. "
+                    "Search for the MOST INTERESTING stories from the past 12 hours. "
+                    "Skip boring stats — find DRAMA, MONEY, and ALPHA.\n\n"
+                    "TWO AREAS:\n"
+                    "1) FRACTAL BITCOIN — UniSat, CAT Protocol, ordinals, inscriptions, BRC-20. "
+                    "What launched? Who shipped? Any drama?\n"
+                    "2) BITCOIN — Who bought? ETF drama, Saylor moves, regulation news, "
+                    "exchange drama, whale activity, controversial opinions.\n\n"
+                    "Return EXACTLY:\n\n"
+                    "FRACTAL BITCOIN:\n"
+                    "1. [what happened] — [who] — [why it matters]\n"
+                    "(up to 3 stories, search for 'Fractal Bitcoin' 'UniSat' 'ordinals')\n\n"
+                    "BITCOIN MACRO:\n"
+                    "1. [what happened] — [who] — [why it matters]\n"
+                    "(up to 4 stories)\n\n"
+                    "SPICY TAKES (tweet-ready, under 200 chars, viral potential):\n"
+                    "1. [Fractal insight that insiders would appreciate]\n"
+                    "2. [BTC take that would start a debate]\n"
+                    "3. [bold prediction]\n\n"
+                    "MONEY MOVES: ETF flows, whale buys/sells, liquidations.\n"
+                    "Name names. Make it interesting, not boring."
+                ),
+                "ai": (
+                    "You are a dev/AI insider on tech Twitter. Search for the MOST INTERESTING "
+                    "AI and tech stories from the past 12 hours. Skip boring press releases.\n\n"
+                    "Find:\n"
+                    "- New model drops (who shipped what, benchmarks vs competition)\n"
+                    "- Developer tools that are blowing up\n"
+                    "- Controversial takes from big names (Karpathy, Altman, LeCun, Levelsio)\n"
+                    "- Funding rounds, acquisitions, layoffs\n"
+                    "- Open source drama, license wars\n"
+                    "- Things devs are actually excited about building with\n\n"
+                    "Return EXACTLY:\n\n"
+                    "TOP STORIES:\n"
+                    "1. [what happened] — [who] — [why devs care]\n"
+                    "(up to 6 stories)\n\n"
+                    "SPICY TAKES (tweet-ready, under 200 chars):\n"
+                    "1. [hot take on the biggest story]\n"
+                    "2. [contrarian dev opinion]\n"
+                    "3. [what everyone should be building right now]\n\n"
+                    "Name specific tools, models, companies. Make it interesting."
+                ),
+            }
+            prompt = prompts.get(niche, prompts["solana"])
+
+            grok_hdrs = gql._headers("POST", "/2/grok/add_response.json")
+            grok_hdrs["origin"] = "https://x.com"
+            grok_hdrs["referer"] = "https://x.com/i/grok"
+
+            r2 = s.post("https://grok.x.com/2/grok/add_response.json", json={
+                "responses": [{"message": prompt, "sender": 1}],
+                "grokModelOptionId": "grok-3",
+                "conversationId": conv_id,
+                "returnSearchResults": True,
+                "returnCitations": True,
+            }, headers=grok_hdrs, timeout=90)
+
+            # Parse streaming JSONL
+            import re as _re
+            text = ""
+            for line in r2.text.split("\n"):
+                if not line.strip():
+                    continue
+                try:
+                    j = json.loads(line)
+                    if "result" in j:
+                        msg = j["result"].get("message", "")
+                        if msg:
+                            text += msg
+                except Exception:
+                    pass
+            # Strip Grok tool_usage XML tags
+            text = _re.sub(r"<xai:tool_usage_card>.*?</xai:tool_usage_card>", "", text, flags=_re.DOTALL).strip()
+
+            if text and len(text) > 50:
+                cls._cache[cache_key] = text
+                cls._cache_ts[cache_key] = time.time()
+                log.info("Grok news [%s]: got %d chars", niche, len(text))
+                return text
+            else:
+                log.warning("Grok news [%s]: empty response (status %d)", niche, r2.status_code)
+                return cls._cache.get(cache_key, "")
+        except Exception as e:
+            log.warning("Grok news [%s] failed: %s", niche, str(e)[:200])
+            return cls._cache.get(cache_key, "")
 
 
 # ─── Wallet Analysis for IdentityPrism roasts ────────────────────────
@@ -1478,7 +1739,7 @@ async def fetch_wallet_stats(wallet_address: str) -> dict | None:
     """Fetch wallet identity stats from Identity Prism API."""
     import aiohttp
     # Primary: /api/actions/share (returns description with stats)
-    share_url = f"https://example.com/api/actions/share?address={wallet_address}"
+    share_url = f"https://identityprism.xyz/api/actions/share?address={wallet_address}"
     try:
         async with aiohttp.ClientSession() as session:
             async with session.get(share_url, timeout=aiohttp.ClientTimeout(total=10)) as resp:
@@ -1503,7 +1764,7 @@ async def fetch_wallet_stats(wallet_address: str) -> dict | None:
     except Exception as e:
         log.warning("Wallet stats fetch failed (share): %s", e)
     # Fallback: /api/actions/stats
-    stats_url = f"https://example.com/api/actions/stats?address={wallet_address}"
+    stats_url = f"https://identityprism.xyz/api/actions/stats?address={wallet_address}"
     try:
         async with aiohttp.ClientSession() as session:
             async with session.get(stats_url, timeout=aiohttp.ClientTimeout(total=10)) as resp:
@@ -1568,7 +1829,7 @@ Return ONLY the roast text."""
 
 
 # ─── Cross-bot awareness: never engage with our own bots ────────────
-OTHER_BOTS: set[str] = set()  # populated at runtime from bot configs to prevent cross-reply
+OTHER_BOTS = {"polyfantasy", "polybot", "fennecbot", "fennec_btc", "fennecbtc", "identity_prism", "identityprism", "yourophub"}
 
 # ─── Niche relevance keywords (tweet must contain at least 1 to be worth replying to) ───
 NICHE_KEYWORDS = {
@@ -1816,8 +2077,8 @@ class BotConfig:
     video_prompt_template: str = ""
     max_follows_per_day: int = 50
     min_followers_for_follow: int = 300
-    max_follow_ratio: float = 0.0  # 0 = no upper limit on friends/followers ratio
-    niche_max_age_hours: float = 1.0  # Max age of niche tweets to reply to
+    max_follow_ratio: float = 0.0  # 0 = no upper limit
+    niche_max_age_hours: float = 1.0  # max tweet age for niche replies
 
     @classmethod
     def from_dict(cls, d: dict) -> "BotConfig":
@@ -1839,11 +2100,12 @@ class XApiClient:
     BASE = "https://api.x.com"
 
     def __init__(self, consumer_key: str, consumer_secret: str,
-                 access_token: str, access_secret: str):
+                 access_token: str, access_secret: str, proxy: str = ""):
         self.ck = consumer_key
         self.cs = consumer_secret
         self.at = access_token
         self.ats = access_secret
+        self.proxy = proxy
         self.user_id = access_token.split("-")[0] if "-" in access_token else ""
 
     def _sign(self, method: str, url: str, body_params: dict = None) -> str:
@@ -1882,10 +2144,20 @@ class XApiClient:
         if json_body is not None:
             headers["Content-Type"] = "application/json"
         try:
-            async with aiohttp.ClientSession() as session:
+            connector = None
+            _proxy_url = None
+            if self.proxy:
+                if self.proxy.startswith("socks"):
+                    from aiohttp_socks import ProxyConnector
+                    _p = self.proxy.replace("socks5h://", "socks5://")
+                    connector = ProxyConnector.from_url(_p, rdns=True)
+                else:
+                    _proxy_url = self.proxy
+            async with aiohttp.ClientSession(connector=connector) as session:
                 async with session.request(
                     method, YarlURL(url, encoded=True), json=json_body, headers=headers,
-                    timeout=aiohttp.ClientTimeout(total=15)
+                    timeout=aiohttp.ClientTimeout(total=15),
+                    proxy=_proxy_url
                 ) as resp:
                     data = await resp.json()
                     return resp.status, data
@@ -2151,9 +2423,10 @@ class XGraphQLClient:
 
     _QUERY_ID_TTL = 6 * 3600  # 6 hours
 
-    def __init__(self, auth_token: str, ct0: str, all_cookies: str = ""):
+    def __init__(self, auth_token: str, ct0: str, all_cookies: str = "", proxy: str = ""):
         self.auth_token = auth_token
         self.ct0 = ct0
+        self.proxy = proxy
         self._all_cookies = all_cookies or f"auth_token={auth_token}; ct0={ct0}"
         self._log = logging.getLogger("gql")
         # Auto query-id cache
@@ -2227,18 +2500,41 @@ class XGraphQLClient:
                 try:
                     import bs4
                     from x_client_transaction import ClientTransaction
-                    from x_client_transaction.utils import get_ondemand_file_url
+
                     home_soup = bs4.BeautifulSoup(html, "html.parser")
-                    ondemand_url = get_ondemand_file_url(response=home_soup)
+
+                    # Custom ondemand.s resolver (library regex broken for new Twitter webpack format)
+                    ondemand_url = None
+                    for tag in home_soup.find_all("script"):
+                        text = tag.string or ""
+                        if "ondemand.s" not in text:
+                            continue
+                        cid_m = re.search(r'(\d+)\s*:\s*["\x27]ondemand\.s["\x27]', text)
+                        if not cid_m:
+                            continue
+                        chunk_id = cid_m.group(1)
+                        for hm in re.finditer(chunk_id + r'\s*:\s*["\x27]([a-f0-9]{4,16})["\x27]', text):
+                            candidate = "https://abs.twimg.com/responsive-web/client-web/ondemand.s.%sa.js" % hm.group(1)
+                            try:
+                                r_chk = await session.get(candidate, timeout=8)
+                                if r_chk.status_code == 200:
+                                    ondemand_url = candidate
+                                    break
+                            except Exception:
+                                pass
+                        if ondemand_url:
+                            break
+
                     if ondemand_url:
-                        resp = await session.get(ondemand_url, timeout=15)
-                        ondemand_soup = bs4.BeautifulSoup(resp.text, "html.parser")
+                        self._log.info("ondemand.s resolved: %s", ondemand_url.split("/")[-1])
+                        od_resp = await session.get(ondemand_url, timeout=15)
+                        ondemand_soup = bs4.BeautifulSoup(od_resp.text, "html.parser")
                         self._client_transaction = ClientTransaction(
                             home_page_response=home_soup,
                             ondemand_file_response=ondemand_soup)
                         self._log.info("ClientTransaction initialized")
                     else:
-                        self._log.warning("ondemand.s URL not found")
+                        self._log.warning("ondemand.s URL not resolved from inline scripts")
                 except Exception as e:
                     self._log.warning("ClientTransaction init failed: %s", e)
 
@@ -2302,10 +2598,11 @@ class XGraphQLClient:
         if features:
             params["features"] = _json.dumps(features)
         try:
+            _proxies = {"https": self.proxy, "http": self.proxy} if self.proxy else None
             async with AsyncSession(impersonate="chrome131") as session:
                 resp = await session.get(
                     url, params=params, headers=self._headers("GET", path),
-                    timeout=20)
+                    timeout=20, proxies=_proxies)
                 status = resp.status_code
                 data = resp.json()
         except Exception as e:
@@ -2374,11 +2671,14 @@ class XGraphQLClient:
         payload = {"variables": variables, "queryId": resolved_id}
         if features:
             payload["features"] = features
+        # Anti-detection: random delay before write operations
+        await asyncio.sleep(random.uniform(1.5, 4.0))
         try:
+            _proxies = {"https": self.proxy, "http": self.proxy} if self.proxy else None
             async with AsyncSession(impersonate="chrome131") as session:
                 resp = await session.post(
                     url, json=payload, headers=self._headers("POST", path),
-                    timeout=20)
+                    timeout=20, proxies=_proxies)
                 status = resp.status_code
                 try:
                     data = resp.json()
@@ -2435,15 +2735,24 @@ class XGraphQLClient:
         if errors:
             codes = {e.get("code") for e in errors if isinstance(e, dict)}
             if 226 in codes:
-                # Anti-automation detection — retry after refreshing transaction ID
+                # Anti-automation detection — refresh transaction + backoff
                 self._consecutive_errors += 1
                 self._log.warning("GQL %s: code 226 (automation detected)"
                                   " — errors=%d", op_name,
                                   self._consecutive_errors)
+                # Invalidate ClientTransaction so next request rebuilds it
+                self._client_transaction = None
+                self._query_id_cache.clear()
+                self._cache_fetched_at = 0.0
                 if self._consecutive_errors >= 3:
                     self.paused_until = time.time() + 2 * 3600
                     self._log.warning("GQL %s: 3x code 226 — paused 2h",
                                       op_name)
+                else:
+                    # Short random backoff before next attempt
+                    backoff = random.uniform(30, 90)
+                    self.paused_until = time.time() + backoff
+                    self._log.info("GQL %s: code 226 backoff %.0fs", op_name, backoff)
                 return data
             if codes & {326, 64}:
                 # Account restricted or suspended
@@ -2732,10 +3041,11 @@ class XGraphQLClient:
         hdrs = self._headers("POST", "/i/api/1.1/friendships/create.json")
         hdrs["content-type"] = "application/x-www-form-urlencoded"
         try:
+            _proxies = {"https": self.proxy, "http": self.proxy} if self.proxy else None
             async with AsyncSession(impersonate="chrome131") as session:
                 resp = await session.post(
                     url, data={"user_id": user_id},
-                    headers=hdrs, timeout=15)
+                    headers=hdrs, timeout=15, proxies=_proxies)
                 if resp.status_code == 200:
                     self._log.info("Follow OK → user_id=%s", user_id)
                     return True
@@ -3177,8 +3487,7 @@ class XGraphQLClient:
         return results
 
     async def get_tweet_detail(self, tweet_id: str, count: int = 20) -> list[dict]:
-        """Fetch replies to a tweet via TweetDetail GraphQL operation.
-        Returns list of {id, text, author, created_at} for replies."""
+        """Fetch replies to a tweet via TweetDetail GraphQL operation."""
         variables = {
             "focalTweetId": tweet_id,
             "with_rux_injections": False,
@@ -3225,7 +3534,6 @@ class XGraphQLClient:
                     eid = entry.get("entryId", "")
                     if "cursor" in eid:
                         continue
-                    # Conversation thread entries
                     content = entry.get("content", {})
                     items = []
                     if content.get("entryType") == "TimelineTimelineItem":
@@ -3243,10 +3551,8 @@ class XGraphQLClient:
                         legacy = tr.get("legacy", {})
                         text = legacy.get("full_text", "")
                         rid = legacy.get("id_str", "") or tr.get("rest_id", "")
-                        # Skip the focal tweet itself
                         if rid == tweet_id:
                             continue
-                        # Only include actual replies to the focal tweet
                         if legacy.get("in_reply_to_status_id_str") != tweet_id:
                             continue
                         ua = (tr.get("core", {})
@@ -3531,26 +3837,30 @@ Skip: off-topic, non-English, political, spam. Be SELECTIVE — quality over qua
 
 Reply to @{author}'s tweet: "{tweet_text}"
 
-MANDATORY: Your reply MUST reference at least ONE specific word, phrase, concept, or name from the tweet above. If the tweet mentions "Firedancer" — say something about Firedancer. If it mentions "grants" — talk about grants. GENERIC REPLIES THAT COULD APPLY TO ANY TWEET WILL BE REJECTED BY CODE.
+MANDATORY: Your reply MUST be about the SPECIFIC TOPIC of the tweet. Read it carefully. If they talk about a product launch — comment on THAT launch. If they share an opinion — agree, disagree, or add nuance to THAT opinion.
 
-Choose ONE approach:
-- Cite a specific DATA POINT from [REAL-TIME DATA] that relates to their topic (e.g. "Kamino just hit $1.9B TVL — that backs this up")
-- Ask a GENUINE question about something specific they said
-- Challenge one specific point WITH evidence or data
-- Add context they missed — a number, a comparison, a trend
+Choose ONE approach (pick what fits the tweet best):
+- AGREE + ADD: "Yes, and here's what most people miss about this..."
+- DISAGREE + WHY: "I'd push back on this because [specific reason]"
+- GENUINE QUESTION: Ask something that shows you actually read and thought about their tweet
+- INSIDER CONTEXT: Add a detail they missed that only someone following closely would know
+- WIT: A sharp, funny observation about what they said (not a random joke)
+
+CRITICAL — what NOT to do:
+- Do NOT dump random stats (Fear & Greed index, block height, fees, TVL) unless the tweet is specifically about those stats
+- Do NOT repeat the same data points across multiple replies
+- Do NOT start with "Hard to say X when Y stat is Z" — this pattern is banned
+- Do NOT mention your own project unless the tweet is directly about that topic
+- The reply should sound like a REAL PERSON texting back, not a data terminal
 
 Hard rules:
 - MAX 200 characters
-- NO generic phrases: "Great post", "Love this", "So true", "This!", "Couldn't agree more"
-- NO hashtags in replies — real people don't hashtag replies
-- NO links, NO @mentions
+- NO generic phrases: "Great post", "Love this", "So true", "This!"
+- NO hashtags, NO links, NO @mentions
 - 0-1 emoji
-- Only mention Identity Prism if the tweet is specifically about wallets, on-chain identity, or reputation
+- Sound HUMAN. Like you're replying to a friend's tweet, not writing a report.
 
-PERSONA RULE: Persona is BACKGROUND FLAVOR only.
-- Do NOT open with character clichés ('based', 'ser', 'wagmi', 'bullish', 'alpha', 'lfg')
-- Do NOT start with generic affirmations ('facts', 'real', 'true', 'exactly', 'absolutely')
-- LEAD WITH THE SUBSTANCE — reference what THEY said
+PERSONA: Background flavor only. No clichés. No 'wagmi/lfg/based/ser'.
 Return ONLY the reply text."""
         parts = [prompt]
         if screenshot_b64:
@@ -3854,7 +4164,7 @@ Return ONLY the comment text."""
     def post_validate_for_bot(self, text: str, bot_name: str,
                               memory: "AgentMemory" = None) -> str:
         """Per-bot post-validation: enforce bot-specific rules."""
-        if bot_name == "meme_bot":
+        if bot_name == "fennecbot":
             # Ensure at least one $ ticker is present (with configured probability)
             if "$" not in text and random.random() < 0.65:
                 tickers = ["$FENNEC", "$FB", "$BTC"]
@@ -3867,7 +4177,7 @@ Return ONLY the comment text."""
                     else:
                         lines[-1] = last[:-1] + f" {ticker}" + last[-1]
                     text = "\n".join(lines)
-        if bot_name == "analyst_bot" and memory:
+        if bot_name == "identityprism" and memory:
             lower = text.lower()
             # Limit airdrop teases: max 1 per 3 days
             if any(w in lower for w in ["airdrop", "early supporters", "check your score", "just saying"]):
@@ -3877,14 +4187,14 @@ Return ONLY the comment text."""
                     return ""
                 memory.set_state("last_airdrop_ts", str(time.time()))
             # Limit site mentions: max 1 per day
-            if "example.com" in lower or "identity prism" in lower:
+            if "identityprism.xyz" in lower or "identity prism" in lower:
                 last_site = float(memory.get_state("last_site_mention_ts", "0"))
                 if time.time() - last_site < 1 * 86400:
                     log.info("  🚫 Site mention blocked (< 2 days since last)")
                     # Don't block the whole tweet, just note it
                 else:
                     memory.set_state("last_site_mention_ts", str(time.time()))
-        if bot_name == "trader_bot" and memory:
+        if bot_name == "polybot" and memory:
             # Virtual portfolio: inject running record into tweets about trades
             lower = text.lower()
             if any(w in lower for w in ["entered", "position", "trade", "p&l", "record"]):
@@ -3958,7 +4268,7 @@ Return ONLY the formatted tweets."""
         """Generate a 3-4 tweet daily Solana ecosystem digest thread."""
         prompt = f"""{persona}
 
-You are writing your DAILY SOLANA ECOSYSTEM DIGEST — a comprehensive overview thread.
+You are writing your DAILY ECOSYSTEM DIGEST for your niche — a comprehensive overview thread.
 You have access to headlines, DeFi TVL data, protocol metrics, and ecosystem tweets.
 
 DATA:
@@ -4082,7 +4392,7 @@ Generate a tweet about the wallet analysis. Include:
 - A fun commentary on what the traits reveal about this wallet's on-chain identity
 - MAX 260 characters
 - Make it feel like you're showing off the Identity Prism product naturally
-- End with something that makes people want to check their own wallet at example.com
+- End with something that makes people want to check their own wallet at identityprism.xyz
 
 Return ONLY the tweet text."""
         text = await self._call(prompt, temperature=random.uniform(0.85, 1.0))
@@ -4892,12 +5202,12 @@ class BrowserBot:
             count = self.memory.user_reply_count_recent(author, days=1)
             limit = 3  # 3/day for key accounts
             if count >= limit:
-                self.log.info("  ⏳ Rate limit: already replied to @%s %d times today (limit %d/day)", author, count, limit)
+                self.log.debug("  ⏳ Rate limit: already replied to @%s %d times today (limit %d/day)", author, count, limit)
                 return False
         else:
             count = self.memory.user_reply_count_recent(author, days=7)
             if count >= min(MAX_REPLIES_PER_USER_WEEKLY, 2):
-                self.log.info("  ⏳ Rate limit: already replied to @%s %d times this week", author, count)
+                self.log.debug("  ⏳ Rate limit: already replied to @%s %d times this week", author, count)
                 return False
         return True
 
@@ -4940,6 +5250,7 @@ class BrowserBot:
             self.api = XApiClient(
                 self.cfg.api_consumer_key, self.cfg.api_consumer_secret,
                 self.cfg.api_access_token, self.cfg.api_access_secret,
+                proxy=self.cfg.proxy or "",
             )
             self.log.info("X API client initialized (pay-per-use)")
             NewsFeeder.set_api_client(self.api)
@@ -5140,7 +5451,7 @@ class BrowserBot:
                       f"Do NOT insert BTC price unless the tweet is about price action.\n"
                       f"Do NOT open with persona clichés ('based', fox metaphors, 'bullish', 'ser').\n"
                       f"LEAD WITH the specific thing they said.\n"
-                      f"Rules: MAX 120 chars. Be punchy. NO hashtags. 0-1 emoji. Sound human.\n"
+                      f"Rules: MAX 200 chars. Be punchy. NO hashtags. 0-1 emoji. Sound human.\n"
                       f"{self.grok.PROMPT_END_MARKER}")
             text = await self.grok.generate_text(prompt)
             if text:
@@ -6117,7 +6428,7 @@ class BrowserBot:
         return (time.time() - self.last_reply_ts) >= self.MIN_REPLY_INTERVAL_SEC
 
     # ── Telegram queue consumer ───────────────────────────────────────────
-    TG_QUEUE_PATH = Path(os.getenv("TG_QUEUE_PATH", "/app/tg_queue.json"))
+    TG_QUEUE_PATH = Path("/srv/apps/browser_bot/tg_queue.json")
 
     def _load_tg_queue(self) -> list:
         try:
@@ -6138,7 +6449,7 @@ class BrowserBot:
         """Process pending items from TG monitor queue. Returns count processed."""
         items = self._load_tg_queue()
         pending = [i for i in items if i.get("status") == "pending"
-                   and i.get("bot", "meme_bot") == self.cfg.name]
+                   and i.get("bot", "fennecbot") == self.cfg.name]
         if not pending:
             return 0
 
@@ -6285,9 +6596,9 @@ class BrowserBot:
             self.day_start = time.time()
             self.memory.cleanup_old_replies(days=30)
             self._curated_today = False
-        # Even at daily limit, analyst_bot still checks wallet mentions
+        # Even at daily limit, identityprism still checks wallet mentions
         if self.actions_today >= self.cfg.actions_per_day:
-            if self.cfg.name == "analyst_bot":
+            if self.cfg.name == "identityprism":
                 self.log.info("Daily limit reached but checking wallet mentions first...")
                 try:
                     await self._cycle_wallet_roast("")
@@ -6307,7 +6618,7 @@ class BrowserBot:
                     self.log.debug("Curation error: %s", e)
 
         # TG queue: process any pending Telegram-sourced tweet URLs (FennecBot priority)
-        if self.cfg.name == "meme_bot":
+        if self.cfg.name == "fennecbot":
             try:
                 tg_processed = await self._process_tg_queue()
                 if tg_processed:
@@ -6396,7 +6707,7 @@ class BrowserBot:
             # Event-Driven: priority mention check first action only
             if i == 0:
                 # IdentityPrism: ALWAYS check wallet mentions first
-                if self.cfg.name == "analyst_bot":
+                if self.cfg.name == "identityprism":
                     await self._cycle_wallet_roast(learning)
                 did_priority = await self._priority_mention_scan(learning)
                 if did_priority:
@@ -6419,20 +6730,20 @@ class BrowserBot:
                 force_post = False  # only once per session
 
             # PolyBot: Polymarket virtual betting (8%) + bet review (4%)
-            elif not force_engage and self.cfg.name == "trader_bot" and roll < 0.04 and self._can_post():
+            elif not force_engage and self.cfg.name == "polybot" and roll < 0.04 and self._can_post():
                 await self._cycle_polymarket_bet(learning)
-            elif not force_engage and self.cfg.name == "trader_bot" and roll < 0.08:
+            elif not force_engage and self.cfg.name == "polybot" and roll < 0.08:
                 await self._cycle_polymarket_review(learning)
             # PolyBot legacy: market follow-up + prediction accuracy
-            elif not force_engage and self.cfg.name == "trader_bot" and roll < 0.11 and self._can_reply():
+            elif not force_engage and self.cfg.name == "polybot" and roll < 0.11 and self._can_reply():
                 await self._cycle_market_followup(learning)
 
             # FennecBot: on-chain alert (4%)
-            elif not force_engage and self.cfg.name == "meme_bot" and roll < 0.04 and self._can_post():
+            elif not force_engage and self.cfg.name == "fennecbot" and roll < 0.04 and self._can_post():
                 await self._cycle_onchain_alert(learning)
 
             # IdentityPrism: wallet roasting — skip if already done at i=0
-            elif not force_engage and self.cfg.name == "analyst_bot" and roll < 0.15 and i > 0:
+            elif not force_engage and self.cfg.name == "identityprism" and roll < 0.15 and i > 0:
                 await self._cycle_wallet_roast(learning)
 
             # Weekly series (2%) — only fires on the right day
@@ -6514,9 +6825,9 @@ class BrowserBot:
 
             # Intra-session pause (like a human between actions)
             if i < session_size - 1:
-                pause = random.uniform(60, 180)
-                if random.random() < 0.15:
-                    pause += random.uniform(60, 180)  # sometimes get distracted
+                pause = random.uniform(90, 240)
+                if random.random() < 0.20:
+                    pause += random.uniform(90, 300)  # sometimes get distracted
                 await asyncio.sleep(pause)
 
         self.log.info("📱 Session done (%d actions, %d posts today)",
@@ -7071,12 +7382,12 @@ class BrowserBot:
         if perf:
             mem_ctx += f"\n[PERFORMANCE INSIGHT]: {perf}\nWrite more like your top posts.\n"
         # PolyBot: inject virtual portfolio stats
-        if self.cfg.name == "trader_bot":
+        if self.cfg.name == "polybot":
             wins = self.memory.get_state("portfolio_wins", "47")
             losses = self.memory.get_state("portfolio_losses", "19")
             mem_ctx += f"\n[PORTFOLIO] Your running record: {wins}W-{losses}L. Reference this naturally in trade/portfolio tweets.\n"
         # Identity Prism: 20% chance of wallet analysis post (ONLY with real data)
-        if self.cfg.name == "analyst_bot" and random.random() < 0.20:
+        if self.cfg.name == "identityprism" and random.random() < 0.20:
             real_wallet = NewsFeeder._cache.get("helius_wallet_raw")
             if real_wallet:
                 text = await self.brain.generate_wallet_analysis(
@@ -7154,6 +7465,9 @@ class BrowserBot:
         recent_posts = self.memory.get_my_recent_posts(10)
         evaluation = await self.brain.self_evaluate(
             self.cfg.persona, text, recent_posts)
+        self.log.info("Self-eval: %s | reason: %s",
+                      "PASS" if evaluation.get("pass", True) else "FAIL",
+                      evaluation.get("reason", "")[:80])
         if not evaluation.get("pass", True):
             improved = evaluation.get("improved", "")
             if improved and 10 < len(improved) <= 280:
@@ -7225,12 +7539,12 @@ class BrowserBot:
         perf = self.memory.get_state("performance_insight", "")
         if perf:
             mem_ctx += f"\n[PERFORMANCE INSIGHT]: {perf}\nWrite more like your top posts.\n"
-        if self.cfg.name == "trader_bot":
+        if self.cfg.name == "polybot":
             wins = self.memory.get_state("portfolio_wins", "47")
             losses = self.memory.get_state("portfolio_losses", "19")
             mem_ctx += f"\n[PORTFOLIO] Record: {wins}W-{losses}L.\n"
         # Identity Prism: sometimes generate wallet analysis instead (ONLY with real data)
-        if self.cfg.name == "analyst_bot" and random.random() < 0.25:
+        if self.cfg.name == "identityprism" and random.random() < 0.25:
             real_wallet = NewsFeeder._cache.get("helius_wallet_raw")
             if real_wallet:
                 text = await self.brain.generate_wallet_analysis(
@@ -7274,7 +7588,7 @@ class BrowserBot:
         if self.cfg.image_prompt_template:
             if random.random() < self.cfg.post_image_probability:
                 self.log.info("  🎨 Generating image...")
-                meme = self.cfg.name == "meme_bot" and random.random() < 0.3
+                meme = self.cfg.name == "fennecbot" and random.random() < 0.3
                 img_bytes = await self._grok_image(
                     self.cfg.image_prompt_template, text, meme_mode=meme)
                 if not img_bytes:
@@ -7550,7 +7864,7 @@ class BrowserBot:
         self.log.info("Cycle: thread post")
         news_ctx = await NewsFeeder.build_context(self.cfg.news_niche)
         mem_ctx = self.memory.get_context_for_generation()
-        if self.cfg.name == "trader_bot":
+        if self.cfg.name == "polybot":
             wins = self.memory.get_state("portfolio_wins", "47")
             losses = self.memory.get_state("portfolio_losses", "19")
             mem_ctx += f"\n[PORTFOLIO] Your running record: {wins}W-{losses}L.\n"
@@ -7621,8 +7935,8 @@ class BrowserBot:
                     self.log.info("  🚫 Skip spam mention from @%s: %s", tw["author"], tw["text"][:60])
                     self._mark_replied(tid, tw["author"])
                     continue
-                # Skip wallet tweets for analyst_bot (handled by wallet_roast cycle)
-                if self.cfg.name == "analyst_bot":
+                # Skip wallet tweets for identityprism (handled by wallet_roast cycle)
+                if self.cfg.name == "identityprism":
                     _clean = re.sub(r"[​-‏⁠-⁤﻿]", "", tw.get("text", ""))
                     if SOLANA_WALLET_REGEX.search(_clean):
                         continue
@@ -7762,7 +8076,7 @@ class BrowserBot:
     # ── PolyBot-specific cycles ────────────────────────────────────────
     async def _cycle_market_followup(self, learning: str):
         """PolyBot: find own recent prediction posts, check if market moved, reply with update."""
-        if self.cfg.name != "trader_bot":
+        if self.cfg.name != "polybot":
             return
         self.log.info("Cycle: market follow-up")
         try:
@@ -7835,7 +8149,7 @@ class BrowserBot:
 
     async def _cycle_prediction_accuracy(self, learning: str):
         """PolyBot: post a prediction accuracy / track record update."""
-        if self.cfg.name != "trader_bot":
+        if self.cfg.name != "polybot":
             return
         self.log.info("Cycle: prediction accuracy update")
         try:
@@ -8176,7 +8490,7 @@ Only suggest changes if confidence > 0.7 (strong signal from data)."""
     # ── PolyBot: Virtual Polymarket Betting ─────────────────────────
     async def _cycle_polymarket_bet(self, learning: str):
         """Analyze Polymarket, place virtual bet, post about it."""
-        if self.cfg.name != "trader_bot":
+        if self.cfg.name != "polybot":
             return
         last_bet = float(self.memory.get_state("last_bet_ts", "0"))
         if time.time() - last_bet < 4 * 3600:
@@ -8247,7 +8561,7 @@ Rules:
 
     async def _cycle_polymarket_review(self, learning: str):
         """Check open bets, resolve any with significant odds movement, post updates."""
-        if self.cfg.name != "trader_bot":
+        if self.cfg.name != "polybot":
             return
         open_bets = self.memory.get_open_bets()
         if not open_bets:
@@ -8279,7 +8593,7 @@ Rules:
     # ── FennecBot: On-chain Alert System ─────────────────────────────
     async def _cycle_onchain_alert(self, learning: str):
         """Monitor Fractal Bitcoin / UniSat for noteworthy on-chain events."""
-        if self.cfg.name != "meme_bot":
+        if self.cfg.name != "fennecbot":
             return
         last_alert = float(self.memory.get_state("last_onchain_alert_ts", "0"))
         if time.time() - last_alert < 3 * 3600:
@@ -8407,10 +8721,12 @@ Return ONLY the tweet text (or SKIP)."""
             if reasons:
                 self.log.info("Post skipped: %s", ", ".join(reasons))
 
-        # 2.5. Daily digest (once per day, peak hours only)
+        # 2.5. Daily digest (once per day, peak hours only, NOT right after a post)
         last_digest = float(self.memory.get_state("last_digest_ts", "0"))
+        just_posted = (time.time() - self.last_post_ts < 300)  # posted <5min ago
         if (time.time() - last_digest > 20 * 3600
                 and self._is_peak_hour()
+                and not just_posted
                 and self.gql and not self.gql.disabled):
             try:
                 await self._gql_post_digest()
@@ -8470,6 +8786,7 @@ Return ONLY the tweet text (or SKIP)."""
             fr = info.get("friends_count", 0)
             if fc < self.cfg.min_followers_for_follow:
                 return False
+            # High ratio = they follow many people back
             ratio = fr / max(fc, 1)
             if self.cfg.max_follow_ratio > 0 and ratio > self.cfg.max_follow_ratio:
                 return False
@@ -8614,7 +8931,7 @@ Return ONLY the tweet text (or SKIP)."""
                     continue
                 tier_emoji = TIER_EMOJIS.get(stats.get("tier", ""), "🔮")
                 score = stats.get("score", 0)
-                link = f"example.com/?address={addr}"
+                link = f"identityprism.xyz/?address={addr}"
                 final = roast
                 score_line = f"\n{tier_emoji} Score: {score}/1400"
                 link_line = "\n🔗 " + link
@@ -8737,6 +9054,7 @@ Return ONLY the tweet text (or SKIP)."""
             self.memory.remember("my_tweet", text[:200])
         else:
             self.log.error("API post failed: %s", result)
+            raise RuntimeError("API post failed")
 
     async def _gql_post(self):
         """Generate and post a tweet via GQL (with optional image)."""
@@ -8766,6 +9084,26 @@ Return ONLY the tweet text (or SKIP)."""
         if not text:
             self.log.info("GQL: post blocked by validation")
             return
+
+        # Self-evaluation gate (7 criteria: voice, repetition, formatting, value, cringe, specificity, analyst value)
+        evaluation = await self.brain.self_evaluate(
+            self.cfg.persona, text, recent)
+        passed = evaluation.get("pass", True)
+        reason = evaluation.get("reason", "")
+        self.log.info("GQL self-eval: %s | reason: %s", "PASS" if passed else "FAIL", reason[:80])
+        if not passed:
+            improved = evaluation.get("improved", "")
+            if improved and 10 < len(improved) <= 280:
+                self.log.info("  GQL: using improved version from self-eval")
+                text = await self.brain.validate_tweet(improved)
+                if not text:
+                    return
+                text = self.brain.post_validate_for_bot(text, self.cfg.name, self.memory)
+                if not text:
+                    return
+            else:
+                self.log.info("  GQL: post rejected by self-eval, no usable improvement")
+                return
 
         # Video or Image generation
         media_ids = None
@@ -8809,7 +9147,7 @@ Return ONLY the tweet text (or SKIP)."""
             self.last_post_ts = time.time()
             self.memory.set_state("last_post_ts", str(self.last_post_ts))
             self.memory.remember("my_tweet", text[:200])
-            # Store tweet ID for conversation tracking (rotating buffer of 10)
+            # Store tweet ID for conversation tracking
             self._store_my_tweet_id(result)
         else:
             self.log.error("GQL post failed: %s", result)
@@ -8829,7 +9167,6 @@ Return ONLY the tweet text (or SKIP)."""
         """Post a thread via GQL: first tweet with optional media, then self-replies."""
         if not self.gql or self.gql.disabled or not tweets:
             return False
-        # Post first tweet (with media if provided)
         ok, first_id = await self.gql.post(tweets[0], media_ids=media_ids)
         if not ok:
             self.log.error("GQL thread: first tweet failed: %s", first_id)
@@ -8838,7 +9175,6 @@ Return ONLY the tweet text (or SKIP)."""
         self.memory.remember("my_tweet", tweets[0][:200])
         prev_id = first_id
         for i, tweet in enumerate(tweets[1:], start=2):
-            # Human-like delay between thread tweets
             await asyncio.sleep(random.uniform(30, 60))
             ok, new_id = await self.gql.reply(tweet, prev_id)
             if ok:
@@ -8858,18 +9194,15 @@ Return ONLY the tweet text (or SKIP)."""
         last_digest = float(self.memory.get_state("last_digest_ts", "0"))
         if time.time() - last_digest < 20 * 3600:
             return
-        self.log.info("📰 Generating daily Solana digest...")
-        # Build digest context from all data sources
-        digest_ctx = await NewsFeeder.build_digest_context()
+        self.log.info("Generating daily %s digest...", self.cfg.news_niche)
+        digest_ctx = await NewsFeeder.build_digest_context(self.cfg.news_niche)
         if not digest_ctx or len(digest_ctx) < 100:
             self.log.warning("Digest: insufficient data, skipping")
             return
-        # Generate thread
         tweets = await self.brain.generate_daily_digest(self.cfg.persona, digest_ctx)
         if not tweets:
             self.log.warning("Digest: generation returned empty")
             return
-        # Generate image for the first tweet
         media_ids = None
         try:
             img_bytes = await self.brain.generate_image(
@@ -8881,7 +9214,6 @@ Return ONLY the tweet text (or SKIP)."""
                     media_ids = [mid]
         except Exception as e:
             self.log.warning("Digest: image gen failed: %s", e)
-        # Post thread
         ok = await self._gql_post_thread(tweets, media_ids=media_ids)
         if ok:
             self.memory.set_state("last_digest_ts", str(time.time()))
@@ -8889,9 +9221,9 @@ Return ONLY the tweet text (or SKIP)."""
             self.actions_today += 1
             self.last_post_ts = time.time()
             self.memory.set_state("last_post_ts", str(self.last_post_ts))
-            self.log.info("📰 Daily digest posted (%d tweets)", len(tweets))
+            self.log.info("Daily digest posted (%d tweets)", len(tweets))
         else:
-            self.log.error("📰 Daily digest thread posting failed")
+            self.log.error("Daily digest thread posting failed")
 
     # ── Conversation Reply Cycle ───────────────────────────────────────
     async def _gql_reply_to_conversations(self):
@@ -8901,12 +9233,9 @@ Return ONLY the tweet text (or SKIP)."""
         if self.gql.paused_until > time.time():
             return
         last_conv_check = float(self.memory.get_state("last_conv_check_ts", "0"))
-        if time.time() - last_conv_check < 3600:  # max once per hour
+        if time.time() - last_conv_check < 3600:
             return
         self.memory.set_state("last_conv_check_ts", str(time.time()))
-        # Get our recent tweet IDs (last 24h)
-        recent_posts = self.memory.get_my_recent_posts(10)
-        # We need tweet IDs — extract from memory state
         my_tweet_ids = []
         for i in range(10):
             tid = self.memory.get_state(f"my_tweet_id_{i}")
@@ -8937,19 +9266,16 @@ Return ONLY the tweet text (or SKIP)."""
                     continue
                 if rid in self.replied_ids:
                     continue
-                # Skip spam and low-effort replies
                 if self._is_spam_mention(text):
                     self._mark_replied(rid, author)
                     continue
                 if self._LOW_EFFORT_RE.match(text):
                     self._mark_replied(rid, author)
                     continue
-                # Skip low-follower accounts
                 fc = reply.get("followers_count", 0)
                 if 0 < fc < 100:
                     self._mark_replied(rid, author)
                     continue
-                # Generate contextual reply
                 mem_ctx = self.memory.get_context_for_generation(
                     topic=text[:30], author=author)
                 news_ctx = await NewsFeeder.build_context(self.cfg.news_niche)
@@ -9059,7 +9385,7 @@ Return ONLY the tweet text (or SKIP)."""
                     continue
                 tier_emoji = TIER_EMOJIS.get(stats.get("tier", ""), "\U0001f52e")
                 score = stats.get("score", 0)
-                link = f"example.com/?address={addr}"
+                link = f"identityprism.xyz/?address={addr}"
                 final = roast
                 score_line = f"\n{tier_emoji} Score: {score}/1400"
                 link_line = "\n\U0001f517 " + link
@@ -9170,6 +9496,29 @@ Return ONLY the tweet text (or SKIP)."""
             except Exception as e:
                 self.log.error("GQL search error: %s", e)
 
+        # BOOST: Individual search for under-represented priority accounts
+        replied_authors = {tw.get("author", "").lower() for tw in results}
+        missing_priority = [a for a in (self.cfg.priority_accounts or [])
+                           if a.lower() not in replied_authors]
+        if missing_priority and len(results) < 30:
+            # Pick 1-2 missing priority accounts and search individually
+            import random as _rnd
+            for acct in _rnd.sample(missing_priority, min(2, len(missing_priority))):
+                try:
+                    extra = await self.gql.search_recent(
+                        f"from:{acct} -filter:replies", count=5)
+                    seen_ids = {tw.get("id") for tw in results}
+                    added = 0
+                    for tw in extra:
+                        if tw.get("id") not in seen_ids:
+                            results.append(tw)
+                            seen_ids.add(tw.get("id"))
+                            added += 1
+                    if added:
+                        self.log.info("GQL niche boost: +%d tweets from @%s", added, acct)
+                except Exception:
+                    pass
+
         if not results:
             self.log.info("GQL niche: no tweets found")
             return
@@ -9229,7 +9578,7 @@ Return ONLY the tweet text (or SKIP)."""
                 skip_reasons["rate_limit"] += 1
                 continue
 
-            # Freshness check: skip tweets older than configured max age
+            # Freshness check: skip tweets older than 1 hour
             created = tw.get("created_at", "")
             if created:
                 try:
@@ -9262,7 +9611,7 @@ Return ONLY the tweet text (or SKIP)."""
             # Generate reply
             mem_ctx = self.memory.get_context_for_generation(
                 topic=text[:30], author=author)
-            news_ctx = await NewsFeeder.build_context(self.cfg.news_niche)
+            news_ctx = await NewsFeeder.build_context(self.cfg.news_niche, for_reply=True)
             acct_ctx = self.cfg.account_contexts.get(
                 author, self.cfg.account_contexts.get(author.lower(), ""))
             full_ctx = news_ctx + mem_ctx
@@ -9284,7 +9633,7 @@ Return ONLY the tweet text (or SKIP)."""
             # Send via GraphQL
             ok, result = await self.gql.reply(reply, tid)
             if ok:
-                self.log.info("  GQL reply to @%s: %s", author, reply[:60])
+                self.log.info("  GQL reply to @%s: %s (re: %s)", author, reply[:60], text[:50])
                 self._mark_replied(tid, author)
                 self.actions_today += 1
                 self.replies_today += 1
@@ -9308,7 +9657,7 @@ Return ONLY the tweet text (or SKIP)."""
     # ── IdentityPrism: Wallet Roasting from Mentions ─────────────────
     async def _cycle_wallet_roast(self, learning: str):
         """Scan mentions for Solana wallet addresses, call Identity Prism API, and roast."""
-        if self.cfg.name != "analyst_bot":
+        if self.cfg.name != "identityprism":
             return
         # No global cooldown - reply to every wallet mention ASAP
         # Per-address dedup handled by self.replied_ids
@@ -9383,7 +9732,7 @@ Return ONLY the tweet text (or SKIP)."""
                 # Add the Identity Prism link
                 tier_emoji = TIER_EMOJIS.get(stats.get("tier", ""), "🔮")
                 score = stats.get("score", 0)
-                link = f"example.com/?address={addr}"
+                link = f"identityprism.xyz/?address={addr}"
 
                 # Build final reply: roast + score line + link
                 final_reply = roast
@@ -9572,7 +9921,7 @@ Return ONLY a JSON: {{"new_phrases": ["phrase1", "phrase2"]}}"""
                                 self.cfg.twitter_handle.lower() in _txt_low))
                 # IdentityPrism: wallet address = instant priority
                 has_wallet = False
-                if self.cfg.name == "analyst_bot":
+                if self.cfg.name == "identityprism":
                     addrs = SOLANA_WALLET_REGEX.findall(tw["text"])
                     addrs = [a for a in addrs if len(a) >= 40 and not a.startswith("http")]
                     has_wallet = len(addrs) > 0
@@ -9645,7 +9994,7 @@ Return ONLY a JSON: {{"new_phrases": ["phrase1", "phrase2"]}}"""
                 mentions_us = (self.cfg.name.lower() in _txt_low or
                                (self.cfg.twitter_handle and self.cfg.twitter_handle.lower() in _txt_low))
                 has_wallet = False
-                if self.cfg.name == "analyst_bot":
+                if self.cfg.name == "identityprism":
                     addrs = SOLANA_WALLET_REGEX.findall(tw["text"])
                     addrs = [a for a in addrs if len(a) >= 40 and not a.startswith("http")]
                     has_wallet = len(addrs) > 0
@@ -9982,13 +10331,6 @@ class BotOrchestrator:
             return None
 
     async def run(self):
-        global OTHER_BOTS
-        # Auto-populate OTHER_BOTS from all configured bot handles
-        for cfg in self.configs:
-            if cfg.twitter_handle:
-                OTHER_BOTS.add(cfg.twitter_handle.lower())
-                OTHER_BOTS.add(cfg.name.lower())
-
         # Separate API-only bots from browser bots
         api_only_configs = [c for c in self.configs if c.api_only]
         browser_configs = [c for c in self.configs if not c.api_only]
@@ -10010,10 +10352,15 @@ class BotOrchestrator:
             if cookies:
                 bot.gql = XGraphQLClient(
                     cookies["auth_token"], cookies["ct0"],
-                    all_cookies=cookies.get("all_cookies", ""))
+                    all_cookies=cookies.get("all_cookies", ""), proxy=cfg.proxy or "")
                 bot.log.info("GraphQL client initialized (cookie-based)")
             else:
                 bot.log.warning("No cookies extracted — GQL disabled")
+
+            # Share bitpredict's GQL client for Grok news queries
+            if cfg.name == "bitpredict" and bot.gql:
+                NewsFeeder.set_grok_client(bot.gql)
+                log.info("Grok news client set (via bitpredict cookies)")
 
             if not bot.api and not bot.gql:
                 log.error("Bot %s: no API and no GQL — skipping", cfg.name)
